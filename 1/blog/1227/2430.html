@@ -1,0 +1,1031 @@
+<!--
+ * 严重鄙视任何盗窃、复制代码行为！
+ * 引用、借鉴本站功能或布局的，请在页面中标注或附上链接，谢谢.
+ * 本站已在github开源，只需保留版权声明即可免费使用：https://github.com/xiaodai945/WEBJIKE
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+    <!--头部信息-->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>圣诞节快乐呀~~今天有没有用精选壁纸皮肤？ | 小呆导航</title>
+    <meta name="keywords" content="小呆博客,WEBJIKE博客,小呆导航博客,程序员博客">
+    <meta name="description" content="WEBJIKE博客是小呆导航站长的个人博客，致力于为广大用户提供最前沿的前端开发技术、平面设计、作品分享、网站推荐、资源共享，开发交流等资讯。">
+<!-- zui -->
+
+<link rel="stylesheet" href="../../css/zui.min.css">
+<link href="../../css/main-style-3.0.2.css" rel="stylesheet">
+<link href="../../css/font-awesome.min.css" rel="stylesheet">
+<script src="../../ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+
+    <script src="../../sdk/c-1607697920580013.js"></script>
+  </head>
+  <body>
+
+<link rel="stylesheet" type="text/css" href="../../SiteFiles/Plugins/SS.Login/assets/cleanslate.min.css">
+<link rel="stylesheet" type="text/css" href="../../SiteFiles/Plugins/SS.Login/assets/style.css">
+<!-- template start -->
+
+<div id="ss-auth" class="ss-auth cleanslate" v-bind:style="{ display: form ? '' : 'none !important' }" style="display: none !important;">
+  <header class="popupHeader">
+    <span class="header_title">{{ title }}</span>
+    <span class="modal_close" @click="closeModal"></span>
+  </header>
+
+  <section class="popupBody">
+    <!-- Social form -->
+    <div class="social_login" v-bind:style="{ display: form == 'social' ? '' : 'none !important' }" style="display: none !important;">
+      <div>
+        <a v-bind:href="apiUrlWeixin" v-bind:style="{ display: apiUrlWeixin ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weixin"></span>
+          <span class="icon_title">微信登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlQq" v-bind:style="{ display: apiUrlQq ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon qq"></span>
+          <span class="icon_title">QQ 登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlWeibo" v-bind:style="{ display: apiUrlWeibo ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weibo"></span>
+          <span class="icon_title">微博登录</span>
+        </a>
+      </div>
+
+      <div class="centeredText">
+        <span>使用账号密码登录</span>
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openRegisterModal" class="btn">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div data-vv-scope="login_form" v-bind:style="{ display: form == 'login' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名/邮箱/手机</label>
+      <input type="text" name="account" v-validate="'required'" :class="{'is-danger': errors.has('login_form.account') }" v-model="login.account">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('login_form.password') }" v-model="login.password">
+      <br>
+
+      <!-- <div class="checkbox">
+        <input id="remember" type="checkbox" />
+        <label for="remember">记住用户名</label>
+      </div> -->
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="loginSubmit" class="btn btn_red">登录</a>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;" @click="openFindPasswordModal" class="forgot_password">忘记密码？</a> -->
+    </div>
+
+    <!-- Register Form -->
+    <div data-vv-scope="register_form" v-bind:style="{ display: form == 'register' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名</label>
+      <input type="text" name="userName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.userName') }" v-model="register.userName">
+      <br>
+
+      <label>姓名</label>
+      <input type="text" name="displayName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.displayName') }" v-model="register.displayName">
+      <br>
+
+      <label>邮箱</label>
+      <input type="email" name="email" v-validate="'required|email'" :class="{'is-danger': errors.has('register_form.email') }" v-model="register.email">
+      <br>
+
+      <label>手机号</label>
+      <input type="text" name="mobile" v-validate="{ required: true, regex: /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/ }" :class="{'is-danger': errors.has('register_form.mobile') }" v-model="register.mobile">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('register_form.password') }" v-model="register.password">
+      <br>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取 消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="registerSubmit" class="btn btn_red">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Success Form -->
+    <div class="user_form" v-bind:style="{ display: form == 'registerSuccess' ? '' : 'none !important' }" style="display: none !important;">
+      <div class="successText">
+        {{ registerSuccessMessage }}
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">关 闭</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/vue-2.1.10.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/vee-validate-2.0.3.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/axios-0.17.1.min.js"></script>
+<script type="text/javascript">
+var authData = {
+    apiUrlRegister: '/api/SS.Login/actions/register',
+    apiUrlLogin: '/api/SS.Login/actions/login',
+    apiUrlLogout: '/api/SS.Login/actions/logout',
+    apiUrlWeixin: '/api/SS.Login/auth/Weixin?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlWeibo: '/api/SS.Login/auth/Weibo?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlQq: '/api/SS.Login/auth/Qq?redirectUrl=' + encodeURIComponent(location.href),
+    registerSuccessMessage: '恭喜，注册用户成功',
+    loginRedirectUrl: '?success=true',
+    logoutRedirectUrl: '?logout=true',
+};
+</script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/script.js"></script>
+<script src="../../sitefiles/assets/components/lodash-4.17.4.min.js" type="text/javascript"></script><script src="../../sitefiles/assets/components/stlClient.js" type="text/javascript"></script>
+
+    <!--[if lt IE 8]>
+    <div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+    <![endif]-->
+    <!--头部导航条-->
+    <header>
+      <div class="main">
+  <div class="logo">
+    <a href="../../index.html">
+      <img src="../../images/logo.png">
+      <span>小呆导航</span>
+    </a>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a class="duty-nav" href="../../dutynav.html">职业导航<i class="fa fa-caret-down"></i></a></li>
+      
+      
+        <li><a href="../../course.html">教程资源</a></li>
+      
+        <li><a href="../../blog.html">个人博客</a></li>
+      
+        <li><a href="../../liuyan.html">在线留言</a></li>
+      
+        <li><a href="../../link.html">友情链接</a></li>
+      
+        <li><a href="../../adout.html">关于本站</a></li>
+      
+    </ul>
+  </nav>
+  <div class="user visible-lg">
+    
+<div id="ajaxElement_1_895_loading"></div>
+<div id="ajaxElement_1_895_success" style="display: none"></div>
+<div id="ajaxElement_1_895_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_1_895(page)
+{
+    document.getElementById('ajaxElement_1_895_loading').style.display = 'block';
+    document.getElementById('ajaxElement_1_895_success').style.display = 'none';
+    document.getElementById('ajaxElement_1_895_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQC0add0X6Y5MJz9WyuKcTjAggaKIMVaPbKc5rxKbvJgSgP9bZh0slash0F0slash0UMmjQMwFIOTpEHgEiGLI3XOUCBEBSWJncYelN0slash0cdpFbVSnVHEVFQ0slash0JqnzuEdTVkNvwFZG0Y3p0add0TTfx9bkNQizf0add0wFn7ta0slash05PN43GxYkfc41JjYbumYv0slash0pnJEu8ANG3lfDJz7SIl4Lhu32wWQDwZlyQpkZ1DK0uXs7XcmN0add08nPHox6xJq05dxak9t8i90slash0cA0zOJKL0add0upI20add0VlRKCtisrgLBjOwMH2bDf3NwHMTjWIEu7mKQYXuaF8qrccR8cJSNOmSPItP4ALcu9bQhhx7gAWGx6gtJFXxLDeQSucE8z0uIeyB0add00slash0bHlsZtGQ9EjMCDzFe2UhauFgIbeRvpkXvS4VFdS7ugQQ1HkEMMnUgu68CcFxjiC0slash0J0slash0hIQHzhv40add0eGXD4IZOjMNXkJDfk1pSq26nlhxzrWpR7chEI2iAK9gXRSlU886DkqPIlovlqdotfyA5V4kTKKgc5Aylhzmi741IgeO4mzjiVprTA0slash0VS17NklZbS0add02S0slash0qV26K2ELI0slash0DeWQGnicyPF0dCZ5Q98snVjG0slash09Ui4eG9nMc2Pqy0slash0CKb0add0tLjZVZ30add0QxdxKA072NTvO2BBUtn4qqnpP2gGyxrbIsruTFSmShsOgYAdgHi0FEfQUf8KdC0add00ILSkO8Hr0slash0Suu5mn9HLO0add0KMnxzXP7UXDWrXuqlJLh97d2K7hwMpEuFvQCBlJcxh0add0grD8i3OWbSZ6KJkUk4qLma4Yj0mQGjxCnK912SJZxHkhbB8D3PbByqtV30jJFszSEOht8ni0cWKmg5AgXzsz2kqOpxOzdpXX1lZqm0slash0TUl8xIhnGydTr0no8GPO6fUYQCBBGhTghng0g8San80NHW5AWDHBvAVmtfrAalqL8Q8ZCn94M49oP4tg6oBwtG9rGR7u7RC4pwYODMzZeUGyKwMMq2I6C0add0uN6ywrpe5ryl4aZ6gEuCBpgJXVfmOSWaR9Wh0add0t22ld1Pl1WphQujuNEqwVDrHDAlC4CpwUiwFmMTjkw8HiPzbY2ZeuMXt0slash0DrVN5cQHjf7iVAa0slash01kGTY0yiPLWvhRcTldSrdkm0add0TKIADSxBd6Dzd1rXhaLX86zwFJb1ji0add0011JBdvb4QC9ZNd1fbUevxFv4iECQGg0KSryOIjGqYDYhgOYVLgRugTWgemlq7y7ARQrp6YClsHDGzHoiS0add0ZfAF5JPZIA0add0yX2txv6sg1MFYHj5PsmAM1zvJveVHmphRnGwJbAIweLJWqWQtapn0add0ozXHjA8ko5w9ogsUEBSlnVmQcrRhS0add0ADxowOHDkEQJnW9a0dnkxuZ4GgYPQti0add0UdSK9Klx3vP73YVXHh0add0kMfFespWUaI2L8xgLGQOILESJ6Ja7EfpiH6g3e5kYgRwP0slash02Tt7mCIr1tY3aWlilOA0equals00equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_1_895_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_895_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_1_895_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_895_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_1_895(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_1_895(stlGetPageajaxElement_1_895());
+
+function stlRedirectajaxElement_1_895(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div class="head-btn visible-lg">
+    <a href="../../sethome.html" target="_blank">设为首页</a>
+  </div>
+  <button class="nav-btn visible-xs visible-sm">
+    <span class="icon-line top"></span>
+    <span class="icon-line middle"></span>
+    <span class="icon-line bottom"></span>
+  </button>
+  <div class="mobile-user visible-xs visible-sm">
+    
+<div id="ajaxElement_2_630_loading"></div>
+<div id="ajaxElement_2_630_success" style="display: none"></div>
+<div id="ajaxElement_2_630_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_2_630(page)
+{
+    document.getElementById('ajaxElement_2_630_loading').style.display = 'block';
+    document.getElementById('ajaxElement_2_630_success').style.display = 'none';
+    document.getElementById('ajaxElement_2_630_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQC0add0X6Y5MJz9WyuKcTjAggaKIMVaPbKc5rxKbvJgSgP9bZh0slash0F0slash0UMmjQMwFIOTpEHgEiGLI3XOUCBEBSWJncYelN0slash0s4429J20Md7D9iKPiCLvJfqkyeY4kWqBqTwD0add0jDpVUF5MCqL4iOp5d3w4R5tztT0xVotiAgm2OyuJJOArhtX4NJjDaXDOgWxbomWlqFGAdXSm3p0slash0Kami8CpGEyHfVlBNgZS3FcyEhURxTb0ZFaM5e92qeOV0add0B1GZF8Lg0add0mphkVvOlNMYgP6op9U7fAenwHycQm6fYJaQPAUGuEIcfFcfKiRXH1kXMPiGzJHvz0f7qrOY19G3BU0add0MzexYzbB1C5yVNJg2CSXq5q533337N4GKAOQpFlXmBzc4cAkDDTqdO2YcZphgGi1X5VvQKU9WIlvCq36E8u2s0add0hLlWuPrTqcMUhZ0slash0pVFR0add06X41SjJzrCVKySfJTkRTdi0slash0RPo9Rm4S0slash0AocjtUhofLmtwHpu4rkCo4tH57JW1JDrMVMIOyQragyZF1Danqnh9JWJpLbmYMsCREDHsLZVfI1vUVa9uhEH5pVOW20add0iuTytEnqSO0slash0ru0slash04IZHHf2ZRGu2GXccn0add07V6j6zquq3KyU0add0WeJ0add0jNnHddMRSRpeFsHNa0add0484CJOTVJUdJfY7NzCVColYudK8cv0slash0psxXhm0PAG7KhEo0add0Qp3YmZ2GJx2v7OnsG8rFztbINiR4NzCQvyjedGwW6xfYhVsuRxHJGy09UskhgIXnUScHDA00add0gHV0add0aT7H0add0NPkU0slash0ynkyW1MMukHxGgdbPYKXPj7yA67ETziZjraYBVK3waITfatslcyOcp0biMrwQ0add0pMp5IdoKFpQT10add0y6TeyJ7ZVmxWYjwe6Nvfhicl4WXG42vtbUHBYA00add05LvWcZkuJnHnFw6iFHhFCiyW6WOdHrrllbcxgspzLNcHJRtdKaVMr2AyP5wRkdo3a5OVXKunFojoX4SjRcjLp1olLFoazFozR5oPn5xq5iCmOi0add0Z3sB7net35bTaRw9LFMF84mniDNCldfL9xbbGoxNjeDlLRTF0slash00slash0V3CDdrcaFbdacFvAOnZdF4Hc2mGFWIG9SD2lYmxJLhulAxkbTF9QPfUwjO4lrQ2bXYUBp6T1CSB59XyHWFJrP6kewc9nepZozvbQD0slash0kGfmY0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_2_630_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_630_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_2_630_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_630_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_2_630(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_2_630(stlGetPageajaxElement_2_630());
+
+function stlRedirectajaxElement_2_630(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div id="tow-nav">
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../web.html">前端开发</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../web.html">视频教程</a></li>
+          
+            <li><a target="_blank" href="../../web.html">在线学习</a></li>
+          
+            <li><a target="_blank" href="../../web.html">碎片学习</a></li>
+          
+            <li><a target="_blank" href="../../web.html">学习工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">WEB公共库</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端组织/团队</a></li>
+          
+            <li><a target="_blank" href="../../web.html">社区/论坛</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端框架 - UI</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端框架 - JS</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端插件</a></li>
+          
+            <li><a target="_blank" href="../../web.html">移动框架</a></li>
+          
+            <li><a target="_blank" href="../../web.html">预处理器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">字体图标</a></li>
+          
+            <li><a target="_blank" href="../../web.html">构建工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">模块加载</a></li>
+          
+            <li><a target="_blank" href="../../web.html">包管理器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">模板引擎</a></li>
+          
+            <li><a target="_blank" href="../../web.html">游戏引擎</a></li>
+          
+            <li><a target="_blank" href="../../web.html">代码高亮</a></li>
+          
+            <li><a target="_blank" href="../../web.html">代码托管</a></li>
+          
+            <li><a target="_blank" href="../../web.html">博客系统</a></li>
+          
+            <li><a target="_blank" href="../../web.html">域名/服务器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">辅助工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">站长工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">图片素材</a></li>
+          
+            <li><a target="_blank" href="../../web.html">精选酷站</a></li>
+          
+            <li><a target="_blank" href="../../web.html">互联网资讯</a></li>
+          
+            <li><a target="_blank" href="../../web.html">工作/私单</a></li>
+          
+            <li><a target="_blank" href="../../web.html">应用程序</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../ui.html">界面设计</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../ui.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">灵感采集</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">界面交互</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计规范</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">icon图标</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计素材</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">图库素材</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">颜色搭配</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">渐变配色</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">字体字形</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">漫画插画</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计团队</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">社区交流</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">酷站集合</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../cg.html">影视后期</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../cg.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">特效动画</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">资讯交流</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">软件插件</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">摄影摄像</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">素材资源</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">录屏工具</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">学习论坛</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">求职招聘</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">渲染平台</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">兼职外包</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../office.html">日常办公</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../office.html">热门推荐</a></li>
+          
+            <li><a target="_blank" href="../../office.html">效率资源</a></li>
+          
+            <li><a target="_blank" href="../../office.html">办公软件</a></li>
+          
+            <li><a target="_blank" href="../../office.html">技能提升</a></li>
+          
+            <li><a target="_blank" href="../../office.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="../../office.html">团队协作</a></li>
+          
+            <li><a target="_blank" href="../../office.html">电子邮箱</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文案策划</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文档模板</a></li>
+          
+            <li><a target="_blank" href="../../office.html">工作兼职</a></li>
+          
+            <li><a target="_blank" href="../../office.html">企业信息</a></li>
+          
+            <li><a target="_blank" href="../../office.html">合同/范文</a></li>
+          
+            <li><a target="_blank" href="../../office.html">思维导图</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文件转换</a></li>
+          
+            <li><a target="_blank" href="../../office.html">政府网站</a></li>
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+
+    </header>
+    <div id="content">
+      <div class="">
+        <div class="container content-box">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="blog-header">
+                <div class="blog-logo">
+                  <img src="../../images/blog-logo.jpg">
+                  <div class="blog-title">
+                    <strong>Webjike</strong>
+                    <p>总有人说你变了，却从没人问你经历过什么 ―― by网易云热评《经历》</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <article class="article">
+                <h1 class="article-title">圣诞节快乐呀~~今天有没有用精选壁纸皮肤？</h1>
+                <div class="infos-meta">
+                  
+<div id="ajaxElement_3_209_loading"></div>
+<div id="ajaxElement_3_209_success" style="display: none"></div>
+<div id="ajaxElement_3_209_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_3_209(page)
+{
+    document.getElementById('ajaxElement_3_209_loading').style.display = 'block';
+    document.getElementById('ajaxElement_3_209_success').style.display = 'none';
+    document.getElementById('ajaxElement_3_209_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWNz0add0l4ml2DkHNaNJ17dAzNKjrc6zakt0add0mTIdgc9wYqZqfwM4XhKsgBlfQfkJzc5CrPdLL63jZWTN1tsCu4cQzB9zSXgVN0slash0Yb9EZvRcxxJS4tj7lM2R9YFJ8hwhmo0NQGW5hr29bbwScVsP1yYNgOlfOPhYrlHyWfVZ6BmpCSYAn3FR0TMSKFUn8BdiJNrDGW67YbF0add03FyKkBhhHwe2twkZFYXCaR98Z02hgrx9PiIGGyYgKKv0587gjzR0DfLYQUwD4Rx70add0MNVZQ8jViGBgXjoxPC0add0Qx0slash00Ffg9Lc7fg4snKYVNxxtoWzXBRYzDPcDvCacSFEBgJxMomaE3a76mEnjSatYNw250XhV0slash0PCr8fNH2vaaFW0add0hsXPGaY8krchIapFxDgAQoCpEMd0add0LNF1XkKH5XkEOjieN08KncnFpuULarctlcdP6F3b6L0add0qGTBNh1oxYka0slash04RBnUCjiP9kdQAJe0slash0COnFsxn9nF53mWUf0add0CigkK8TCkgmKbPQHTh0slash0DYR8Kps2xYkjL28dvbFkWkLfNn1EWatNbCal7iY1TSw4Pe05Ap7whrA3R5wCVSwtjsdcH6oK1Bk5uufazBhzEz6VxJ0add0MbAywm4lQxtBqjNdASoKce0add0RPMcMNa0add0rVpGDBO0add0QT6BYjVZMLQ4x910add0saHr0slash0v0add05bsg5hNzMsar25vfKRhvMtEWYUqqUhgCITIuo0PQE0slash0M6ZxDliDqsDoiTzw8Urv6d4wjBVLNSm1Y0slash0KZ7YtVv0slash0ec7TflzvJXpumfgXMSRDpEDQPrKHMYNf1tc8fsOtumUOA0k5WskNgPPHVfnK0ScN1ZbrfRB3Uql9t2zKK4SUnyEpD0MiPndcZefcUkDD0add0XHooDgYbB5wTP7hbtbxu7j0fk0add0G0slash04IvZJL1ZNtjHhGtaj0O2hIL9J8KJPQVJNRfWqRCbeG0add0pY3dCnBHOVC0slash0nxXz0slash050add0XrKx1aH12dOGd5rcUzIxKIgGITzeDUnexz0Ak9d0add0vDKMPMhQjo3oxuOj2TyfO3vlHJI0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_3_209_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_3_209_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_3_209_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_3_209_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_3_209(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_3_209(stlGetPageajaxElement_3_209());
+
+function stlRedirectajaxElement_3_209(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                </div>
+                <!-- 文章正文部分 -->
+                <section class="article-main">
+                  <p>今天用了随机壁纸的小伙伴打开小呆导航的第一眼有没有被惊艳到呢~<br></p><p><img src="../../upload/images/2018/12/4d5309b7de47ad20.png" title="11.png" alt="11.png"></p><p>很好看的圣诞主题壁纸，很贴心对不对<img src="../../upload/images/2018/12/afcf560b5b2aa29e.gif"></p><p>还没有使用朋友赶紧换上：</p><p><img src="../../upload/images/2018/12/bfdc7c8c52ed76eb.png" title="12414.png" alt="12414.png"></p><p>最后祝大家圣诞快乐，有女朋友的今晚浪漫一下，没有女朋友的一个人也要开心~</p>
+                </section>
+                <!-- 文章底部 -->
+                <footer>
+                  
+<div id="ajaxElement_4_140_loading"></div>
+<div id="ajaxElement_4_140_success" style="display: none"></div>
+<div id="ajaxElement_4_140_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_4_140(page)
+{
+    document.getElementById('ajaxElement_4_140_loading').style.display = 'block';
+    document.getElementById('ajaxElement_4_140_success').style.display = 'none';
+    document.getElementById('ajaxElement_4_140_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWNz0add0l4ml2DkHNaNJ17dAzNKjrc6zakt0add0mTIdgc9wYqZqfwM4XhKsgBlfQfkJzc5CrPdLL63jZWTN1tsCu4cQzB0add0gdC9BpfxihcTBkOcIWJKCEkGL30add0tNKSfqMT9gErdQnKZgvN2ATEuQm5otE4P0add0k2SpE1iav60add0nM1tvDv9hojxLS1O4lB8BEzcG6R750slash0I0slash06xqfaCdyFmnwYAWPBG2zx8z6aUg5B0add0WTjm6QdKXCLDMCY861tz7cd44FPyk1GLvhfFwgm0add0dhw0slash0idox4JO1oRRsp0slash0ub2a0add0gRkrG6nH5ZWwdypnaKnz2VoKo73ya4jPbOEONYSlPhzUXxypaMaXkiu0add00nF81skPhgtDYmvgVZBUGXz3NPiBJorn8IMxl0add0921NXchXcWowQYCBJPHp7WqTmrQcM90slash07YiU0slash0avFQVxflmcZXbkqKOgcXMN3sYr0slash05MtG0slash04hSm4mL5fg2n0slash0dVMWTl2ynf9Vt55l0Rd7OvXBLaiJ9bg3FUB3EHIsx6Gh0add0fT0BUu1KFQWtFGjhdYJcvGdevo0o2Up16tfiVerrgBHPVIyqRgG976gOGuUu3jVF5u4uqtBOBEMMKw60add0LeKt0add0U7r9A6TNl31NSPwvCcGUZ9jM0UDNLuE0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_4_140_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_4_140_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_4_140_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_4_140_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_4_140(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_4_140(stlGetPageajaxElement_4_140());
+
+function stlRedirectajaxElement_4_140(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                </footer>
+              </article>
+              <div class="comment-box">
+                <div class="comment"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-th-list"></i>文章分类</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_5_440_loading"></div>
+<div id="ajaxElement_5_440_success" style="display: none"></div>
+<div id="ajaxElement_5_440_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_5_440(page)
+{
+    document.getElementById('ajaxElement_5_440_loading').style.display = 'block';
+    document.getElementById('ajaxElement_5_440_success').style.display = 'none';
+    document.getElementById('ajaxElement_5_440_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWNz0add0l4ml2DkHNaNJ17dAzNKjrc6zakt0add0mTIdgc9wYqZqfwM4XhKsgBlfQfkJzc5CrPdLL63jZWTN1tsCu4cQzBxactOSQRDlp0mSihGktrJLb8JeP32yMcHgXj0add0SEWPQAtW8oYmbux9WDkPtiKN0EFeNGiJfaAOu5bL5oJb0slash0w0wXhUq2gMQva0slash0R97quVBC4Wv0add013d2Mak59MRBL8JFhrcCu54iDmFJa9CrsktikZLvZUMYm1hgGoR1D7SUfHfUnKOXMDbMwBdc7fiYlpk0slash0aMidgYakbF70slash0mucVuu0r3lnlw1XL61Yspz8SthC2av4QYmE2ywtpSEOHVOdg1D8Pxg8NYe0add0TAdKOFDw9Cq9fuOM90add0C0slash0g0slash0xolI1vCnNExN00yUDx1q1Hzy8eK230slash0HMOaO0slash0NBcJ732K4TsJb0slash0owfMX4JQ90slash0FSPEhRy3h2ZC0add0Vksva9wpCG0slash0hpi1zSgawHnvNPeUcutvQCatWa2mWSUCg3xm5Xjt3MShpvLszOlcJG4VlnFHzUXiRaHfgsl3yj0Bma4XMNtGapOsu9s7o2YT9HXhAUwp5u0zqe2YCAJ3ZMsJZFI2juFWF7WCxX8efUDnSBt6Y5WTUaOGq3Kdx0slash0S1x7dGklmhhdKq5DJpYnnmg34Bh9rq7reO9kGbZejlXRF1q9aRvbTXHv5OiP1vJ70slash0L8J42T0Y7Ek6YFlWVZgkyPBeQfCEdKdL6hsMd9IyFFh40add0rZnVvuHTdkeT5pRkXCPpYNCkkOONHgnMMyAjfgd1gq6cSEwNE1BgFw0add0ypurksRXc1o3HjvHRwO7k0BsghUG7vyl9FgLLFutYIUiw0slash02i73wd9yeI5VbdDr6jTtTgmo0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_5_440_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_5_440_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_5_440_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_5_440_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_5_440(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_5_440(stlGetPageajaxElement_5_440());
+
+function stlRedirectajaxElement_5_440(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-newspaper-o"></i>热门文章</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_6_832_loading"></div>
+<div id="ajaxElement_6_832_success" style="display: none"></div>
+<div id="ajaxElement_6_832_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_6_832(page)
+{
+    document.getElementById('ajaxElement_6_832_loading').style.display = 'block';
+    document.getElementById('ajaxElement_6_832_success').style.display = 'none';
+    document.getElementById('ajaxElement_6_832_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWNz0add0l4ml2DkHNaNJ17dAzNKjrc6zakt0add0mTIdgc9wYqZqfwM4XhKsgBlfQfkJzc5CrPdLL63jZWTN1tsCu4cQzB2Tkdn8sbSINOQDnpR1gJHSgVfx1rSO4Db0add0GFw9XJWbqeSaPcASfNWZX9J0slash0HmnzOpIrCC94r32qxJsRhuIqN3Y0add0BwEHE0slash0Wy35FXL7FbuiGQP0h9rRVqltyoFVGe3aChfa5cXAd0add0YR4rl0add0wPw7TTkPQwcpZKKYwUYZfrghmCPj4ABBty9buvUv3A3sE6S7HKPHU0add0ESeGGCx2m0add0OODrMJ0add0Ne7gX6N7lb3Twrp0add0S835OQd7qOIUI660slash0HjgRKPW6i45w030add0tGb6CKlegV0viK0slash0OgQddI7AhUjzByPOJ6LHDH8DbEtG1k3WTnbq0GA7BsD6d2LQ3qMpvzmnAW6iWkWmVXqnZblkbwZwxT77JVCr40add0Hukv0slash0zfSQ1nlqX0slash0Jxv1ADJoYJncObz0add0PP4GrG1EXMRmBvaJjc5qwxKNov29IJLRMGXHw0slash0F6TyQn0slash0Q654cp2JuUYjRPO0add0zljzqRdJA70slash0CMdj4JhPo7OIctQrh6bXFALzrvlvodIEfk7kblWgkcnxK0slash0A7ydq3tc8xpU624FOMgov2ZSMpWMZy0slash02sXx7idKJVKQvTiCifJlQ7Gz2O0slash0pJUg6EAz5PQSScOD5L0slash0wK4MPGhWfWyMk78AMveBzWIBQ65DkOMfZnflmfq6OHDXJNOza7M0slash0qX67ID0add0eL5sUM6l7CcZLLem1VI1XTvawy6qk0slash0cMu6yhGXP6t5Nwx8Ze87bRxYog3WelyZJSm3aObc5cZUspk8IY4LiKTs0slash0ZP6X3DNdePBvLe5W7bMsJwdLIu0slash0Wk71gpvt1d7jLBaNgYdr70secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_6_832_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_6_832_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_6_832_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_6_832_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_6_832(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_6_832(stlGetPageajaxElement_6_832());
+
+function stlRedirectajaxElement_6_832(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-newspaper-o"></i>文章标签</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_7_409_loading"></div>
+<div id="ajaxElement_7_409_success" style="display: none"></div>
+<div id="ajaxElement_7_409_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_7_409(page)
+{
+    document.getElementById('ajaxElement_7_409_loading').style.display = 'block';
+    document.getElementById('ajaxElement_7_409_success').style.display = 'none';
+    document.getElementById('ajaxElement_7_409_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWNz0add0l4ml2DkHNaNJ17dAzNKjrc6zakt0add0mTIdgc9wYqZqfwM4XhKsgBlfQfkJzc5CrPdLL63jZWTN1tsCu4cQzBxwg70slash0tNLk1qQEOlZexe9Co8o1oZ76GNlcTlgk7Y0add0VgIF0add01UpLIFsritrpbjEw0Nca0slash0W3i2uxI5Amz72RZcD1PHG86eM1Wz8BVtp6kv5TQt7OKVVDhR1hQeFXtf2SYtJz7tJZ0slash0dshVbL8JUyVvS0pSm9rtNxJPNa0cRGnP1eYNlaLOXyqDuifzeSBiwkLelWw35n9a0add0e1MetaFJhufvL1tSuNIWiuVRKIJH0add0GvqaWxa79TxYMz13k8dG65PeHkJv25VLpj0gNB3nbli21VO4jpNghCIdO5KAPcY1saElah0slash0EnWQN4gGrNELKpJyKeiCRseAF4okU0VOUmPZOko2ERrHUKwUxbjvuolOVfDOLpQezZQi70slash0AJxbN2HUIaShq5v0afYVR0add0Ne00slash0GbDODe7FuY0j60add0Eb2J0uSsygXM5XQ9m4rrwp1s781hBxvr0HvUz0NZCkcSXyYRF0slash0jED9xXP04weuyeDC2sHlfoyTLldiDJ6dM00add087sxzRK6oXChX3r9QwopGFum38p4fUs7Ai6ADcX7jn2jCoZJxE26u0TBzOGwyPtsvd7Gb60slash0LxoN4XO80slash0sTIMnQqEsxDzMUgI30xbXXB5RtDdJRGmTbIOuwTPaS01660secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_7_409_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_7_409_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_7_409_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_7_409_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_7_409(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_7_409(stlGetPageajaxElement_7_409());
+
+function stlRedirectajaxElement_7_409(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--页脚-->
+        <footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-main">
+          <p>Copyright © 2017-2019 小呆导航（<a href="../../index.html">webjike.com</a>）By SiteServer CMS 提供强力驱动 · 粤ICP备18030223号-1  <a href="../../sitemap.html" target="_blank">网站地图</a><a href="javascript:window.open('https://github.com/xiaodai945/WEBJIKE');" target="_blank" class="pull-right"><img src="../../github/stars/xiaodai945/WEBJIKE-social.jpg"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="top" class="hidden-xs hidden-sm">
+  <ul>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="联 系客 服"><i class="fa fa-smile-o"></i></a>
+      <span><img src="../../images/weixin.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="意 见反 馈"><i class="fa fa-envelope-o fa-fw"></i></a>
+      <span>我们可以做的更好</span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="微 信群 聊"><i class="fa fa-weixin"></i></a>
+      <span><img src="../../images/qun.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="返 回顶 部" style="display: none" id="go-top"><i class="fa fa-chevron-up"></i></a>
+    </li>
+  </ul>
+</div>
+
+
+      </div><!--内容区域-->
+    </div>
+    <!--[if lt IE 9]>
+    <script src="dist/lib/ieonly/html5shiv.js"></script>
+    <script src="dist/lib/ieonly/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261855216'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261855216' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+<script src="../../js/jquery.js"></script>
+<script src="../../dist/js/zui.js"></script>
+<script src="../../static/js/3.0.4/av-min.js"></script>
+<script src="../../js/Valine.min.js"></script>
+<script src="../../js/main.min-3.0.2.js"></script>
+  </body>
+</html>
+<script src="../../api/SS.Hits/hits/2/1227/2430.js" type="text/javascript"></script>

@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<head>
+    <script type="text/javascript" src="https://g.alicdn.com/aliyun/account/0.0.8/js/jQuery1.9.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+			var loc = window.location.hash.substring(1);
+            window.location.href='https://account.aliyun.com/login/login.htm?lang=&oauth_callback=' + escape('http://workorder.console.aliyun.com/console.htm?lang=#' + loc);
+        });
+        
+    </script>
+</head>
+<body><script type="text/javascript">
+(function (d) {
+var t=d.createElement("script");t.type="text/javascript";t.async=true;t.id="tb-beacon-aplus";
+t.setAttribute("exparams","category=&userid=&aplus&yunid=&yunpk=");
+t.src="//g.alicdn.com/alilog/mlog/aplus_int.js";
+d.getElementsByTagName("head")[0].appendChild(t);
+})(document);
+</script>
+</body>
+</html>

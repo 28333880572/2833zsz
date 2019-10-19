@@ -1,0 +1,1128 @@
+<!--
+ * 严重鄙视任何盗窃、复制代码行为！
+ * 引用、借鉴本站功能或布局的，请在页面中标注或附上链接，谢谢.
+ * 本站已在github开源，只需保留版权声明即可免费使用：https://github.com/xiaodai945/WEBJIKE
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+    <!--头部信息-->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript Array 数组对象的所有方法及用法详解 | 小呆导航</title>
+    <meta name="keywords" content="小呆博客,WEBJIKE博客,小呆导航博客,程序员博客">
+    <meta name="description" content="WEBJIKE博客是小呆导航站长的个人博客，致力于为广大用户提供最前沿的前端开发技术、平面设计、作品分享、网站推荐、资源共享，开发交流等资讯。">
+<!-- zui -->
+
+<link rel="stylesheet" href="../../css/zui.min.css">
+<link href="../../css/main-style-3.0.2.css" rel="stylesheet">
+<link href="../../css/font-awesome.min.css" rel="stylesheet">
+<script src="../../ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+
+    <script src="../../sdk/c-1607697920580013.js"></script>
+  </head>
+  <body>
+
+<link rel="stylesheet" type="text/css" href="../../SiteFiles/Plugins/SS.Login/assets/cleanslate.min.css">
+<link rel="stylesheet" type="text/css" href="../../SiteFiles/Plugins/SS.Login/assets/style.css">
+<!-- template start -->
+
+<div id="ss-auth" class="ss-auth cleanslate" v-bind:style="{ display: form ? '' : 'none !important' }" style="display: none !important;">
+  <header class="popupHeader">
+    <span class="header_title">{{ title }}</span>
+    <span class="modal_close" @click="closeModal"></span>
+  </header>
+
+  <section class="popupBody">
+    <!-- Social form -->
+    <div class="social_login" v-bind:style="{ display: form == 'social' ? '' : 'none !important' }" style="display: none !important;">
+      <div>
+        <a v-bind:href="apiUrlWeixin" v-bind:style="{ display: apiUrlWeixin ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weixin"></span>
+          <span class="icon_title">微信登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlQq" v-bind:style="{ display: apiUrlQq ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon qq"></span>
+          <span class="icon_title">QQ 登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlWeibo" v-bind:style="{ display: apiUrlWeibo ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weibo"></span>
+          <span class="icon_title">微博登录</span>
+        </a>
+      </div>
+
+      <div class="centeredText">
+        <span>使用账号密码登录</span>
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openRegisterModal" class="btn">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div data-vv-scope="login_form" v-bind:style="{ display: form == 'login' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名/邮箱/手机</label>
+      <input type="text" name="account" v-validate="'required'" :class="{'is-danger': errors.has('login_form.account') }" v-model="login.account">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('login_form.password') }" v-model="login.password">
+      <br>
+
+      <!-- <div class="checkbox">
+        <input id="remember" type="checkbox" />
+        <label for="remember">记住用户名</label>
+      </div> -->
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="loginSubmit" class="btn btn_red">登录</a>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;" @click="openFindPasswordModal" class="forgot_password">忘记密码？</a> -->
+    </div>
+
+    <!-- Register Form -->
+    <div data-vv-scope="register_form" v-bind:style="{ display: form == 'register' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名</label>
+      <input type="text" name="userName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.userName') }" v-model="register.userName">
+      <br>
+
+      <label>姓名</label>
+      <input type="text" name="displayName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.displayName') }" v-model="register.displayName">
+      <br>
+
+      <label>邮箱</label>
+      <input type="email" name="email" v-validate="'required|email'" :class="{'is-danger': errors.has('register_form.email') }" v-model="register.email">
+      <br>
+
+      <label>手机号</label>
+      <input type="text" name="mobile" v-validate="{ required: true, regex: /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/ }" :class="{'is-danger': errors.has('register_form.mobile') }" v-model="register.mobile">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('register_form.password') }" v-model="register.password">
+      <br>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取 消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="registerSubmit" class="btn btn_red">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Success Form -->
+    <div class="user_form" v-bind:style="{ display: form == 'registerSuccess' ? '' : 'none !important' }" style="display: none !important;">
+      <div class="successText">
+        {{ registerSuccessMessage }}
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">关 闭</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/vue-2.1.10.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/vee-validate-2.0.3.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/js/axios-0.17.1.min.js"></script>
+<script type="text/javascript">
+var authData = {
+    apiUrlRegister: '/api/SS.Login/actions/register',
+    apiUrlLogin: '/api/SS.Login/actions/login',
+    apiUrlLogout: '/api/SS.Login/actions/logout',
+    apiUrlWeixin: '/api/SS.Login/auth/Weixin?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlWeibo: '/api/SS.Login/auth/Weibo?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlQq: '/api/SS.Login/auth/Qq?redirectUrl=' + encodeURIComponent(location.href),
+    registerSuccessMessage: '恭喜，注册用户成功',
+    loginRedirectUrl: '?success=true',
+    logoutRedirectUrl: '?logout=true',
+};
+</script>
+<script type="text/javascript" src="../../SiteFiles/Plugins/SS.Login/assets/script.js"></script>
+<script src="../../sitefiles/assets/components/lodash-4.17.4.min.js" type="text/javascript"></script><script src="../../sitefiles/assets/components/stlClient.js" type="text/javascript"></script>
+
+    <!--[if lt IE 8]>
+    <div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+    <![endif]-->
+    <!--头部导航条-->
+    <header>
+      <div class="main">
+  <div class="logo">
+    <a href="../../index.html">
+      <img src="../../images/logo.png">
+      <span>小呆导航</span>
+    </a>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a class="duty-nav" href="../../dutynav.html">职业导航<i class="fa fa-caret-down"></i></a></li>
+      
+      
+        <li><a href="../../course.html">教程资源</a></li>
+      
+        <li><a href="../../blog.html">个人博客</a></li>
+      
+        <li><a href="../../liuyan.html">在线留言</a></li>
+      
+        <li><a href="../../link.html">友情链接</a></li>
+      
+        <li><a href="../../adout.html">关于本站</a></li>
+      
+    </ul>
+  </nav>
+  <div class="user visible-lg">
+    
+<div id="ajaxElement_1_548_loading"></div>
+<div id="ajaxElement_1_548_success" style="display: none"></div>
+<div id="ajaxElement_1_548_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_1_548(page)
+{
+    document.getElementById('ajaxElement_1_548_loading').style.display = 'block';
+    document.getElementById('ajaxElement_1_548_success').style.display = 'none';
+    document.getElementById('ajaxElement_1_548_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQC0add0X6Y5MJz9WN2YsaRChfPirwfwQ6mvMj5PlpIdWaxftKQ9hLbeEFxru8ZzNy2I0add0aWLcnw0dosnfdEPoS6oMUYdW1HX20add0bYJWrjHKTpEQ7jTEOl3WgZDTHi1E0X5kAbVIlQpp8Y6pfBj0slash0jRbLu3zIIYjaXZm8RWagUUZ8zBemyW0slash0zJoXGtx2QN5jJ0slash0pfmPA0taYlKFJ4s2cCAwS8N758KkPSCn484iu79uSuLhHsSQ3WGwcoSKy61KiJvaFM20Cs9diPVHXEtfXHc1n6serTLqcA0add0czNU2gOhiJYPCe37aDRlqoraqYNwwFUovHeknh0W7fOL0GnvPRNActRNo0slash0V61a9RkcPbCvoGFFEzlhv340add0PCCU7EzWxA68VeK1WJ0add051SWcALf4Tk0slash03O5Ift1RBe7uBbp0slash0GPOabAg3G6B9zCv8fQ4rUgxsNoPkds3xW566UU2OiPSLz8C0x24GxkMgzntEN0dL1tQqFYKh23hT7EnsSWJ0ebqbPZkvLrycLZKkMK0slash0piXrJTYrJoSJvTOmF58nmonf9xp3L0hI6y0f0add00l0add0hf23SSltFfU30add0MXmPQOqKMmFSmSgQI2OtKn3ODgp7ej00slash09Whcnn6WajHMTiwt0slash0z6OlgnBWRAL0slash03STCAapHqpAXJXnSOd0slash0RtMxRMPuDfi1HsdRCDgIwA1STizKplMmS5AfzTBD80add060add00add0swwmFZQgYfpvBJOVWYyqSD1C6feX8p5BMbTtALrZSTETrcEd62vFi0tNw60BX0dzQg80slash0HgynWdvVgDJ5EWfBxWQqwHK0add0QU3Y7eSxQgyWAF3hWML0slash02pYSBy09OKYvicEJ5d30R0slash0qBabWgS48piogMoMxaIcDVjA2fB1sB25ZbjbbBdXhsOc47UfVJP0XiKpKlFbIK20add0JKX7NH5MD638qR0add0zlgYlqdfZbzXn4Nzr2MLGKlj3xCCgG0slash0eB8V8CHbSS4quTFFwUgDCIBrWx8VNVfBkIyRSmazvh8uZjIVUEXaMojx0add0e0add0MLslOPs087sebbRLgVX0GQQBXY0add08hTvRF3GTWmAClIMasxeN53CIsZ8Ijqwe1s1qJb0slash0VOGECBZ0slash0jYfV00add0XF3CC0slash0tysCO0oFtocIafDyQazf5f0slash0jvZvIzB548jB4q7psERMbAOquT08nBSf53esusPpZDobIk30add00slash04BchvpeiMBpkb3oivCViIg9bruDS1K4JHI8sKJEbYJqRXmIXmKnxgsuqSlmDtn0s0fTum0x6EcKD2BJs4jfJrOkMxZydp7xXe8dYDrPsIgrm5BjBQl4llTEogvq84e0CbOXyfz0add0S07l30add0vQvn747xQ6wNkqvMVHP6HSeBWHloXGkVba0Az4GuWOeMagi4Do3XpWaYCLgvtL56fyrAOWuMi7ERA8faE7kksJ7IJ6v9zQIv8RyiEJT58VvYvK0V0slash0MVQ0equals00equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_1_548_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_548_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_1_548_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_548_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_1_548(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_1_548(stlGetPageajaxElement_1_548());
+
+function stlRedirectajaxElement_1_548(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div class="head-btn visible-lg">
+    <a href="../../sethome.html" target="_blank">设为首页</a>
+  </div>
+  <button class="nav-btn visible-xs visible-sm">
+    <span class="icon-line top"></span>
+    <span class="icon-line middle"></span>
+    <span class="icon-line bottom"></span>
+  </button>
+  <div class="mobile-user visible-xs visible-sm">
+    
+<div id="ajaxElement_2_822_loading"></div>
+<div id="ajaxElement_2_822_success" style="display: none"></div>
+<div id="ajaxElement_2_822_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_2_822(page)
+{
+    document.getElementById('ajaxElement_2_822_loading').style.display = 'block';
+    document.getElementById('ajaxElement_2_822_success').style.display = 'none';
+    document.getElementById('ajaxElement_2_822_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQC0add0X6Y5MJz9WN2YsaRChfPirwfwQ6mvMj5PlpIdWaxftKQ9hLbeEFxru8ZzNy2I0add0aWLcnw0dosnfdEPoS6oMUYdkt9t0add0ylgRcQNfABdRID76XRqcYuZhckjgDmwbspE0slash0cr5zJzXqDtgBBT15zPLU4QFaNJwa1TVw4zG0wxz9O0add0E8e6EhlGecstRJE2GmFfW2HeMJ8dFZEcFmB9frlwWYL0vaHAEkQqu00slash08Xz1hGYNMGZqNbtmEhDqgJ5xqZsxSlYBEPGQCbFMKURSCT8cjWhHLzOwb6Wghzj4efjAifBU4CnL0add0hCnJVdmtbk3vtEL2T591oY51QywthizUIbCKRYxTPEas6FoEN0HuCJ1TjDDEe3IuiJKoifC6T0slash01a4G315VC7uWklqodkTT1w7btp0slash0FhiER0bmCCT7pfybEjEqOsiw50slash03e9VC2ZrMwqs1txhqMpP18zxBMceWr379bqfLFwIGmswkchWkDeglFc6B96C1V95rn0jbcUSWE0add00MrGO64lOflN7L0add0TdRGaAysuC8XXSDruucBUWPE0add0NCx7G0add0LR2HAi82Z6gmXqTm0add0UKZGAGdnguHjsQmt0OHJDfIp9B1329Aj5Fw18kEWHFB0slash0hqlKfCH8nuMhqwB0slash0tRiJYjQz1V7pe5kVWbfuAp8f4VhohxmdI92lS7s2ljsBmO0slash003R6YroRhuiuzOqH0cWGQLy2O001ZKszWPZPt58q80add00add0QUQvNn8prnhZbTE2KizhBjKIfa0add0E75ogrKVyqSwPoPGvjSpGgPuYiINxvPTp0slash0DYnM3N5zzkJUOFv27PF0slash0sozax90NAGODFBrUJUiirotxsUU5e0slash0fRo8iPX0add0ywtFtoQ1J0qejBQ1EYbZ0slash0JoRBrksMznkhXKA1HFBkw45FF0slash0CPtbvxN0slash0DE5vkmZEzOGnXoAPndOEVFoV7j0Y3sG3FYPbN0add0nK6CbuTX1kTXjT6PSSNGPIpL9P2fSVvaGW3bsB490add0JcJFJIm260slash0VEbOCG2hUSitfuimbtB6vVutDNCZc7yQnSMl80slash0tBYic8rgPhUi5exfrq87CPWlmHAph7YcII2hbuEQwDoGctzcNPjQiUpLICBkSzyl3cBFetMxnHdbEFK8Rq5haPSnn4DLg9GIg8tSx0slash0yZ6QuGzHRziACESGxSK8rhI0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_2_822_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_822_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_2_822_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_822_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_2_822(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_2_822(stlGetPageajaxElement_2_822());
+
+function stlRedirectajaxElement_2_822(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div id="tow-nav">
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../web.html">前端开发</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../web.html">视频教程</a></li>
+          
+            <li><a target="_blank" href="../../web.html">在线学习</a></li>
+          
+            <li><a target="_blank" href="../../web.html">碎片学习</a></li>
+          
+            <li><a target="_blank" href="../../web.html">学习工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">WEB公共库</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端组织/团队</a></li>
+          
+            <li><a target="_blank" href="../../web.html">社区/论坛</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端框架 - UI</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端框架 - JS</a></li>
+          
+            <li><a target="_blank" href="../../web.html">前端插件</a></li>
+          
+            <li><a target="_blank" href="../../web.html">移动框架</a></li>
+          
+            <li><a target="_blank" href="../../web.html">预处理器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">字体图标</a></li>
+          
+            <li><a target="_blank" href="../../web.html">构建工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">模块加载</a></li>
+          
+            <li><a target="_blank" href="../../web.html">包管理器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">模板引擎</a></li>
+          
+            <li><a target="_blank" href="../../web.html">游戏引擎</a></li>
+          
+            <li><a target="_blank" href="../../web.html">代码高亮</a></li>
+          
+            <li><a target="_blank" href="../../web.html">代码托管</a></li>
+          
+            <li><a target="_blank" href="../../web.html">博客系统</a></li>
+          
+            <li><a target="_blank" href="../../web.html">域名/服务器</a></li>
+          
+            <li><a target="_blank" href="../../web.html">辅助工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">站长工具</a></li>
+          
+            <li><a target="_blank" href="../../web.html">图片素材</a></li>
+          
+            <li><a target="_blank" href="../../web.html">精选酷站</a></li>
+          
+            <li><a target="_blank" href="../../web.html">互联网资讯</a></li>
+          
+            <li><a target="_blank" href="../../web.html">工作/私单</a></li>
+          
+            <li><a target="_blank" href="../../web.html">应用程序</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../ui.html">界面设计</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../ui.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">灵感采集</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">界面交互</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计规范</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">icon图标</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计素材</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">图库素材</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">颜色搭配</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">渐变配色</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">字体字形</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">漫画插画</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">设计团队</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">社区交流</a></li>
+          
+            <li><a target="_blank" href="../../ui.html">酷站集合</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../cg.html">影视后期</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../cg.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">特效动画</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">资讯交流</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">软件插件</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">摄影摄像</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">素材资源</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">录屏工具</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">学习论坛</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">求职招聘</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">渲染平台</a></li>
+          
+            <li><a target="_blank" href="../../cg.html">兼职外包</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="../../office.html">日常办公</a>
+        <ul>
+          
+            <li><a target="_blank" href="../../office.html">热门推荐</a></li>
+          
+            <li><a target="_blank" href="../../office.html">效率资源</a></li>
+          
+            <li><a target="_blank" href="../../office.html">办公软件</a></li>
+          
+            <li><a target="_blank" href="../../office.html">技能提升</a></li>
+          
+            <li><a target="_blank" href="../../office.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="../../office.html">团队协作</a></li>
+          
+            <li><a target="_blank" href="../../office.html">电子邮箱</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文案策划</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文档模板</a></li>
+          
+            <li><a target="_blank" href="../../office.html">工作兼职</a></li>
+          
+            <li><a target="_blank" href="../../office.html">企业信息</a></li>
+          
+            <li><a target="_blank" href="../../office.html">合同/范文</a></li>
+          
+            <li><a target="_blank" href="../../office.html">思维导图</a></li>
+          
+            <li><a target="_blank" href="../../office.html">文件转换</a></li>
+          
+            <li><a target="_blank" href="../../office.html">政府网站</a></li>
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+
+    </header>
+    <div id="content">
+      <div class="">
+        <div class="container content-box">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="blog-header">
+                <div class="blog-logo">
+                  <img src="../../images/blog-logo.jpg">
+                  <div class="blog-title">
+                    <strong>Webjike</strong>
+                    <p>总有人说你变了，却从没人问你经历过什么 ―― by网易云热评《经历》</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <article class="article">
+                <h1 class="article-title">JavaScript Array 数组对象的所有方法及用法详解</h1>
+                <div class="infos-meta">
+                  
+<div id="ajaxElement_3_530_loading"></div>
+<div id="ajaxElement_3_530_success" style="display: none"></div>
+<div id="ajaxElement_3_530_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_3_530(page)
+{
+    document.getElementById('ajaxElement_3_530_loading').style.display = 'block';
+    document.getElementById('ajaxElement_3_530_success').style.display = 'none';
+    document.getElementById('ajaxElement_3_530_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWGnjGh0slash0WF6Sj1VI4z0add00n6qT2iUS5lRqNdonyfl3gUWh5epW2LYpijqj9phsby8LrOw6syLrIipZ0add0Izi8QmcNeNaK8ymHtLm0add0PaoWY0add026z2gLqWQVcqTBQDm0yjymoCBzSNNB01HG9B9nN990XjzpvufyGdp20slash0YDKR2i8JZrf0i3RK0JHJ6D530slash002pxstGAQQ8AuQkCnrVFPOuNzwnvxnxIyS3TT4z0slash0o8760slash0hgovnHe2BmLjnkqsbtRd0B1bgPpDohsesB0slash0wIaBliSboh7aLWNWgyMVzM1rhB6m16SpZzOfB1EMtfu202IPOeu2ZKnQf9iotZ02Dk7iHPd1CnQpUN7EbNWi0add0u6e0slash0LLiTrmAyGvGKioqThUqgg4XDgUOiVwk8KEOlvsUmz0slash0aBcRAUuHi0SqGXbbIUrqkgBoPo7S7jQs1fdGwOsyYJNx6KEblauvJZSBYHdSGz511Sj3GpETA75OEOd7NrjuEjdsAUMCKLU7SnM0SKZu0skL0slash00slash0O6mQnLNRetdLLxq3n0slash0wwusJy8QdBzFFARtj9FrTVVSU47u9lnS3Z5aI0add06s8vaCBZOrfpOMBuK0add0sPrKR44R7k6SiJp3W0slash00lbFB0add0cqSY38NAakdLkZypPiqT5qJuK6TEiJmhA3kZDp0viD7ILg98s7T2so0add0weEBit8FzYHxWgI9LBAD187rqsJAHiKBDg0vgJMfRvTByYi3IYFGmKEpRyixjp0add0vf2E6fYTQEOhQP1ynFjIuduUlZWR522etXnbge1mTy2GipRkuJabCS6LJZlyI15I0slash0odBYCKECuCpiAzFeWf0F0OpVqpCMWeDtGLZSBSnAkybBnhXrmebgEHa0slash0ZYSCfFXBWL1whWAbACtQ98rsbhOcwTEKXn1uWbG9G98OPbTzHG91I0Z95yNbLU10WF8yXnbw0a30add0L8RwIERUArkp1gw0Bz6SBDoLCo9LIcOOL4SnSUtwxE7k0slash0kObOlUqryxe1sbgsKL9ztVprAbed45MvIMY0hgh3xdA0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_3_530_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_3_530_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_3_530_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_3_530_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_3_530(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_3_530(stlGetPageajaxElement_3_530());
+
+function stlRedirectajaxElement_3_530(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                </div>
+                <!-- 文章正文部分 -->
+                <section class="article-main">
+                  <p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><img src="../../upload/images/2019/7/ad5ba1b9dc09610d.jpg" border="0" style="white-space: normal;"></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">Array(数组)是值的有序集合。每个值叫做一个元素，而每个元素在数组中有一个位置，以数字表示，称为索引。JavaScript数组是无类型的：数组元素可以是任意类型，并且同一个数组中的不同元素也有可能有不同的类型。数组的元素甚至也可能是对象或其他数组，这允许创建复杂的数据结构，如对象的数据和数组的数组。</p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">数组继承自Array.prototype中的属性，它定义了一套丰富的数组操作方法，这意味着这些函数(方法)作为任何数组的方法都是可用的。本文将介绍ECMAScript 3中的数组方法及ECMAScript 5中新增的数组遍历方法。</p><blockquote style="box-sizing: border-box; padding: 10px 20px; margin: 0px 0px 20px; font-size: 16.25px; border-left: 5px solid rgb(229, 229, 229);"><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">本文开头简介及部分内容引用自“JavaScript权威指南（第六版）”第七章 数组</p></blockquote><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><span style="box-sizing: border-box; font-weight: 700;">ECMAScript 3 中的数组方法</span></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><span style="box-sizing: border-box; font-weight: 700;">join()<br style="box-sizing: border-box;"></span>Array.join()方法将数组中的所有元素都转化为字符串并链接在一起，返回最后的生成的字符串。默认分隔符为逗号，可以指定一个可选的字符串作为生成的字符串分隔符来分割数组的各个元素：</p><pre class="brush:js;toolbar:false" style="box-sizing: border-box; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap; padding: 9.5px; margin-top: 0px; margin-bottom: 10px; line-height: 1.38462; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-radius: 4px;">var&nbsp;arr&nbsp;=&nbsp;[&quot;www&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;com&quot;];
+arr.join();&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&quot;wwww,webjike,com&quot;
+arr.join(&quot;.&quot;);&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&quot;www.webjike.com&quot;
+
+//&nbsp;实例化一个长度为10的空数组
+var&nbsp;arrTwo&nbsp;=&nbsp;new&nbsp;Array(10);
+arrTwo.join(&quot;-&quot;);&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&quot;---------&quot;&nbsp;:&nbsp;九个连字号组成的字符串</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">提示：Array.join()方法不会改变原数组，而是返回新生成的值</p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><span style="box-sizing: border-box; font-weight: 700;">reverse()</span><br style="box-sizing: border-box;">Array.reverse()方法将数组中的元素颠倒顺序，返回逆序的数组。reverse()方法是在原先的数组中重新排序，会改变数组的值：</p><pre class="brush:js;toolbar:false" style="box-sizing: border-box; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap; padding: 9.5px; margin-top: 0px; margin-bottom: 10px; line-height: 1.38462; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-radius: 4px;">var&nbsp;arr&nbsp;=&nbsp;[&quot;www&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;com&quot;];
+arr.reverse();&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;com&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;www&quot;]</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><span style="box-sizing: border-box; font-weight: 700;">sort()</span><br style="box-sizing: border-box;">Array.sort()方法将数组中的元素排序并返回排序后的数组。当不带参数调用sort()方法时，数组元素默认以字母表顺序排序（如有必要将临时转化为字符串进行比较）：</p><pre class="brush:js;toolbar:false" style="box-sizing: border-box; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap; padding: 9.5px; margin-top: 0px; margin-bottom: 10px; line-height: 1.38462; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-radius: 4px;">var&nbsp;arr&nbsp;=&nbsp;[&quot;www&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;com&quot;];
+arr.sort();&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;com&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;www&quot;]</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">如果数组包含undefiend元素，它们会被排序到数组的尾部。</p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">按照其他方式进行数组排序，必须给sort()方法传递一个比较函数，该函数决定了它的两个参数在排序好的数组中的先后顺序。假设第一个参数在前面，比较函数应该返回一个小于0的数值；反之，则函数应该返回一个大于0的数值。如果两个值相等，说明顺序无关紧要，函数应该返回0。</p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">例如，用数值大小进行数组排序：</p><pre class="brush:js;toolbar:false" style="box-sizing: border-box; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap; padding: 9.5px; margin-top: 0px; margin-bottom: 10px; line-height: 1.38462; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-radius: 4px;">var&nbsp;arr&nbsp;=&nbsp;[10,&nbsp;2,&nbsp;5,&nbsp;1024];
+arr.sort(function&nbsp;(a,&nbsp;b)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;-&nbsp;b;&nbsp;&nbsp;&nbsp;//&nbsp;根据顺序，返回负数、0、正数&nbsp;=&gt;&nbsp;[2,&nbsp;5,&nbsp;10,&nbsp;1024]
+});
+
+arr.sort(function&nbsp;(a,&nbsp;b)&nbsp;{&nbsp;return&nbsp;b-a&nbsp;});&nbsp;&nbsp;//&nbsp;数值大小相反的顺序&nbsp;=&gt;&nbsp;[1024,&nbsp;10,&nbsp;5,&nbsp;2]</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">不区分大小写的字母表排序：</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[&#39;ant&#39;,&nbsp;&#39;bug&#39;,&nbsp;&#39;cat&#39;,&nbsp;&#39;Dog&#39;];
+arr.sort();&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;区分大小写的排序&nbsp;=&gt;&nbsp;[&quot;Dog&quot;,&nbsp;&quot;ant&quot;,&nbsp;&quot;bug&quot;,&nbsp;&quot;cat&quot;]
+arr.sort(function&nbsp;(s,&nbsp;t)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;a&nbsp;=&nbsp;s.toLowerCase();
+&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;b&nbsp;=&nbsp;t.toLowerCase();
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(a&nbsp;&lt;&nbsp;b)&nbsp;return&nbsp;-1;
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(a&nbsp;&gt;&nbsp;b)&nbsp;return&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;0
+});&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;不区分大小写的排序&nbsp;=&gt;&nbsp;[&quot;ant&quot;,&nbsp;&quot;bug&quot;,&nbsp;&quot;cat&quot;,&nbsp;&quot;Dog&quot;]</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">提示：Array.sort()方法是在原先数组中排序，所以会改变原先数组</p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;"><strong>concat()</strong><br>Array.concat()方法创建并返回一个新数组，它的元素包含调用数组的元素和concat()的每个参数。如果传递的参数中有数组，则连接的是数组的元素，而非数组本身。</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3];
+arr.concat(4,&nbsp;5);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5]
+arr.concat([4,&nbsp;5]);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5]
+arr.concat([4,&nbsp;5],&nbsp;[6,&nbsp;7]);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5,&nbsp;6,&nbsp;7]
+arr.concat(4,&nbsp;[5,&nbsp;[6,&nbsp;7]]);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5,&nbsp;[6,&nbsp;7]]&nbsp;:&nbsp;扁平化数组的数组不会被递归</pre><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 15px; color: rgb(99, 107, 111); font-size: 15px !important; line-height: 30px !important;">注意：concat()不会递归扁平化数组的数组、同时该方法不会改变调用数组(原先数组)</p><p><strong>slice()<br></strong>Array.slice()方法返回指定数组的元素或一个片段，传入的两个参数指定返回数组元素的开始和结束位置。如果只传入一个参数，则返回的数组将包含从开始位置到数组结尾的所有元素，负数表示数组最后一个元素的位置：</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[&#39;https&#39;,&nbsp;&#39;://&#39;,&nbsp;&#39;www&#39;,&nbsp;&#39;webjike&#39;,&nbsp;&#39;com&#39;];
+arr.slice(2);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;www&quot;,&nbsp;&quot;webjike&quot;,&nbsp;&quot;com&quot;]
+arr.slice(3,&nbsp;4);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;webjike&quot;]
+arr.slice(1,&nbsp;-1);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;://&quot;,&nbsp;&quot;www&quot;,&nbsp;&quot;webjike&quot;]
+arr.slice(-3,&nbsp;-2);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[&quot;www&quot;]</pre><p>提示：slice()不会修改调用的数组</p><p><strong>splice()</strong><br>splice()方法是在数组中插入或删除元素的通用方法，它可以同时删除和插入元素操作。<br>参数①：删除或插入元素的起始位置<br>参数②：删除元素的个数（若忽略此参数将从起始位置删除所有元素）<br>参数③+：从第二个参数开始的任意个数参数指定了插入数组中的元素，插入元素的位置由第一个参数决定</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5,&nbsp;6,&nbsp;7,&nbsp;8];
+
+//&nbsp;删除元素
+arr.splice(4);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回[5,&nbsp;6,&nbsp;7,&nbsp;8];&nbsp;arr&nbsp;是[1,&nbsp;2,&nbsp;3,&nbsp;4]
+arr.splice(1,&nbsp;2);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回[2,&nbsp;3];&nbsp;arr&nbsp;是[1,&nbsp;4]
+arr.splice(1,&nbsp;1);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&nbsp;返回[4];&nbsp;arr&nbsp;是[1]
+
+//&nbsp;插入元素
+arr.splice(1,&nbsp;0,&nbsp;2,&nbsp;3);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回[];&nbsp;arr&nbsp;是&nbsp;[1,&nbsp;2,&nbsp;3]
+arre.splice(1,&nbsp;2,&nbsp;[4,&nbsp;5],&nbsp;6);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回[2,&nbsp;3];&nbsp;arr&nbsp;是&nbsp;[1,&nbsp;[4,&nbsp;5],&nbsp;6]</pre><p>注意：splice()会改变调用数组，返回值由删除元素组成的数组，若没有删除元素则返回空数组</p><p><strong>push()和pop()</strong><br>push()方法在数组的尾部添加一个或多个元素，并返回数组的新长度。pop()方法则相反，它删除数组中最后一个元素，并返回被删元素的值：<br></p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[];
+arr.push(1,&nbsp;2);&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回：2&nbsp;,&nbsp;&nbsp;&nbsp;arr:&nbsp;[1,&nbsp;2]
+arr.pop();&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回：2&nbsp;,&nbsp;&nbsp;&nbsp;arr:&nbsp;[1]
+arr.push([1,&nbsp;2]);&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;返回：2&nbsp;,&nbsp;&nbsp;&nbsp;arr:&nbsp;[1,&nbsp;[1,&nbsp;2]]</pre><p>注意：两个方法都修改并替换原始数组，而非生成一个新的数组</p><p><strong>unshift()和shift()</strong><br>unshift()方法在数组头部添加一个或多个元素，并返回数组的新长度，unshift()和push()方法的行为相反：</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[];
+arr.unshift(1);&nbsp;//&nbsp;=&gt;&nbsp;返回：1，arr:&nbsp;[1]
+arr.unshift(22);&nbsp;//&nbsp;=&gt;&nbsp;返回：2，arr:&nbsp;[22,&nbsp;1]
+arr.unshift([3,&nbsp;4]);&nbsp;//&nbsp;=&gt;&nbsp;返回：3，arr:&nbsp;[[3,&nbsp;4],&nbsp;22,&nbsp;1]
+arr.shift();&nbsp;//&nbsp;=&gt;&nbsp;返回：[3,&nbsp;4]，arr:&nbsp;[22,&nbsp;1]
+arr.shift();&nbsp;//&nbsp;=&gt;&nbsp;返回：[22]，arr:&nbsp;[1]</pre><p><strong>toString()和toLocaleString()</strong><br>数组和其他JavaScript对象一样拥有toString()方法。针对数组，该方法将数组中每个元素转化为字符串，并输出用逗号分隔的字符串列表；而toLocaleString()是toString()方法的本地化版本，同样将数组的元素转化为字符串。</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5,&nbsp;[6,&nbsp;&quot;c&quot;]];
+arr.toString();&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&#39;1,2,3,4,5,6,c&#39;
+
+var&nbsp;time&nbsp;=&nbsp;new&nbsp;Date();
+time.toLocaleString();&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;&#39;2019/7/27&nbsp;上午9:24:45&#39;</pre><p>注意：toLocaleString()方法在不同的本地环境返回的字符串可能不同，如转化Date对象时返回的格式不一样</p><p><br></p><p><strong>ECMAScript 5 新增的数组方法</strong></p><p>ES5定义了9个新的数组方法用来遍历、映射、过滤、检测、简化和搜索数组。</p><p>在学习这些新的数组方法前先了解一个概述：<br>①大多数方法的第一个参数都接收一个函数，并且对数组中的每个元素调用一次该函数<br>②大多数情况下，调用提供的函数使用三个参数：数组元素、元素的索引、数组本身（通常只需要第一个参数，后面两个可选）<br>③大多数方法的第一个参数是函数，参数二是可选的，如果存在第二个参数，则调用的函数被看作是第二个参数的方法。<br>④ES5中的数组方法都不会修改原始数组</p><p><strong>&nbsp;forEach()</strong><br>Array.forEach()方法从头到尾遍历数组，为每个元素调用指定函数。传递的函数可传入两个参数：<br>①函数：接收三个回调参数（当前元素、当前元素索引、数组本身）<br>②对象（可选）：调用函数时，函数内的this指向它；即调用函数作为该对象的方法调用</p><pre class="brush:js;toolbar:false">//&nbsp;遍历数组
+var&nbsp;data&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5];
+var&nbsp;sum&nbsp;=&nbsp;0;
+data.forEach(function&nbsp;(value,&nbsp;index,&nbsp;arr)&nbsp;{
+&nbsp;&nbsp;sum&nbsp;+=&nbsp;value;&nbsp;//&nbsp;将每个值累加到sum中
+&nbsp;&nbsp;arr[index]++&nbsp;//&nbsp;数组中每个元素的值自增1
+});
+console.log(sum);&nbsp;//&nbsp;=&gt;&nbsp;15
+console.log(data);&nbsp;//&nbsp;=&gt;&nbsp;[2,&nbsp;3,&nbsp;4,&nbsp;5,&nbsp;6]</pre><p><strong>map()</strong><br>Array.map()方法将数组中每个元素传递给指定函数，并返回一个新数组，它包含该函数返回的值：</p><pre class="brush:js;toolbar:false">//&nbsp;映射数组
+var&nbsp;aa&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3];
+var&nbsp;bb&nbsp;=&nbsp;aa.map(function&nbsp;(value)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;value&nbsp;*&nbsp;value
+});
+console.log(bb);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;1,&nbsp;4,&nbsp;9]</pre><p>提示：传递给map()的函数应该有返回值，且同上面概述一样，它不改变调用的数组<br></p><p><strong>filter()</strong><br>Array.filter()方法按传递的函数条件过滤，并返回过滤后的新数组。它是调用数组的一个子集，调用函数返回true或false（一个能转化为true/false的值）；利用filter()方法可以压缩数组，去除不存在（稀疏数组）、undefiend、unll值：</p><pre class="brush:js;toolbar:false">//&nbsp;过滤数组
+var&nbsp;cc&nbsp;=&nbsp;[5,&nbsp;4,&nbsp;3,&nbsp;2,&nbsp;1,&nbsp;,&nbsp;undefined,&nbsp;null];
+var&nbsp;valOne&nbsp;=&nbsp;cc.filter(function&nbsp;(value)&nbsp;{&nbsp;return&nbsp;value&nbsp;&lt;&nbsp;3&nbsp;});
+var&nbsp;valTwo&nbsp;=&nbsp;cc.filter(function&nbsp;(value)&nbsp;{&nbsp;return&nbsp;value&nbsp;!==&nbsp;undefined&nbsp;&amp;&amp;&nbsp;value&nbsp;!=&nbsp;null&nbsp;});
+console.log(valOne);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[2,&nbsp;1,&nbsp;null]
+console.log(valTwo);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[5,&nbsp;4,&nbsp;3,&nbsp;2,&nbsp;1]
+console.log(cc);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;[5,&nbsp;4,&nbsp;3,&nbsp;2,&nbsp;1,&nbsp;empty,&nbsp;undefined,&nbsp;null]</pre><p><strong>every()和some()</strong><br>Array.every()方法对数组每个元素进行逻辑判定，返回true或false；当数组中的每个元素都满足判定条件时（返回true），它才返回true。some()方法同样是对数组进行逻辑判断，只要调用数组中的任意一个元素符合判断条件，它就返回true。</p><p>every()和some()两个方法在遍历数组时，只要判定值符合条件，则循环会立即停止，否则他将遍历整个数组：</p><pre class="brush:js;toolbar:false">//&nbsp;检测数组
+var&nbsp;arr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5];
+arr.every(function&nbsp;(value)&nbsp;{&nbsp;return&nbsp;value&nbsp;&lt;&nbsp;10&nbsp;});&nbsp;//&nbsp;=&gt;&nbsp;true:&nbsp;所有值都小于10
+arr.every(function&nbsp;(value)&nbsp;{&nbsp;return&nbsp;value&nbsp;%&nbsp;2&nbsp;===&nbsp;0&nbsp;});&nbsp;//&nbsp;=&gt;&nbsp;false:&nbsp;不是所有的值都是偶数
+arr.some(function&nbsp;(value)&nbsp;{&nbsp;return&nbsp;value&nbsp;===&nbsp;3&nbsp;});&nbsp;//&nbsp;=&gt;&nbsp;true:&nbsp;数组中包含3的值
+arr.some(isNaN);&nbsp;//&nbsp;=&gt;&nbsp;false:&nbsp;数组不包含非数值元素</pre><p><strong>reduce()和reduceRight()</strong><br>Array.reduce()和reduceRight()方法使用指定函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以称之为“注入”和“折叠”。reduce()需要两个参数：第一个参数是执行简化操作的函数、第二个（可选）是传递给函数的初始值；<br></p><p>简化函数的任何是用某种方法把两个值组合或简化成一个值，并返回简化后的值：<br></p><pre class="brush:js;toolbar:false">//&nbsp;简化数组
+var&nbsp;arr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5];
+var&nbsp;sum&nbsp;=&nbsp;arr.reduce(function&nbsp;(x,&nbsp;y)&nbsp;{&nbsp;return&nbsp;x&nbsp;+&nbsp;y&nbsp;},&nbsp;0);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;15
+var&nbsp;product&nbsp;=&nbsp;arr.reduce(function&nbsp;(x,&nbsp;y)&nbsp;{&nbsp;return&nbsp;x&nbsp;*&nbsp;y&nbsp;},&nbsp;1);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;120
+var&nbsp;max&nbsp;=&nbsp;arr.reduce(function&nbsp;(x,&nbsp;y)&nbsp;{&nbsp;return&nbsp;(x&nbsp;&gt;&nbsp;y)&nbsp;?&nbsp;x&nbsp;:&nbsp;y&nbsp;},&nbsp;1);&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;5</pre><p><strong>简化函数接收的回调参数：<br></strong>① 简化操作累计的值（函数返回值），第一次调用函数时，该值是reduce()第二个参数（初始值）；<br>&nbsp; &nbsp; 若没有传入初始值，则默认用调用数组的第一个元素作为初始值.<br>② ~ ④ 分别为：数组元素、元素索引、数组本身</p><p>注意：在空数组上，不带初始值参数调用reduce()将抛出类型错误异常<br></p><p>reduceRight()方法工作原理和reduce()一样，不用的是它按照数组索引从高到低（从右到左）处理数组，而不是从低到高。</p><p>例如乘方操作的优先顺序是从右到左：</p><pre class="brush:js;toolbar:false">var&nbsp;arr&nbsp;=&nbsp;[2,&nbsp;3,&nbsp;4];
+var&nbsp;big&nbsp;=&nbsp;arr.reduceRight(function&nbsp;(sum,&nbsp;value)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Math.pow(value,&nbsp;sum);
+});
+console.log(big);&nbsp;&nbsp;&nbsp;//&nbsp;=&gt;&nbsp;2.4178516392292583e+24</pre><p><strong>indexOf()和lastIndexOf()</strong><br>indexOf()和lastIndexOf()方法搜索整个数组中具有给定值的元素，返回找到的第一个元素的索引，若不存在则返回-1。indexOf()从头到尾搜索，而lastIndexOf()则反向搜索。传入两个参数：<br>① 需要搜索的值、② 起始位置（可选的的），若忽略此参数，则从头或从尾开始搜索</p><pre class="brush:js;toolbar:false">//&nbsp;搜索数组
+var&nbsp;arr&nbsp;=&nbsp;[0,&nbsp;1,&nbsp;2,&nbsp;1,&nbsp;0];
+arr.indexOf(1);&nbsp;//&nbsp;=&gt;&nbsp;1
+arr.lastIndexOf(1);&nbsp;//&nbsp;=&gt;&nbsp;3
+arr.lastIndexOf(3);&nbsp;//&nbsp;=&gt;&nbsp;-1</pre><p>提示：字符串也有indexOf()和lastIndexOf()方法，它们和数组方法的功能类似</p><p><strong>例子，利用下列函数搜索指定的值并返回所有匹配的元素索引组成的数组：</strong><br></p><pre class="brush:js;toolbar:false">var&nbsp;searchArr&nbsp;=&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;1,&nbsp;22,&nbsp;33,&nbsp;11,&nbsp;1,&nbsp;4,&nbsp;5]
+function&nbsp;findall(a,&nbsp;x)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;results&nbsp;=&nbsp;[],&nbsp;len&nbsp;=&nbsp;a.length,&nbsp;pos&nbsp;=&nbsp;0;
+&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(pos&nbsp;&lt;&nbsp;len)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos&nbsp;=&nbsp;a.indexOf(x,&nbsp;pos);&nbsp;//&nbsp;搜索
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(pos&nbsp;===&nbsp;-1)&nbsp;break;&nbsp;&nbsp;//&nbsp;未找到，就完成搜索
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;results.push(pos);&nbsp;&nbsp;//&nbsp;否则，在数组中存储索引并开始下一个位置开始搜索
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos&nbsp;+=&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;results
+}
+findall(searchArr,&nbsp;1);&nbsp;//&nbsp;=&gt;&nbsp;[0,&nbsp;3,&nbsp;7</pre><p><br></p>
+                </section>
+                <!-- 文章底部 -->
+                <footer>
+                  
+<div id="ajaxElement_4_534_loading"></div>
+<div id="ajaxElement_4_534_success" style="display: none"></div>
+<div id="ajaxElement_4_534_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_4_534(page)
+{
+    document.getElementById('ajaxElement_4_534_loading').style.display = 'block';
+    document.getElementById('ajaxElement_4_534_success').style.display = 'none';
+    document.getElementById('ajaxElement_4_534_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWGnjGh0slash0WF6Sj1VI4z0add00n6qT2iUS5lRqNdonyfl3gUWh5epW2LYpijqj9phsby8LrOw6syLrIipZ0add0Izi8QmcNeNbNOGT2JUGKYwd0add0kT1f8MzpGS5SSfyqnHK4nj8PRoUfAFK0add0YsGM0zRrZvo6m20add0a5v1RHPILqTCA0lMaEiJk0slash00RAWST5giD7MO2Cyr8kyVWFnCzO8NgE303UmoYijrJLOuY0eyz83jx5LktfI6D60add0XQ3oeiLtc4SruWvHitTneSnZIhL3U5XlHbsIvRbTrVAH0slash0n4040add0KQIIqnxde2Ujv1XhWWNvRVH4RzwvGBmzqQ0add04SpT2aEkKE10add0jyzoZ0z7sZ0slash0npLhZ0add0a9jK5CejAWbYOUpLJFKoa0add0ta0slash0K1YsrBTLlKHuNYH0add0UlRm80V4lOHcUIitJa1sMZ1LSRZFrXqNT8uH5zbL01sqPrYH9OuW2QjYMWj0slash0VmfI4F0I2T5xEbsgHT4Twx2dr5khPLt83ss0slash0CAN59copR4xxfHXbNLBzsdInGRomSv9TNkDQWrjEPysezGgQ50slash05THMZlp4u0add0hGbgZeplOC7ZbuvdUlhlgkLMvM6ZKax5RsOYTsiC4lnpqKJXTrAJT6BLRBrPbM0rNOeGjAHieP4Y0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_4_534_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_4_534_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_4_534_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_4_534_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_4_534(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_4_534(stlGetPageajaxElement_4_534());
+
+function stlRedirectajaxElement_4_534(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                </footer>
+              </article>
+              <div class="comment-box">
+                <div class="comment"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-th-list"></i>文章分类</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_5_924_loading"></div>
+<div id="ajaxElement_5_924_success" style="display: none"></div>
+<div id="ajaxElement_5_924_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_5_924(page)
+{
+    document.getElementById('ajaxElement_5_924_loading').style.display = 'block';
+    document.getElementById('ajaxElement_5_924_success').style.display = 'none';
+    document.getElementById('ajaxElement_5_924_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWGnjGh0slash0WF6Sj1VI4z0add00n6qT2iUS5lRqNdonyfl3gUWh5epW2LYpijqj9phsby8LrOw6syLrIipZ0add0Izi8QmcNeNXkxpz7pyZ7zXtsPJ5wI220t8mVkbs7Wq5EB9VhQF0mwfSEWjtYDkTbSnsqD6w1LqIWRHSI0slash0sdpCxnJr5HKMcrBxbbFK4jEnzGhNDDRZr3ln0slash00slash02HtbQUw1zFz6vD89eD3EdyGegyw7ts8SvBypFK9IfoHDfzU6iPcRqEQPNwKi5qJzofDYx3vp2njxU2AIEMhJaouJ0P40slash0UExBE20add0KBWSxAACFiWwdwaGcMrVgWoWfpchu7UJvRY8Nnam0slash0HN4KiSoEVroEw7KYvdiwDX4QY4Ge4RpMqS5CwZ14gBCgNoaZ0OrFM20slash0ky2hdzfqn0AzXwxMPbo3PFJWP0KCL6jjRf2G36b1Ow4mobfKq889PnX0slash0con27AFxuWXOHs1qaVcmzOfIh7Yw2TG9il6YZS9FBCeg8lK06e9vJ7yNMKFUmNF7IJwsYgkJmMj9O0add0P92sJliFe6c6NOK4UFYkp3nJvOTWyvz2tSHlBy30GTwyRjJGTDoiaU522ewDxdFkomaBVuqiCp6QScRZT6XvxPTZwFNVP3gkPEETTVZMD0slash07RIZ9joPjxHEDTK4OyWQPUYJVYbxYK3bJmkXcH6iB0ghFrKrRX4XXtcKH3Lu42kcXVFa5Yne4O3doNZwVpuPQY9BNOAEZ818b4Z0add00slash0fl372noyqnmnmJnVlEOS37Rz9UebwcAt85pxIWjTv5Frjw0qkN9HSjd1bKqpeENomoM8mJjcFMMpqVd6a0add0iVWAuIgwJAK45fdZq6z2WbBsIP8gc7U0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_5_924_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_5_924_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_5_924_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_5_924_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_5_924(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_5_924(stlGetPageajaxElement_5_924());
+
+function stlRedirectajaxElement_5_924(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-newspaper-o"></i>热门文章</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_6_355_loading"></div>
+<div id="ajaxElement_6_355_success" style="display: none"></div>
+<div id="ajaxElement_6_355_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_6_355(page)
+{
+    document.getElementById('ajaxElement_6_355_loading').style.display = 'block';
+    document.getElementById('ajaxElement_6_355_success').style.display = 'none';
+    document.getElementById('ajaxElement_6_355_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWGnjGh0slash0WF6Sj1VI4z0add00n6qT2iUS5lRqNdonyfl3gUWh5epW2LYpijqj9phsby8LrOw6syLrIipZ0add0Izi8QmcNeNT0add0A70ZsKR0add00add0q4aB2bKLcZKAuMhb8qFcJlbmMBY2awtCxjXYz0udd8MFSYTUXF0kKk2iA0v0rHnCEWYab6nC2K1KUBAhRbxUiYQcGQxMqEYYGVQx1yh0slash0FPqDomukg0add0EX1ZLHDW4RxUyCYFjOHiHNFGdENtkqjlfvXILrNVy7tWDcAkYIR3DAtCosDT7Eubk2Ja3hCT3I2VoL0gBpkoFWEe6go4qCbIezLVTnwyRcOUtBqAeZeNcrrTjd4VgFw1HIdlEd7kvDGy9D0slash0kFrvhIr7YAgyPP86ywZrhsErCht1Yv45mCvcsAcnRG0slash00slash02yiFCQWuJpXqtcXClBMNQ0slash0Fn2G57qncixUq6Mw203Jcymj84eJheEpWllC80add04shzvwEqpvnnikxbPrUK58KxE57EFfIvzrSTTkL83WgfDdVY0QBYeg7Ag0jmUnguDmFUqWfrHzfB0add0B6oYzz3XIg5gXkIEd40add0wuicinZgnm1mBUU2jekWQVRFPXp6ao0add0QyZ0IxxCY60slash0dH63rwcYvCHnJaOrucDDa1iDJf2vM4tdtOcYSI5ck2BuVsdcDzA0slash0p68uS8yNpk77eI6O3pGcr9IGnFa8rKn0slash0JKUrO4UxzDWpsiscoJTADSlNYvFoW0slash0fBoWIbsxdkMRcR9RdMBOF0slash0BH4TI0slash0KY7paUt0slash0jfbRnaLpsA9yh30slash0W5ebwm0slash0jU0add06yWh0add0UShnR0slash0VQ0slash0cRECIUuvZQ0slash0PvcUoLeNcPm6Jbpjx6Dtp9krskww9vL07KZy0slash03xglln0add0wJpobEMNQ0add0kJnUhWKSZTOzG7n0secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_6_355_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_6_355_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_6_355_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_6_355_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_6_355(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_6_355(stlGetPageajaxElement_6_355());
+
+function stlRedirectajaxElement_6_355(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="widget">
+                    <strong><i class="fa fa-newspaper-o"></i>文章标签</strong>
+                    <div class="widget-main">
+                      
+<div id="ajaxElement_7_405_loading"></div>
+<div id="ajaxElement_7_405_success" style="display: none"></div>
+<div id="ajaxElement_7_405_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_7_405(page)
+{
+    document.getElementById('ajaxElement_7_405_loading').style.display = 'block';
+    document.getElementById('ajaxElement_7_405_success').style.display = 'none';
+    document.getElementById('ajaxElement_7_405_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/dynamic?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPBscDNYCSD6XFJgnsDiNgJCQnYJ0add00add05BeKlgVcCFsDgWGnjGh0slash0WF6Sj1VI4z0add00n6qT2iUS5lRqNdonyfl3gUWh5epW2LYpijqj9phsby8LrOw6syLrIipZ0add0Izi8QmcNeNS3EWZ8Rr5UP8pnlcODt69ydpcGmLP0FUslV0add0Z5SEcf0Kwtn9QrJwlkRB0slash0Bh8ZgfH160slash00add08QSm1iZAkKiOuw9dRmVTHLHuIEzMuBZxNfFbb7zRk0add0UzDjpQnbRBh3LEpFKMENNh6GQDg3B0WswD1qQ0slash0oXPTOSyy7OHOTACadF7zz0slash01m0slash00xTRohk60slash0haEbC3Gx5TyUy4bsPyQS3FGQhHV0add0zsB737AU51HW0add08Kk1pAE3xxrXCzy1M7kxRfIjawJSziyaiAPgaibDgnDGnPA02oEGFWT8tBRJWcogdEeoNPfsiCTHwPAuIpZkYrlwxjYPqzPrjncWqwmDl6hHSlg8u2PjonwBM9KpGdxAz5fBJHn1YtF44cyWwwwDex865PQbWv2VWlt1GkSHwX90slash0d1UhGqSTypBnnnv3I2fGtV0add010slash0dTWLFj0jvFeBF8ttbxWcxtBcyW3cJ8yXC222A6Vt0add00slash00add0MqYsj0slash0JNiQD731hYrvfTJroJrtaTZCnjE7h7waHFGlnv9JdufPnCJNBu0slash0tJe8cKfQl0slash0Hb70add0xx6VAF0add0yIQF0add0cPsVqtdDY0add01ebAz0add0yJd40add0FtU2VHdkW9Ksk4iNQxQbEOq4EKUO0slash0GdqnvqczMpuEIozSveyPM1s0secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_7_405_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_7_405_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_7_405_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_7_405_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_7_405(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_7_405(stlGetPageajaxElement_7_405());
+
+function stlRedirectajaxElement_7_405(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--页脚-->
+        <footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-main">
+          <p>Copyright © 2017-2019 小呆导航（<a href="../../index.html">webjike.com</a>）By SiteServer CMS 提供强力驱动 · 粤ICP备18030223号-1  <a href="../../sitemap.html" target="_blank">网站地图</a><a href="javascript:window.open('https://github.com/xiaodai945/WEBJIKE');" target="_blank" class="pull-right"><img src="../../github/stars/xiaodai945/WEBJIKE-social.jpg"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="top" class="hidden-xs hidden-sm">
+  <ul>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="联 系客 服"><i class="fa fa-smile-o"></i></a>
+      <span><img src="../../images/weixin.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="意 见反 馈"><i class="fa fa-envelope-o fa-fw"></i></a>
+      <span>我们可以做的更好</span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="微 信群 聊"><i class="fa fa-weixin"></i></a>
+      <span><img src="../../images/qun.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="返 回顶 部" style="display: none" id="go-top"><i class="fa fa-chevron-up"></i></a>
+    </li>
+  </ul>
+</div>
+
+
+      </div><!--内容区域-->
+    </div>
+    <!--[if lt IE 9]>
+    <script src="dist/lib/ieonly/html5shiv.js"></script>
+    <script src="dist/lib/ieonly/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261855216'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261855216' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+<script src="../../js/jquery.js"></script>
+<script src="../../dist/js/zui.js"></script>
+<script src="../../static/js/3.0.4/av-min.js"></script>
+<script src="../../js/Valine.min.js"></script>
+<script src="../../js/main.min-3.0.2.js"></script>
+  </body>
+</html>
+<script src="../../api/SS.Hits/hits/2/1224/2710.js" type="text/javascript"></script>

@@ -1,0 +1,2278 @@
+<!--
+ * 严重鄙视任何盗窃、复制代码行为！
+ * 引用、借鉴本站功能或布局的，请在页面中标注或附上链接，谢谢.
+ * 本站已在github开源，只需保留版权声明即可免费使用：https://github.com/xiaodai945/WEBJIKE
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+    <!--头部信息-->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>办公导航 - 高效率，便捷的办公网址导航</title>
+    <meta name="keywords" content="办公导航,工作导航,word模板,表格模板,运营导航,求职网站,办公网站大全">
+    <meta name="description" content="办公导航为小呆导航推出的一个高效率，便捷的办公网址导航，集合了各类办公常用网站，是一个为你带来灵感、节省时间的网址导航。">
+<!-- zui -->
+
+<link rel="stylesheet" href="css/zui.min.css">
+<link href="css/main-style-3.0.2.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  </head>
+  <body data-page-name="office">
+
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/cleanslate.min.css">
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/style.css">
+<!-- template start -->
+
+<div id="ss-auth" class="ss-auth cleanslate" v-bind:style="{ display: form ? '' : 'none !important' }" style="display: none !important;">
+  <header class="popupHeader">
+    <span class="header_title">{{ title }}</span>
+    <span class="modal_close" @click="closeModal"></span>
+  </header>
+
+  <section class="popupBody">
+    <!-- Social form -->
+    <div class="social_login" v-bind:style="{ display: form == 'social' ? '' : 'none !important' }" style="display: none !important;">
+      <div>
+        <a v-bind:href="apiUrlWeixin" v-bind:style="{ display: apiUrlWeixin ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weixin"></span>
+          <span class="icon_title">微信登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlQq" v-bind:style="{ display: apiUrlQq ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon qq"></span>
+          <span class="icon_title">QQ 登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlWeibo" v-bind:style="{ display: apiUrlWeibo ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weibo"></span>
+          <span class="icon_title">微博登录</span>
+        </a>
+      </div>
+
+      <div class="centeredText">
+        <span>使用账号密码登录</span>
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openRegisterModal" class="btn">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div data-vv-scope="login_form" v-bind:style="{ display: form == 'login' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名/邮箱/手机</label>
+      <input type="text" name="account" v-validate="'required'" :class="{'is-danger': errors.has('login_form.account') }" v-model="login.account">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('login_form.password') }" v-model="login.password">
+      <br>
+
+      <!-- <div class="checkbox">
+        <input id="remember" type="checkbox" />
+        <label for="remember">记住用户名</label>
+      </div> -->
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="loginSubmit" class="btn btn_red">登录</a>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;" @click="openFindPasswordModal" class="forgot_password">忘记密码？</a> -->
+    </div>
+
+    <!-- Register Form -->
+    <div data-vv-scope="register_form" v-bind:style="{ display: form == 'register' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名</label>
+      <input type="text" name="userName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.userName') }" v-model="register.userName">
+      <br>
+
+      <label>姓名</label>
+      <input type="text" name="displayName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.displayName') }" v-model="register.displayName">
+      <br>
+
+      <label>邮箱</label>
+      <input type="email" name="email" v-validate="'required|email'" :class="{'is-danger': errors.has('register_form.email') }" v-model="register.email">
+      <br>
+
+      <label>手机号</label>
+      <input type="text" name="mobile" v-validate="{ required: true, regex: /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/ }" :class="{'is-danger': errors.has('register_form.mobile') }" v-model="register.mobile">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('register_form.password') }" v-model="register.password">
+      <br>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取 消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="registerSubmit" class="btn btn_red">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Success Form -->
+    <div class="user_form" v-bind:style="{ display: form == 'registerSuccess' ? '' : 'none !important' }" style="display: none !important;">
+      <div class="successText">
+        {{ registerSuccessMessage }}
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">关 闭</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vue-2.1.10.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vee-validate-2.0.3.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/axios-0.17.1.min.js"></script>
+<script type="text/javascript">
+var authData = {
+    apiUrlRegister: '/api/SS.Login/actions/register',
+    apiUrlLogin: '/api/SS.Login/actions/login',
+    apiUrlLogout: '/api/SS.Login/actions/logout',
+    apiUrlWeixin: '/api/SS.Login/auth/Weixin?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlWeibo: '/api/SS.Login/auth/Weibo?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlQq: '/api/SS.Login/auth/Qq?redirectUrl=' + encodeURIComponent(location.href),
+    registerSuccessMessage: '恭喜，注册用户成功',
+    loginRedirectUrl: '?success=true',
+    logoutRedirectUrl: '?logout=true',
+};
+</script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/script.js"></script>
+<script src="sitefiles/assets/components/lodash-4.17.4.min.js" type="text/javascript"></script><script src="sitefiles/assets/components/stlClient.js" type="text/javascript"></script>
+
+    <!--[if lt IE 8]>
+    <div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+    <![endif]-->
+    <!--头部导航条-->
+    <header id="fenzhi-nav">
+      <div class="main">
+  <div class="logo">
+    <a href="index.html">
+      <img src="images/logo.png">
+      <span>小呆导航</span>
+    </a>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a class="duty-nav" href="dutynav.html">职业导航<i class="fa fa-caret-down"></i></a></li>
+      
+      
+        <li><a href="course.html">教程资源</a></li>
+      
+        <li><a href="blog.html">个人博客</a></li>
+      
+        <li><a href="liuyan.html">在线留言</a></li>
+      
+        <li><a href="link.html">友情链接</a></li>
+      
+        <li><a href="adout.html">关于本站</a></li>
+      
+    </ul>
+  </nav>
+  <div class="user visible-lg">
+    
+<div id="ajaxElement_1_732_loading"></div>
+<div id="ajaxElement_1_732_success" style="display: none"></div>
+<div id="ajaxElement_1_732_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_1_732(page)
+{
+    document.getElementById('ajaxElement_1_732_loading').style.display = 'block';
+    document.getElementById('ajaxElement_1_732_success').style.display = 'none';
+    document.getElementById('ajaxElement_1_732_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQG0add0DHo7NDCyszQ2hj9voS6QNFUGwn9CCcLm1500SyouCyMzJAlTkoriZ95lnIvaQvqWFWJa2n1APpFzXLHJVpOTWHMLGI0add0azFqo0slash0ArTtMs0add0CwUO3uNnJrV7yEZOoCBKNNVhyxm5pCjiqdOV0slash0CmHuaO4u5SwybH560add0WJBpnaD5CzgnVqQrk2l2L0slash01PegSHigciuznHKFtnc1Dks0KhrSRZ9zRWMBA4dXPnTZ3U2VQUY7Rp3NWC0add0jHZmrhPqLsHSWPOujnMgh2su8f0slash0I748bESQaSeAAw2SkC6DcQXt9L35I0lzmAGaQJq0add0vFY7Y4mt0slash0oe6jhF0add0u6ziUrjlxtvz0add0vsMmuaaSWNC5rYAIEvtgirnxEOk2tQ4ufy7a607XWsjm4TUIE1VQ5TecexGuWPmWyswtfgZBEpa5Wa3ShwAQXLk00JRq9AsFx7ODBr4HGRoq9z0slash0s0HMQlBy4fHk0wVYRHkRpkabcgzpE360slash02UAjopSORSllqgIGacG8iTAB28UevxouzyKX3sTxHq0wn0vgk0add02zKJVj4bIg3wr4pEP3ErCqMP7uOwsMViK3ovGXiymjohDID6gdBovGdXP2SsasjE4W6hFPVGoNzuk0Y4STYOJc0add0XV1iTzOU8QDixkAy7fXK7or7nBTYQ9wV0bnO0d0slash0i66aN0add0hrACNYOj1CdvgumvtdLSqclCsoy9xF2VGUNM0add0785O4btOaJUzWGlYd0slash0JB9OurV0Gsmcuxn0add0mUYv8aw3vAaKIo1HgFv1L6R2fldX8IrU0VDDofiWNu0C9edm6vNZPSvjFkxvIht1Yi5D0slash0zb99Sr9020add0ozPjGsK7O5kx0add0IFU22IKpS0slash0USjiXfb0U5mOqQG55P78m5KLd0uvvBy2D6K0slash0quB6ylu8k5VhJQVBZMyZfHByPyrpTmNu6iQ9RTVPrwJfWHrmYoRGu7J1mbhq0slash01VduCBY4DxvW22BAoUmzqhlpRdFgoEWp0slash0EIo4SfjcqWNYF40slash0dNDWwHglkPoSjBJGK0add0Pah0add08nXrW6dFGfIcyfzzZORI3uaSTPvmmTN4IZkQy2UHUKP1iXa3deICreeqhowHbZ5Us6snrMi4WNO3aKIW5NA8i5eFQR3nOa9jNewEjS4Jhi1XBoYo0add0voafKjVYE93cP7py84zcIQKQmMNKKNOZ8jRsZZFvuroNhlqaT6QRTHJqJalfvZTVkB9NEeRTNqE19WZlzujUFwL0slash0tHSHggB7XfKPQ1vCkGDaM7JGUWUiWW7HJUNXui3jnfgx0add07qlLIsjaTdDlqHIbLpDFl75spITRSQqW0slash0CDi2fgnFdLDziUdT6L4PuoIbbhRo9Ve8Eh5u4iW7QMN8l8SH9t31lcMVTEnkvpdpAUK3ETH8r6RkbvqofpV8120slash0o70slash0JeMpNtx5hjkOUfIhnI6MthiTjlY0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_1_732_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_732_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_1_732_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_732_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_1_732(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_1_732(stlGetPageajaxElement_1_732());
+
+function stlRedirectajaxElement_1_732(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div class="head-btn visible-lg">
+    <a href="sethome.html" target="_blank">设为首页</a>
+  </div>
+  <button class="nav-btn visible-xs visible-sm">
+    <span class="icon-line top"></span>
+    <span class="icon-line middle"></span>
+    <span class="icon-line bottom"></span>
+  </button>
+  <div class="mobile-user visible-xs visible-sm">
+    
+<div id="ajaxElement_2_621_loading"></div>
+<div id="ajaxElement_2_621_success" style="display: none"></div>
+<div id="ajaxElement_2_621_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_2_621(page)
+{
+    document.getElementById('ajaxElement_2_621_loading').style.display = 'block';
+    document.getElementById('ajaxElement_2_621_success').style.display = 'none';
+    document.getElementById('ajaxElement_2_621_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQG0add0DHo7NDCyszQ2hj9voS6QNFUGwn9CCcLm1500SyouCyMzJAlTkoriZ95lnIvaQvqWFWJa2n1APpFzXLHJVpOQD8ZIx0slash0j4uZCWRBPAjWnWcsQA57liK4XTbPe50a0V0slash00slash08XCJXJlcwoXc3af18W3VnHDMwuDyBVMjrCusgCPl7Vv2gy2jJJ1QTuXiUPMCppEqFNJDxNXNRWKsDWTtaX8TVg1vQBERc4BkHlvyT3eOPtTGx2HLFcBixRjz0add0qZFSpTN2WQ0slash0wzCXHz2wclzqv8u9g7xdkrF28bN5qdkIFePD0add0fzl88neaZUJb0add0pZ0add0ahqtkXVFkr0slash06eGR88GKpKoKyPONQvsFImKS0slash0kqZrcvuWPqPR3fbrqWH8oHERnnG1GcBFJ9yZxeAZ0add0Yxz19G9AkW6MMFG2ST56IlRWQcisDcS2GQZsaW61zLa04Sdu09wHSOP0add0JYeCkYEJcGmt98ALlo3aM5DIyssVaTdtwzSG7Sii9GKehBy9DFVKAx6itCP89vNObjFq3UujjuFuXkIK6Q0Pu4nE6sKCMxIJZ4BU5FcRmqDAPZXEukDONIyNJMn8EadIxVxUMm56PMNQWbkBjPy7uhUGfoHL0iLTxhDWRUgxTkxuLM0slash0ZMqXAKjUHm2ooDCfuX41fBkMjPFe59Ft3vFEs93qZ25RtC1oyHcElcgGguUpDKxgS4q5jxhq5abaLcs29hR4yqRO70add0paoByoaLATToiIrOWi7w62gDEIiGFxdRFeE8lHpaxzeJyptYOn1NB4Ocuv0slash0ti50add0qNAuPndoFNlZKMWYBSZxh0add0m1tm0wAsiM66yfF0slash0gVu1kaUxcF2KZrV4h9gkLx9cUhrvbxGNm0slash0wq0slash04kOQC2zxOCDuofonGIrvj1sg3BPLh0slash00add0kUzWuVoGD7lekIEI0owLGzx22u1hMZcZYlx6XsARY2x6ZW9WVxuv2u0slash0E6wrpdUnWyw0add09csIzL6GaNuOYD0add0nhkjXns05LOA8AkoY3mrqbOBcqHowPoYda1qOxghO0aeg4GVtCx1ukz4WtE0slash0H1x31EZZ2axRkfJTwBkUttqTjnCr4H9lYut5lWFCMuzArBI0gX2im4or3DlL0slash0DhsSVJ7g6wA83ifPUOMRePg9tJOK5lZiNVEc1f0add0bndPtLkrX0secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_2_621_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_621_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_2_621_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_621_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_2_621(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_2_621(stlGetPageajaxElement_2_621());
+
+function stlRedirectajaxElement_2_621(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div id="tow-nav">
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="web.html">前端开发</a>
+        <ul>
+          
+            <li><a target="_blank" href="web.html">视频教程</a></li>
+          
+            <li><a target="_blank" href="web.html">在线学习</a></li>
+          
+            <li><a target="_blank" href="web.html">碎片学习</a></li>
+          
+            <li><a target="_blank" href="web.html">学习工具</a></li>
+          
+            <li><a target="_blank" href="web.html">WEB公共库</a></li>
+          
+            <li><a target="_blank" href="web.html">前端组织</a></li>
+          
+            <li><a target="_blank" href="web.html">社区/论坛</a></li>
+          
+            <li><a target="_blank" href="web.html">UI 框架</a></li>
+          
+            <li><a target="_blank" href="web.html">JS 框架</a></li>
+          
+            <li><a target="_blank" href="web.html">前端插件</a></li>
+          
+            <li><a target="_blank" href="web.html">移动框架</a></li>
+          
+            <li><a target="_blank" href="web.html">预处理器</a></li>
+          
+            <li><a target="_blank" href="web.html">字体图标</a></li>
+          
+            <li><a target="_blank" href="web.html">构建工具</a></li>
+          
+            <li><a target="_blank" href="web.html">模块加载</a></li>
+          
+            <li><a target="_blank" href="web.html">包管理器</a></li>
+          
+            <li><a target="_blank" href="web.html">模板引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">游戏引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">代码高亮</a></li>
+          
+            <li><a target="_blank" href="web.html">代码托管</a></li>
+          
+            <li><a target="_blank" href="web.html">博客系统</a></li>
+          
+            <li><a target="_blank" href="web.html">域名/服务器</a></li>
+          
+            <li><a target="_blank" href="web.html">辅助工具</a></li>
+          
+            <li><a target="_blank" href="web.html">站长工具</a></li>
+          
+            <li><a target="_blank" href="web.html">图片素材</a></li>
+          
+            <li><a target="_blank" href="web.html">精选酷站</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="ui.html">界面设计</a>
+        <ul>
+          
+            <li><a target="_blank" href="ui.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="ui.html">灵感采集</a></li>
+          
+            <li><a target="_blank" href="ui.html">界面交互</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计规范</a></li>
+          
+            <li><a target="_blank" href="ui.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="ui.html">icon图标</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计素材</a></li>
+          
+            <li><a target="_blank" href="ui.html">图库素材</a></li>
+          
+            <li><a target="_blank" href="ui.html">颜色搭配</a></li>
+          
+            <li><a target="_blank" href="ui.html">渐变配色</a></li>
+          
+            <li><a target="_blank" href="ui.html">字体字形</a></li>
+          
+            <li><a target="_blank" href="ui.html">漫画插画</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计团队</a></li>
+          
+            <li><a target="_blank" href="ui.html">社区交流</a></li>
+          
+            <li><a target="_blank" href="ui.html">酷站集合</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="cg.html">影视后期</a>
+        <ul>
+          
+            <li><a target="_blank" href="cg.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="cg.html">特效动画</a></li>
+          
+            <li><a target="_blank" href="cg.html">资讯交流</a></li>
+          
+            <li><a target="_blank" href="cg.html">软件插件</a></li>
+          
+            <li><a target="_blank" href="cg.html">摄影摄像</a></li>
+          
+            <li><a target="_blank" href="cg.html">素材资源</a></li>
+          
+            <li><a target="_blank" href="cg.html">录屏工具</a></li>
+          
+            <li><a target="_blank" href="cg.html">学习论坛</a></li>
+          
+            <li><a target="_blank" href="cg.html">求职招聘</a></li>
+          
+            <li><a target="_blank" href="cg.html">渲染平台</a></li>
+          
+            <li><a target="_blank" href="cg.html">兼职外包</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="">日常办公</a>
+        <ul>
+          
+            <li><a target="_blank" href="">热门推荐</a></li>
+          
+            <li><a target="_blank" href="">效率资源</a></li>
+          
+            <li><a target="_blank" href="">办公软件</a></li>
+          
+            <li><a target="_blank" href="">技能提升</a></li>
+          
+            <li><a target="_blank" href="">在线工具</a></li>
+          
+            <li><a target="_blank" href="">团队协作</a></li>
+          
+            <li><a target="_blank" href="">电子邮箱</a></li>
+          
+            <li><a target="_blank" href="">文案策划</a></li>
+          
+            <li><a target="_blank" href="">文档模板</a></li>
+          
+            <li><a target="_blank" href="">工作兼职</a></li>
+          
+            <li><a target="_blank" href="">企业信息</a></li>
+          
+            <li><a target="_blank" href="">合同/范文</a></li>
+          
+            <li><a target="_blank" href="">思维导图</a></li>
+          
+            <li><a target="_blank" href="">文件转换</a></li>
+          
+            <li><a target="_blank" href="">工作/私单</a></li>
+          
+            <li><a target="_blank" href="">新闻资讯</a></li>
+          
+            <li><a target="_blank" href="">应用程序</a></li>
+          
+            <li><a target="_blank" href="">政府网站</a></li>
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+
+    </header>
+    <div id="content">
+      <!--导航条-->
+      <div class="mask">
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="web.html"><img src="upload/images/2018/10/8a051f89bcd0750a.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="ui.html"><img src="upload/images/2018/10/3e08d3698b088f88.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="cg.html"><img src="upload/images/2018/10/46f51682aee0c3a5.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href=""><img src="upload/images/2018/10/9a40eea2605a4965.jpg"></a>
+          </div>
+        
+      </div>
+      <div class="left-bar">
+        
+          
+        
+          
+        
+          
+        
+          <div class="header"><h2>日常办公</h2></div>
+              <div class="menu" id="menu">
+                <ul class="scrollcontent">
+                  
+                    <li><a href=""><i class="fa fa-fire"></i>热门推荐</a></li>
+                  
+                    <li><a href=""><i class="fa fa-dashboard"></i>效率资源</a></li>
+                  
+                    <li><a href=""><i class="fa fa-pencil-square"></i>办公软件</a></li>
+                  
+                    <li><a href=""><i class="fa fa-graduation-cap"></i>技能提升</a></li>
+                  
+                    <li><a href=""><i class="fa fa-wrench"></i>在线工具</a></li>
+                  
+                    <li><a href=""><i class="fa fa-users"></i>团队协作</a></li>
+                  
+                    <li><a href=""><i class="fa fa-envelope"></i>电子邮箱</a></li>
+                  
+                    <li><a href=""><i class="fa fa-book"></i>文案策划</a></li>
+                  
+                    <li><a href=""><i class="fa fa-file-word-o"></i>文档模板</a></li>
+                  
+                    <li><a href=""><i class="fa fa-desktop"></i>工作兼职</a></li>
+                  
+                    <li><a href=""><i class="fa fa-pie-chart"></i>企业信息</a></li>
+                  
+                    <li><a href=""><i class="fa  fa-edit"></i>合同/范文</a></li>
+                  
+                    <li><a href=""><i class="fa fa-code-fork"></i>思维导图</a></li>
+                  
+                    <li><a href=""><i class="fa fa-clipboard"></i>文件转换</a></li>
+                  
+                    <li><a href=""><i class="fa fa-suitcase"></i>工作/私单</a></li>
+                  
+                    <li><a href=""><i class="fa fa-globe"></i>新闻资讯</a></li>
+                  
+                    <li><a href=""><i class="fa fa-cloud-download"></i>应用程序</a></li>
+                  
+                    <li><a href=""><i class="fa fa-institution"></i>政府网站</a></li>
+                  
+                </ul>
+              </div>
+        
+        <div class="menu-about">
+          <span>Powered by <a href="index.html">小呆导航 3.0</a></span>
+        </div>
+      </div>
+      <!--内容-->
+      <div class="duty-main">
+        <div class="container content-box">
+          <section class="sousuo">
+  <div class="search">
+    <div class="search-box">
+      <span class="search-icon" style="background: url('images/search_icon.png')"></span>
+      <input type="text" id="txt" class="search-input" placeholder="请输入关键字，按回车 / Enter 搜索">
+      <button class="search-btn" id="search-btn"><i class="fa fa-search"></i></button>
+    </div>
+    <!-- 搜索热词 -->
+    <div class="box search-hot-text" id="box" style="display: none">
+      <ul></ul>
+    </div>
+    <!-- 搜索引擎 -->
+    <div class="search-engine">
+      <div class="search-engine-head">
+        <strong class="search-engine-tit">选择您的默认搜索引擎：</strong>
+        <div class="search-engine-tool">搜索热词： <span id="hot-btn"></span></div>
+      </div>
+      <ul class="search-engine-list">
+      </ul>
+    </div>
+    <!--<div class="bt-link"><a href="https://ibaotu.com/ppt/3-0-0-0-0-1.html?format_type=0&spm=cndesign&utm_source=BD&utm_medium=%E5%B0%8F%E5%91%86%E5%AF%BC%E8%88%AA&utm_campaign=%E5%8A%9E%E5%85%AC" target="_blank">福利：2000套精美PPT模板，一键套用，立即领取！</a></div>-->
+  </div>
+</section>
+          <div class="row duty-custom">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-keyboard-o"></i>任你创造<span class="pull-right hidden-xs hidden-sm" id="duty-custom-btn"><i class="fa fa-cog"></i>自定义</span></strong>
+            </div>  
+            <div class="col-md-12">
+              <ul class="duty-custom-item">
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://shimo.im/');">石墨文档</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.turnitin.com/');">Turnitin</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://vdisk.weibo.com/');">微盘</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.weiyun.com/');">微云</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://fanyi.baidu.com/');">百度翻译</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.iciba.com/');">爱词霸</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.onenote.com/');">OneNote</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://maxiang.io/');">马克飞象</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://note.youdao.com/');">有道云笔记</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.office.com/');">Office 365</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://shu.taobao.com/');">淘宝指数</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://data.weibo.com/datacenter/recommendapp');">微博数据中心</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://top.baidu.com/');">百度搜索风云榜</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://index.baidu.com/');">百度指数</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.yuque.com/');">语雀</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://uzer.me/');">云端桌面</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.wps.cn/');">WPS Office</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://docs.qq.com/');"> 腾讯文档</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.nicetool.net/');">好工具网</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://tableconvert.com/');">Table Convert Online</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://hizdm.cn/');">张大妈工资计算器</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://showmore.com/zh/');"> ShowMore</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://qrdream.com/');">维码梦工厂</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.cuobiezi.net/');">错别字检测工具</a></li>
+                
+              </ul>
+            </div>
+            <!--职业导航自定义面板-->
+            <div class="col-md-12">
+              <ul class="duty-customize">
+                <li id="duty-local-save">本 地 保 存</li>
+                <li id="duty-server-save">云 端 保 存</li>
+                <li id="duty-sync-data">数 据 同 步</li>
+                <li id="duty-restore-data">恢 复 默 认</li>
+                <li id="duty-out">关 闭 面 板</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="duty-tool">
+                <div class="duty-tool-notice">
+                  <i class="fa fa-volume-up" aria-hidden="true"></i>
+                  <span>小呆导航 3.0 全新版本强势来袭！新增会员、投稿等功能，目前功能测试中，欢迎提出你的反馈与建议，谢谢支持。</span>
+                </div>
+                <ul class="duty-tool-switch hidden-xs hidden-sm">
+                  <li><span>图标</span><i class="fa fa-toggle-on"></i></li>
+                  <li><span>简介</span><i class="fa fa-toggle-on"></i></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-1" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-fire"></i>热门推荐</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://wx.qq.com/');" class="duty-card" target="_blank" title="网页版微信 - 微信网页版是腾讯公司于2011年1月21日推出的一个为智能终端提供即时通讯服务的免费应用程序。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/dcec7c1de35594e9.jpg">网页版微信</div>
+                        <div class="duty-card-des">微信网页版是腾讯公司于2011年1月21日推出的一个为智能终端提供即时通讯服务的免费应用程序。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.yinxiang.com/');" class="duty-card" target="_blank" title="印象笔记 - 一款多功能笔记类应用，跨平台的印象笔记将帮你随时随地快速获取和同步笔记信息。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d4660568a612ee3d.jpg">印象笔记</div>
+                        <div class="duty-card-des">一款多功能笔记类应用，跨平台的印象笔记将帮你随时随地快速获取和同步笔记信息。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://dict.youdao.com/');" class="duty-card" target="_blank" title="有道词典 - 网易旗下产品，全球首款基于搜索引擎技术的全能免费语言翻译软件。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/c75df950d5c248ec.jpg">有道词典</div>
+                        <div class="duty-card-des">网易旗下产品，全球首款基于搜索引擎技术的全能免费语言翻译软件。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://pan.baidu.com/');" class="duty-card" target="_blank" title="百度网盘 - 百度推出的一项面向个人、企业的云存储服务，中国最大最稳定的网盘平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5d7188b7eeb04d12.jpg">百度网盘</div>
+                        <div class="duty-card-des">百度推出的一项面向个人、企业的云存储服务，中国最大最稳定的网盘平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://translate.google.cn/');" class="duty-card" target="_blank" title="Google 翻译 - 可提供 80 种语言之间的即时翻译，支持任意两种语言之间的字词、句子和网页翻译。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fb1b18750d817c1e.png">Google 翻译</div>
+                        <div class="duty-card-des">可提供 80 种语言之间的即时翻译，支持任意两种语言之间的字词、句子和网页翻译。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-2" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-dashboard"></i>效率资源</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://index.baidu.com/');" class="duty-card" target="_blank" title="百度指数 - 百度指数是以百度海量网民行为数据为基础的数据分享平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f8d9618806bee006.jpg">百度指数</div>
+                        <div class="duty-card-des">百度指数是以百度海量网民行为数据为基础的数据分享平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://top.baidu.com/');" class="duty-card" target="_blank" title="百度搜索风云榜 - 以数亿网民的搜索行为作为数据基础，建立权威的关键词排行榜与分类热点门户。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/818ef6a56c120f16.png">百度搜索风云榜</div>
+                        <div class="duty-card-des">以数亿网民的搜索行为作为数据基础，建立权威的关键词排行榜与分类热点门户。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://data.weibo.com/datacenter/recommendapp');" class="duty-card" target="_blank" title="微博数据中心 - 汇集新浪微博数据中心分析类、榜单类、内容类、活动工具类等不同类型应用产品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/befd6dfca04f867e.png">微博数据中心</div>
+                        <div class="duty-card-des">汇集新浪微博数据中心分析类、榜单类、内容类、活动工具类等不同类型应用产品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://shu.taobao.com/');" class="duty-card" target="_blank" title="淘宝指数 - 以阿里电商数据为核心，面向媒体、市场研究员以及社会大众提供的社会化大数据展示平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/acae3ecaf40cfaee.png">淘宝指数</div>
+                        <div class="duty-card-des">以阿里电商数据为核心，面向媒体、市场研究员以及社会大众提供的社会化大数据展示平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.office.com/');" class="duty-card" target="_blank" title="Office 365 - 微软带给所有企业最佳生产力和高效协同的高端云服务，是微软公司基于云平台的应用套件。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e936347d3ee09bb6.jpg">Office 365</div>
+                        <div class="duty-card-des">微软带给所有企业最佳生产力和高效协同的高端云服务，是微软公司基于云平台的应用套件。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://note.youdao.com/');" class="duty-card" target="_blank" title="有道云笔记 - 网易出品的笔记软件，用户可以随时随地对线上资料进行编辑、分享以及协同。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f29356bf386bc852.jpg">有道云笔记</div>
+                        <div class="duty-card-des">网易出品的笔记软件，用户可以随时随地对线上资料进行编辑、分享以及协同。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://maxiang.io/');" class="duty-card" target="_blank" title="马克飞象 - 马克飞象是一款专为印象笔记打造的Markdown编辑器，配合印象笔记强大的存储和同步功能。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/32df8e481ff4236e.jpg">马克飞象</div>
+                        <div class="duty-card-des">马克飞象是一款专为印象笔记打造的Markdown编辑器，配合印象笔记强大的存储和同步功能。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.onenote.com/');" class="duty-card" target="_blank" title="OneNote - 微软推出的云笔记本，是个收集资料的利器，你可以将所有自己觉得有用的信息都往里面丢。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6d1da3277ed31186.png">OneNote</div>
+                        <div class="duty-card-des">微软推出的云笔记本，是个收集资料的利器，你可以将所有自己觉得有用的信息都往里面丢。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iciba.com/');" class="duty-card" target="_blank" title="爱词霸 - 爱词霸提供在线翻译，英语学习，属于金山公司，相当于网络版金山词霸。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9b8e201e7ed98216.jpg">爱词霸</div>
+                        <div class="duty-card-des">爱词霸提供在线翻译，英语学习，属于金山公司，相当于网络版金山词霸。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://fanyi.baidu.com/');" class="duty-card" target="_blank" title="百度翻译 - 提供即时免费的多语种文本翻译和网页翻译服务,支持中、英、日、韩、等28种热门语言互译。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b3ae8ca720389266.jpg">百度翻译</div>
+                        <div class="duty-card-des">提供即时免费的多语种文本翻译和网页翻译服务,支持中、英、日、韩、等28种热门语言互译。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.weiyun.com/');" class="duty-card" target="_blank" title="微云 - 腾讯公司为用户精心打造的一项智能云服务，通过微云方便地在手机和电脑之间同步文件等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5f030b0fdf1b6b8e.jpg">微云</div>
+                        <div class="duty-card-des">腾讯公司为用户精心打造的一项智能云服务，通过微云方便地在手机和电脑之间同步文件等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://vdisk.weibo.com/');" class="duty-card" target="_blank" title="微盘 - 新浪微盘是一款云存储网盘及新浪微博的官方网盘，可用来存储文件，还可分享文件到微博。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/66b7ef7177c5950e.jpg">微盘</div>
+                        <div class="duty-card-des">新浪微盘是一款云存储网盘及新浪微博的官方网盘，可用来存储文件，还可分享文件到微博。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.turnitin.com/');" class="duty-card" target="_blank" title="Turnitin - Turnitin是国际上最权威的英文论文检测系统，适合于要到国际期刊上发表论文检测等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9a4d41ac5eccfc84.jpg">Turnitin</div>
+                        <div class="duty-card-des">Turnitin是国际上最权威的英文论文检测系统，适合于要到国际期刊上发表论文检测等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://shimo.im/');" class="duty-card" target="_blank" title="石墨文档 - 一款轻便、简洁的在线协作文档工具，可以实现多人同时在同一文档上进行编辑和实时讨论。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1858621cde1d7522.jpg">石墨文档</div>
+                        <div class="duty-card-des">一款轻便、简洁的在线协作文档工具，可以实现多人同时在同一文档上进行编辑和实时讨论。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-13" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-pencil-square"></i>办公软件</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://docs.qq.com/');" class="duty-card" target="_blank" title=" 腾讯文档 - 可多人协作的在线文档，任意设备皆可顺畅访问、创建和编辑文档">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/1f3ee9366fd1e85e.jpg"> 腾讯文档</div>
+                        <div class="duty-card-des">可多人协作的在线文档，任意设备皆可顺畅访问、创建和编辑文档</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.wps.cn/');" class="duty-card" target="_blank" title="WPS Office - 国内较常用的免费办公软件，金山公司旗下的办公软件">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/dbd9c9138905d672.jpg">WPS Office</div>
+                        <div class="duty-card-des">国内较常用的免费办公软件，金山公司旗下的办公软件</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://uzer.me/');" class="duty-card" target="_blank" title="云端桌面 - 云端超级应用空间，随时使用各种应用">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/7a8b5b2ff6af061f.jpg">云端桌面</div>
+                        <div class="duty-card-des">云端超级应用空间，随时使用各种应用</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.yuque.com/');" class="duty-card" target="_blank" title="语雀 - 优雅高效的在线文档编辑与协同工具">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/2c2dc4b8975a2c8.jpg">语雀</div>
+                        <div class="duty-card-des">优雅高效的在线文档编辑与协同工具</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-3" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-graduation-cap"></i>技能提升</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.icourse163.org/');" class="duty-card" target="_blank" title="中国大学MOOC - 爱课程网携手网易云课堂打造的在线学习平台，每一个有提升愿望的人，都可以在这里学习中国优质的大学课程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/72becf21c11c0b0b.png">中国大学MOOC</div>
+                        <div class="duty-card-des">爱课程网携手网易云课堂打造的在线学习平台，每一个有提升愿望的人，都可以在这里学习中国优质的大学课程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://oeasy.org/');" class="duty-card" target="_blank" title="Oeasy系列 - Oeasy系列网络教程，以“oeasy就是给想学而没钱学的人做的”理念，与大家分享经验。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1a3ee4c7351f570b.jpg">Oeasy系列</div>
+                        <div class="duty-card-des">Oeasy系列网络教程，以“oeasy就是给想学而没钱学的人做的”理念，与大家分享经验。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.bilibili.com/video/tech-wild-1.html');" class="duty-card" target="_blank" title="野生技术协会 - B站免费教程学习栏目“野生技术协会”，展示一定改装/创作能力的视频。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2ff18891904cb2cb.jpg">野生技术协会</div>
+                        <div class="duty-card-des">B站免费教程学习栏目“野生技术协会”，展示一定改装/创作能力的视频。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.yiihuu.com/');" class="duty-card" target="_blank" title="翼狐网 - 中国专业的数字艺术学习平台，致力于为用户提供优质的CAD、CDR、AE、3dmax等软件教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3d132b585d7ff62b.png">翼狐网</div>
+                        <div class="duty-card-des">中国专业的数字艺术学习平台，致力于为用户提供优质的CAD、CDR、AE、3dmax等软件教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.miguxue.com/');" class="duty-card" target="_blank" title="咪咕学堂 - 一站式贴心学习服务平台，面向学生、职业教育类学习群体，提供海量优质学习资源，包括直播课程、视频课程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/291e39a06ed44b3b.png">咪咕学堂</div>
+                        <div class="duty-card-des">一站式贴心学习服务平台，面向学生、职业教育类学习群体，提供海量优质学习资源，包括直播课程、视频课程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://study.163.com/');" class="duty-card" target="_blank" title="网易云课堂 - 领先的实用技能学习平台，网易云旗下品牌，内容非常丰富，免费教程也挺多的。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d18e1d87082d0a13.png">网易云课堂</div>
+                        <div class="duty-card-des">领先的实用技能学习平台，网易云旗下品牌，内容非常丰富，免费教程也挺多的。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://chuanke.baidu.com/');" class="duty-card" target="_blank" title="百度传课 - 百度推出的教育领域新兴在线教育平台，免费视频教程很丰富，基本都是免费的。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5febfa4c1834fd33.jpg">百度传课</div>
+                        <div class="duty-card-des">百度推出的教育领域新兴在线教育平台，免费视频教程很丰富，基本都是免费的。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.51zxw.net/');" class="duty-card" target="_blank" title="我要自学网 - 免费视频教程平台，提供全方位软件学习，涉及的行业很多，资源非常丰富。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6d0d7f5ca95830c3.png">我要自学网</div>
+                        <div class="duty-card-des">免费视频教程平台，提供全方位软件学习，涉及的行业很多，资源非常丰富。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-4" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-wrench"></i>在线工具</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://24mail.chacuo.net/');" class="duty-card" target="_blank" title="临时邮箱 - 在线生成临时邮箱网站、开通邮箱最长支持24小时，支持邮件转发，自动刷新&#33;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6d175cd509de68ea.png">临时邮箱</div>
+                        <div class="duty-card-des">在线生成临时邮箱网站、开通邮箱最长支持24小时，支持邮件转发，自动刷新&#33;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.txttool.com/');" class="duty-card" target="_blank" title="TXTTOOL - TXT文本在线处理工具，功能非常强大，支持内容替换、过滤、文字排版等操作。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/406a050876b65cae.png">TXTTOOL</div>
+                        <div class="duty-card-des">TXT文本在线处理工具，功能非常强大，支持内容替换、过滤、文字排版等操作。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mikecrm.com/');" class="duty-card" target="_blank" title="麦客表单 - 麦客CRM是一款在线表单制作工具，同时也是强大的客户信息处理和关系管理系统。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/babc3bb215f9b7c8.jpg">麦客表单</div>
+                        <div class="duty-card-des">麦客CRM是一款在线表单制作工具，同时也是强大的客户信息处理和关系管理系统。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.hiwenku.com/');" class="duty-card" target="_blank" title="嗨文库 - 百度文库文档下载工具，能根据百度文库文档地址提取到文档内容并形成.docx的文档，告别手动复制的烦恼。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e1818cebded34f18.png">嗨文库</div>
+                        <div class="duty-card-des">百度文库文档下载工具，能根据百度文库文档地址提取到文档内容并形成.docx的文档，告别手动复制的烦恼。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://zhitu.isux.us/');" class="duty-card" target="_blank" title="智图 - 图片压缩在线工具，为图片智能选择合适的图片格式，支持在线jpg图片压缩，png图片压缩。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e682956f5006c6e.png">智图</div>
+                        <div class="duty-card-des">图片压缩在线工具，为图片智能选择合适的图片格式，支持在线jpg图片压缩，png图片压缩。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.picdiet.com/zh-cn');" class="duty-card" target="_blank" title="Picdiet - 在线批量压缩图片神器，不需要后端服务器或者API的支持，仅通过你的浏览器来压缩图片大小。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6ef88d1938cbfc59.png">Picdiet</div>
+                        <div class="duty-card-des">在线批量压缩图片神器，不需要后端服务器或者API的支持，仅通过你的浏览器来压缩图片大小。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://jinshuju.net/');" class="duty-card" target="_blank" title="金数据 - 一款免费的表单设计和数据搜集工具，可用来设计表单，制作在线问卷调查等数据资料，获得产品反馈等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/31aaf98f9fbddc79.jpg">金数据</div>
+                        <div class="duty-card-des">一款免费的表单设计和数据搜集工具，可用来设计表单，制作在线问卷调查等数据资料，获得产品反馈等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.processon.com/');" class="duty-card" target="_blank" title="ProcessOn - ProcessOn是一个方便易用、免费高效的在线作图工具，运用它可以免费制作多种图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6e97d3d79f7a604a.png">ProcessOn</div>
+                        <div class="duty-card-des">ProcessOn是一个方便易用、免费高效的在线作图工具，运用它可以免费制作多种图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://huaban.com/about/goodies/');" class="duty-card" target="_blank" title="花瓣采集工具 - 你可以方便地保存任意网站上的图片、视频和截图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/88dc363a15d31642.jpg">花瓣采集工具</div>
+                        <div class="duty-card-des">你可以方便地保存任意网站上的图片、视频和截图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.wenjuan.net/');" class="duty-card" target="_blank" title="问卷网 - 网络调查平台、问卷调查、市场调查、网络调查、表单设计。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bc99ec00a66a8082.jpg">问卷网</div>
+                        <div class="duty-card-des">网络调查平台、问卷调查、市场调查、网络调查、表单设计。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.wjx.cn/');" class="duty-card" target="_blank" title="问卷星 - 问卷星提供30多种题型，强大的统计分析功能，统计报告和原始答卷可免费下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/22c2a2474cd2b48a.jpg">问卷星</div>
+                        <div class="duty-card-des">问卷星提供30多种题型，强大的统计分析功能，统计报告和原始答卷可免费下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://tinypng.com/');" class="duty-card" target="_blank" title="TinyPNG - 图片压缩网站，支持小于5M的jpg、png图片的压缩。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/35e3b40398dc5a68.jpg">TinyPNG</div>
+                        <div class="duty-card-des">图片压缩网站，支持小于5M的jpg、png图片的压缩。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.polaxiong.com/');" class="duty-card" target="_blank" title="泼辣修图 - 一款免费的在线图像处理软件，只要页面加载完成，导出导入图片不再受网络影响">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/72c267138f889315.png">泼辣修图</div>
+                        <div class="duty-card-des">一款免费的在线图像处理软件，只要页面加载完成，导出导入图片不再受网络影响</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.cuobiezi.net/');" class="duty-card" target="_blank" title="错别字检测工具 - 日常用语、成语、五笔、拼音、OCR等输入方式导致的错别字检查。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/f09bd776ef414c07.jpg">错别字检测工具</div>
+                        <div class="duty-card-des">日常用语、成语、五笔、拼音、OCR等输入方式导致的错别字检查。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://qrdream.com/');" class="duty-card" target="_blank" title="维码梦工厂 - 在线艺术二维码生成器">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/55da1f6e2ea9568f.png">维码梦工厂</div>
+                        <div class="duty-card-des">在线艺术二维码生成器</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://showmore.com/zh/');" class="duty-card" target="_blank" title=" ShowMore - 一款免费在线录屏工具，可同时录制屏幕，摄像头，声音等，录制过程中可以实时编辑视频，录制完可以上传到云端存储，一键分享给好友。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/5d2659ba3fec3601.png"> ShowMore</div>
+                        <div class="duty-card-des">一款免费在线录屏工具，可同时录制屏幕，摄像头，声音等，录制过程中可以实时编辑视频，录制完可以上传到云端存储，一键分享给好友。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://hizdm.cn/');" class="duty-card" target="_blank" title="张大妈工资计算器 - 五险一金计算器，帮助您更详细了解五险一金扣税的各比例和金额。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/11/a80ff1c465894a64.jpg">张大妈工资计算器</div>
+                        <div class="duty-card-des">五险一金计算器，帮助您更详细了解五险一金扣税的各比例和金额。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://tableconvert.com/');" class="duty-card" target="_blank" title="Table Convert Online - 一个功能强大的在线表编辑器，支持Excel、Markdown、JSON、CSV、HTML等格式的相互转换">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/a58381171c86ef17.jpg">Table Convert Online</div>
+                        <div class="duty-card-des">一个功能强大的在线表编辑器，支持Excel、Markdown、JSON、CSV、HTML等格式的相互转换</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.nicetool.net/');" class="duty-card" target="_blank" title="好工具网 - 在线工具大全，用完即走，触手可及">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/6/6eeae2b273af6efc.jpg">好工具网</div>
+                        <div class="duty-card-des">在线工具大全，用完即走，触手可及</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-5" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-users"></i>团队协作</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.teambition.com/');" class="duty-card" target="_blank" title="Teambition - 国内团队协作工具的创导者，通过帮助团队轻松共享和讨论工作中的任务、文件、分享、日程等内容。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9f41b3306d26bae6.jpg">Teambition</div>
+                        <div class="duty-card-des">国内团队协作工具的创导者，通过帮助团队轻松共享和讨论工作中的任务、文件、分享、日程等内容。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.atlassian.com/software/jira');" class="duty-card" target="_blank" title="Jira - 一个项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集等工作领域。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6696c6fe7a00561e.png">Jira</div>
+                        <div class="duty-card-des">一个项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集等工作领域。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://trello.com/');" class="duty-card" target="_blank" title="Trello - 一个团队协作工具，可以方便追踪项目进度，它能够跟踪一切，大至图片，小至记录细节。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4b6e909e2a5b90de.png">Trello</div>
+                        <div class="duty-card-des">一个团队协作工具，可以方便追踪项目进度，它能够跟踪一切，大至图片，小至记录细节。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://asana.com/');" class="duty-card" target="_blank" title="Asana - 团队任务管理平台，是一个集邮件、办公、文档、沟通于一体的任务管理平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4a195dbc4b4d2d74.jpg">Asana</div>
+                        <div class="duty-card-des">团队任务管理平台，是一个集邮件、办公、文档、沟通于一体的任务管理平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://basecamp.com/');" class="duty-card" target="_blank" title="Basecamp - 一款非常流行的基于云服务的项目管理软件，以简单易用和颠覆性的创新而出名。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1f5c0078a7d9eb6e.png">Basecamp</div>
+                        <div class="duty-card-des">一款非常流行的基于云服务的项目管理软件，以简单易用和颠覆性的创新而出名。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.dingtalk.com/');" class="duty-card" target="_blank" title="钉钉 - 智能移动办公平台，由阿里巴巴集团开发，免费提供给所有中国企业，用于商务沟通和工作协同。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9ad4202727b8f794.png">钉钉</div>
+                        <div class="duty-card-des">智能移动办公平台，由阿里巴巴集团开发，免费提供给所有中国企业，用于商务沟通和工作协同。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://tower.im/');" class="duty-card" target="_blank" title="Tower - 深受用户喜爱的团队协作工具，七十万团队、七百万人正在高效率地使用 Tower 进行协作。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7c2cad53399eca04.png">Tower</div>
+                        <div class="duty-card-des">深受用户喜爱的团队协作工具，七十万团队、七百万人正在高效率地使用 Tower 进行协作。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.tapd.cn/home/index');" class="duty-card" target="_blank" title="TAPD - TAPD是腾讯敏捷产品研发平台，帮助产品团队以敏捷研发方式，更好更快完成项目。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d19425b3892cb074.png">TAPD</div>
+                        <div class="duty-card-des">TAPD是腾讯敏捷产品研发平台，帮助产品团队以敏捷研发方式，更好更快完成项目。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://co.youdao.com/index.html');" class="duty-card" target="_blank" title="有道云协作 - 网易推出的基于资料管理和项目推进的团队协同办公工具，管理项目进度，共享工作资料等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/70b3ec6d26931080.jpg">有道云协作</div>
+                        <div class="duty-card-des">网易推出的基于资料管理和项目推进的团队协同办公工具，管理项目进度，共享工作资料等。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-6" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-envelope"></i>电子邮箱</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mail.qq.com/');" class="duty-card" target="_blank" title="QQ邮箱 - QQ邮箱是腾讯公司2002年推出，向用户提供安全、稳定、快速、便捷电子邮件服务的邮箱产品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1efabc839bf5f413.jpg">QQ邮箱</div>
+                        <div class="duty-card-des">QQ邮箱是腾讯公司2002年推出，向用户提供安全、稳定、快速、便捷电子邮件服务的邮箱产品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://email.163.com/');" class="duty-card" target="_blank" title="163邮箱 - 中国最大的电子邮件服务商，目前已拥有超过2.3亿的用户，是全球使用人数最多的中文邮箱。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/dc23029d1fd51122.jpg">163邮箱</div>
+                        <div class="duty-card-des">中国最大的电子邮件服务商，目前已拥有超过2.3亿的用户，是全球使用人数最多的中文邮箱。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mail.aliyun.com/');" class="duty-card" target="_blank" title="阿里云邮箱 - 阿里云推出的邮件服务，支持个人和企业两种版本，口碑不是很好。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/af1b1da5a75b9462.jpg">阿里云邮箱</div>
+                        <div class="duty-card-des">阿里云推出的邮件服务，支持个人和企业两种版本，口碑不是很好。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mail.sina.com.cn/');" class="duty-card" target="_blank" title="新浪邮箱 - 新浪网推出向用户提供安全、稳定、快速、便捷电子邮件服务的邮箱产品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1a14f28b694adbf6.jpg">新浪邮箱</div>
+                        <div class="duty-card-des">新浪网推出向用户提供安全、稳定、快速、便捷电子邮件服务的邮箱产品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mail.google.com/');" class="duty-card" target="_blank" title="Gmail - Google推出的免费网络邮件服务，是一款直观、高效、实用的电子邮件应用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/af4d2d0442515447.jpg">Gmail</div>
+                        <div class="duty-card-des">Google推出的免费网络邮件服务，是一款直观、高效、实用的电子邮件应用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://outlook.live.com/owa/');" class="duty-card" target="_blank" title="Outlook - 微软推出的免费网络邮件服务，Outlook是微软办公软件套装的组件之一。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6ca49b560c7d583.jpg">Outlook</div>
+                        <div class="duty-card-des">微软推出的免费网络邮件服务，Outlook是微软办公软件套装的组件之一。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://mail.yahoo.com/');" class="duty-card" target="_blank" title="Yahoo Mail - 雅虎邮箱是雅虎公司推出的一项电子邮件服务工具，雅虎是全球最早从事电子邮件服务的互联网企业之一。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/83ceeb00c3bb0845.jpg">Yahoo Mail</div>
+                        <div class="duty-card-des">雅虎邮箱是雅虎公司推出的一项电子邮件服务工具，雅虎是全球最早从事电子邮件服务的互联网企业之一。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-7" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-book"></i>文案策划</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.eqxiu.com/');" class="duty-card" target="_blank" title="易企秀 - 国内最火的H5场景应用制作工具，一款制作和展示各类复杂营销方案的平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e32e531d4c3245d0.jpg">易企秀</div>
+                        <div class="duty-card-des">国内最火的H5场景应用制作工具，一款制作和展示各类复杂营销方案的平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://maka.im/');" class="duty-card" target="_blank" title="MAKA - 简单、强大的免费H5页面、微场景、微信海报制作平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2541d1828fcfbc27.jpg">MAKA</div>
+                        <div class="duty-card-des">简单、强大的免费H5页面、微场景、微信海报制作平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ih5.cn/');" class="duty-card" target="_blank" title="iH5 - 最专业的H5制作工具，原为VXPLO互动大师，是一套完全自主研发的设计工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2510d7dbacd714d7.jpg">iH5</div>
+                        <div class="duty-card-des">最专业的H5制作工具，原为VXPLO互动大师，是一套完全自主研发的设计工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.baomitu.com/');" class="duty-card" target="_blank" title="爆米兔 - 是一个小而美的H5创意平台，通过简单可视化操作即可进行HTML5宣传页面制作。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bd04dc6bd9a5b3eb.png">爆米兔</div>
+                        <div class="duty-card-des">是一个小而美的H5创意平台，通过简单可视化操作即可进行HTML5宣传页面制作。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mugeda.com/');" class="duty-card" target="_blank" title="Mugeda - 专业级HTML5交互动画内容制作云平台，拥有业界最为强大的动画编辑能力和最为自由的创作空间。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/501277ad4e097db0.jpg">Mugeda</div>
+                        <div class="duty-card-des">专业级HTML5交互动画内容制作云平台，拥有业界最为强大的动画编辑能力和最为自由的创作空间。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.zhichiwangluo.com/');" class="duty-card" target="_blank" title="咫尺微页 - H5页面制作工具，可以在微信应用号或微信公众号推广中向用户展示有声有色的微场景。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2eabfc9a21b41ea4.jpg">咫尺微页</div>
+                        <div class="duty-card-des">H5页面制作工具，可以在微信应用号或微信公众号推广中向用户展示有声有色的微场景。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.liveapp.cn/');" class="duty-card" target="_blank" title="云来 - H5页面制作工具，简单、强大的免费H5创作工具，移动场景应用平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f83353f010885b9.png">云来</div>
+                        <div class="duty-card-des">H5页面制作工具，简单、强大的免费H5创作工具，移动场景应用平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://chuye.cloud7.com.cn/');" class="duty-card" target="_blank" title="初页 - 最潮的音乐照片情感故事记录/表达工具，它的提供的免费模板比较丰富。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/254d31a203ee5a6e.png">初页</div>
+                        <div class="duty-card-des">最潮的音乐照片情感故事记录/表达工具，它的提供的免费模板比较丰富。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.chuangkit.com/');" class="duty-card" target="_blank" title="创客贴 - 一款在线平面设计工具，在线PS,免费设计模板包含海报、名片、PPT、简历等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f7f8854a2971001b.jpg">创客贴</div>
+                        <div class="duty-card-des">一款在线平面设计工具，在线PS,免费设计模板包含海报、名片、PPT、简历等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://t.pp.cc/');" class="duty-card" target="_blank" title="皮皮时光机 - 对新浪微博开发的第三方微博管理应用工具，涉及的内容很多，包括文案策划与撰写等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/aa13bccbb936dedf.jpg">皮皮时光机</div>
+                        <div class="duty-card-des">对新浪微博开发的第三方微博管理应用工具，涉及的内容很多，包括文案策划与撰写等。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-8" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-file-word-o"></i>文档模板</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://office.mmais.com.cn/Template/Home.shtml');" class="duty-card" target="_blank" title="OfficePLUS - 微软Office官方在线模板网站，提供各类精品PPT模板、Word、Excel文档和图片素材等资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b00a052ea5a983c0.jpg">OfficePLUS</div>
+                        <div class="duty-card-des">微软Office官方在线模板网站，提供各类精品PPT模板、Word、Excel文档和图片素材等资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://slidemodel.com/');" class="duty-card" target="_blank" title="SlideModel - 免费幻灯片模版资源网，提供了超过了12000个完全可编辑的幻灯片设计模版。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/993ee9d0b8ccfda2.png">SlideModel</div>
+                        <div class="duty-card-des">免费幻灯片模版资源网，提供了超过了12000个完全可编辑的幻灯片设计模版。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.presentationmagazine.com/');" class="duty-card" target="_blank" title="Presentation Magazine - 一个提供海量免费的PPT模版和背景的网站，目前已经收录了44934种免费的模版。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7ce3353a9ba320ca.png">Presentation Magazine</div>
+                        <div class="duty-card-des">一个提供海量免费的PPT模版和背景的网站，目前已经收录了44934种免费的模版。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://slidehunter.com/');" class="duty-card" target="_blank" title="Slidehunter - 4000个完全免费ppt模板网站，,不管你做什么工作，都能在网站中找到相应的 PPT 模板。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1e90b6910c46cb4b.png">Slidehunter</div>
+                        <div class="duty-card-des">4000个完全免费ppt模板网站，,不管你做什么工作，都能在网站中找到相应的 PPT 模板。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.docer.com/');" class="duty-card" target="_blank" title="Docer稻壳儿 - 里面有很多的设计师作品，超过500万个精品模板，而且很多都是免费的。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2bf4653934404f54.png">Docer稻壳儿</div>
+                        <div class="duty-card-des">里面有很多的设计师作品，超过500万个精品模板，而且很多都是免费的。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ypppt.com/');" class="duty-card" target="_blank" title="优品PPT - 一个有情怀的免费PPT模板下载网站&#65281;各种PPT模板、素材、教程资源，不用登录直接下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d726997088743d98.png">优品PPT</div>
+                        <div class="duty-card-des">一个有情怀的免费PPT模板下载网站&#65281;各种PPT模板、素材、教程资源，不用登录直接下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.51pptmoban.com/ppt/');" class="duty-card" target="_blank" title="51PPT模版网 - PPT模板免费下载站点，里面的模板质量也是挺不错的，还有很多教程，而且还是免费的。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a0e809451ad79b23.gif">51PPT模版网</div>
+                        <div class="duty-card-des">PPT模板免费下载站点，里面的模板质量也是挺不错的，还有很多教程，而且还是免费的。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.pptmind.com/');" class="duty-card" target="_blank" title="PPTMIND - 一个分享高端ppt模板与keynote模板的数字作品交易平台，旨在为商务人士提供专业的高端ppt模板。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1f088ba302588c2f.png">PPTMIND</div>
+                        <div class="duty-card-des">一个分享高端ppt模板与keynote模板的数字作品交易平台，旨在为商务人士提供专业的高端ppt模板。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.pooban.com/');" class="duty-card" target="_blank" title="扑奔网 - 一个ppt模板、职场办公文档、简历模板、项目策划等高质量Office文档资源在线分享平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a280ef08e9c5137d.png">扑奔网</div>
+                        <div class="duty-card-des">一个ppt模板、职场办公文档、简历模板、项目策划等高质量Office文档资源在线分享平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.tretars.com/');" class="duty-card" target="_blank" title="逼格PPT - 一个关于PPT的分享博客网站，里面的作品都是博主自己做的，质量还可以，但产能毕竟有限。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9c35cecbda17831e.png">逼格PPT</div>
+                        <div class="duty-card-des">一个关于PPT的分享博客网站，里面的作品都是博主自己做的，质量还可以，但产能毕竟有限。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.pptfans.cn/');" class="duty-card" target="_blank" title="PPT设计教程网 - 高质量的PPT教程和PPT模板下载网站，提供了海量免费PPT模板资源下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ed89cb4f1fe09034.jpg">PPT设计教程网</div>
+                        <div class="duty-card-des">高质量的PPT教程和PPT模板下载网站，提供了海量免费PPT模板资源下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.51miz.com/');" class="duty-card" target="_blank" title="觅知网 - 提供PPT模板素材、设计素材、PNG图片、背景图片、高清图片、矢量素材、视频素材等商业办公素材下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/2b1db078eb4ac6d1.jpg">觅知网</div>
+                        <div class="duty-card-des">提供PPT模板素材、设计素材、PNG图片、背景图片、高清图片、矢量素材、视频素材等商业办公素材下载。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-9" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-desktop"></i>工作兼职</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.nashangban.com/');" class="duty-card" target="_blank" title="哪上班 - 哪上班招聘网是专注优质互联网招聘平台，高薪工作、企业直招、公司内推、内部推荐直接面试。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/51b866cb7407d832.png">哪上班</div>
+                        <div class="duty-card-des">哪上班招聘网是专注优质互联网招聘平台，高薪工作、企业直招、公司内推、内部推荐直接面试。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.liepin.com/');" class="duty-card" target="_blank" title="猎聘网 - 猎聘网于2011年上线，是国内唯一真正实现企业、猎头和职业经理人三方互动的职业发展平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/58b4a03489b4dd5a.jpg">猎聘网</div>
+                        <div class="duty-card-des">猎聘网于2011年上线，是国内唯一真正实现企业、猎头和职业经理人三方互动的职业发展平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.zhaopin.com/');" class="duty-card" target="_blank" title="智联招聘 - 智联招聘创建于1997年，是一家面向大型公司和快速发展的中小企业提供一站式专业人力资源服务，包括网络招聘等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7f6016bc972ef9be.jpg">智联招聘</div>
+                        <div class="duty-card-des">智联招聘创建于1997年，是一家面向大型公司和快速发展的中小企业提供一站式专业人力资源服务，包括网络招聘等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.51job.com/');" class="duty-card" target="_blank" title="前程无忧 - 前程无忧&#40;Nasdaq: JOBS&#41;是国内一个集多种媒介资源优势的专业人力资源服务机构，创始人为甄荣辉。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b9f0943eb841dafe.jpg">前程无忧</div>
+                        <div class="duty-card-des">前程无忧&#40;Nasdaq: JOBS&#41;是国内一个集多种媒介资源优势的专业人力资源服务机构，创始人为甄荣辉。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.chinahr.com/');" class="duty-card" target="_blank" title="中华英才网 - 中华英才网成立于1997年，是国内最早、最专业的人才招聘网站之一，其品牌和服务已被个人求职者和企业人力资源部门普遍认可。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/904561315addcef2.jpg">中华英才网</div>
+                        <div class="duty-card-des">中华英才网成立于1997年，是国内最早、最专业的人才招聘网站之一，其品牌和服务已被个人求职者和企业人力资源部门普遍认可。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.dajie.com/');" class="duty-card" target="_blank" title="大街网 - 大街网创立于2008年底，是一家真正专属于年轻人的移动社交招聘平台，为年轻职场人匹配最佳工作机会。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2cc314c63a3c922.jpg">大街网</div>
+                        <div class="duty-card-des">大街网创立于2008年底，是一家真正专属于年轻人的移动社交招聘平台，为年轻职场人匹配最佳工作机会。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.kanzhun.com/');" class="duty-card" target="_blank" title="看准网 - 看准网&#65288;Kanzhun&#65289;是中国雇主点评与职场信息平台，网站成立于2013年12月，2016年上线看准APP。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a1c5fcb59a065b4e.jpg">看准网</div>
+                        <div class="duty-card-des">看准网&#65288;Kanzhun&#65289;是中国雇主点评与职场信息平台，网站成立于2013年12月，2016年上线看准APP。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.wealink.com/');" class="duty-card" target="_blank" title="若邻网 - 若邻网拥有数百万高端职业人士会员，且保持高速增长，是目前全球最大的中文商务社交网。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a1b81d19aaa2868e.jpg">若邻网</div>
+                        <div class="duty-card-des">若邻网拥有数百万高端职业人士会员，且保持高速增长，是目前全球最大的中文商务社交网。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ganji.com/zhaopin/');" class="duty-card" target="_blank" title="赶集网 - 赶集网成立于2005年，是专业的分类信息网，为用户提供房屋租售、招聘求职、交友等众多本地生活及商务服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3e1cf10d8e2e99ca.jpg">赶集网</div>
+                        <div class="duty-card-des">赶集网成立于2005年，是专业的分类信息网，为用户提供房屋租售、招聘求职、交友等众多本地生活及商务服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.58.com/changecity.html?');" class="duty-card" target="_blank" title="58同城招聘 - 58同城成立于2005年，网站定位于本地社区及免费分类信息服务，帮助人们解决生活和工作所遇到的难题。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4c6f676329a1abe0.jpg">58同城招聘</div>
+                        <div class="duty-card-des">58同城成立于2005年，网站定位于本地社区及免费分类信息服务，帮助人们解决生活和工作所遇到的难题。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.job5156.com/');" class="duty-card" target="_blank" title="智通人才网 - 智通人才网提供“线上&#43;线下”O2O招聘模式，为企业提供网络招聘、招聘会、校园招聘，致力于实现企业和人才的高效对接。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6894e26f1f7d7b9e.jpg">智通人才网</div>
+                        <div class="duty-card-des">智通人才网提供“线上&#43;线下”O2O招聘模式，为企业提供网络招聘、招聘会、校园招聘，致力于实现企业和人才的高效对接。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-10" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-pie-chart"></i>企业信息</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.gsxt.gov.cn/index.html');" class="duty-card" target="_blank" title="国家企业信用信息公示系统 - 提供全国企业、农民专业合作社、个体工商户等市场主体信用信息的填报、公示和查询服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/4a2f4b980c807895.jpg">国家企业信用信息公示系统</div>
+                        <div class="duty-card-des">提供全国企业、农民专业合作社、个体工商户等市场主体信用信息的填报、公示和查询服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.qichacha.com/');" class="duty-card" target="_blank" title="企查查 - 第三方企业信息查询工具，速度比国家企业信用信息公示系统快太多了。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/7002c28317a0f5c7.jpg">企查查</div>
+                        <div class="duty-card-des">第三方企业信息查询工具，速度比国家企业信用信息公示系统快太多了。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.tianyancha.com/');" class="duty-card" target="_blank" title="天眼查 - 专注服务于个人与企业信息查询。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/4fd4d49ba5c00009.jpg">天眼查</div>
+                        <div class="duty-card-des">专注服务于个人与企业信息查询。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.qixin.com/');" class="duty-card" target="_blank" title="启信宝 - 提供全国企业信用信息查询服务,包括企业注册信息查询、企业工商信息查询等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/a6025892680befab.jpg">启信宝</div>
+                        <div class="duty-card-des">提供全国企业信用信息查询服务,包括企业注册信息查询、企业工商信息查询等。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-10" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa  fa-edit"></i>合同/范文</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://fanwen.chazidian.com/');" class="duty-card" target="_blank" title="查字典范文网 - 简历范文，演讲稿范等一系列文常用范文、合同参考下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/c5523055be5730fe.jpg">查字典范文网</div>
+                        <div class="duty-card-des">简历范文，演讲稿范等一系列文常用范文、合同参考下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.diyifanwen.com/');" class="duty-card" target="_blank" title="第一范文网 - 范文大全、简历、教案、课件、 作文、考试辅导等资料网。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/d29f209958ffc0ac.jpg">第一范文网</div>
+                        <div class="duty-card-des">范文大全、简历、教案、课件、 作文、考试辅导等资料网。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.51test.net/sitemap/wendang/');" class="duty-card" target="_blank" title="无忧考范文 - 各种常用范文、工作总结、工作计划常用范文。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/4eed420ae6468e80.jpg">无忧考范文</div>
+                        <div class="duty-card-des">各种常用范文、工作总结、工作计划常用范文。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.66law.cn/contractmodel/');" class="duty-card" target="_blank" title="华律网 - 免费提供合同范本、合同样本等范文资料浏览查看或下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/93d19358a985cba6.jpg">华律网</div>
+                        <div class="duty-card-des">免费提供合同范本、合同样本等范文资料浏览查看或下载。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-11" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-code-fork"></i>思维导图</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.xmind.cn/');" class="duty-card" target="_blank" title="XMind - 最受欢迎的思维导图工具，为激发灵感和创意而生。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/c230e4e5de65f46.jpg">XMind</div>
+                        <div class="duty-card-des">最受欢迎的思维导图工具，为激发灵感和创意而生。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.draw.io/');" class="duty-card" target="_blank" title=" draw - 免费的在线流程图、图表、组织架构、思维导图制作工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/5f46c66e2133ee04.jpg"> draw</div>
+                        <div class="duty-card-des">免费的在线流程图、图表、组织架构、思维导图制作工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://naotu.baidu.com/');" class="duty-card" target="_blank" title="百度脑图 - 便捷的脑图编辑工具 - 控制创意，如此简单，让您在线上直接创建、保存并分享你的思路。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/efde61c037fdd8a3.png">百度脑图</div>
+                        <div class="duty-card-des">便捷的脑图编辑工具 - 控制创意，如此简单，让您在线上直接创建、保存并分享你的思路。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mindflow.pro/');" class="duty-card" target="_blank" title="MindFlow - 轻松简单创建流程图脑图，更可以一键分享给朋友或者同事，一起讨论。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/b7963abc14781543.jpg">MindFlow</div>
+                        <div class="duty-card-des">轻松简单创建流程图脑图，更可以一键分享给朋友或者同事，一起讨论。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.processon.com/');" class="duty-card" target="_blank" title="ProcessOn - 在线作图工具的聚合平台，它可以在线画流程图、思维导图、UI原型图等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/ff0b536f236d7c15.jpg">ProcessOn</div>
+                        <div class="duty-card-des">在线作图工具的聚合平台，它可以在线画流程图、思维导图、UI原型图等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mubu.com/');" class="duty-card" target="_blank" title="幕布 - 极简大纲笔记，一键生成思维导图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/16600e66abbbf05a.jpg">幕布</div>
+                        <div class="duty-card-des">极简大纲笔记，一键生成思维导图。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-12" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-clipboard"></i>文件转换</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.wdku.net/');" class="duty-card" target="_blank" title=" Super Tools - 在线超级转换工具，可识别图片文字、图片转PDF、PDF转word等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/2932c1882d708623.jpg"> Super Tools</div>
+                        <div class="duty-card-des">在线超级转换工具，可识别图片文字、图片转PDF、PDF转word等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ocrmaker.com/');" class="duty-card" target="_blank" title="OCRMAKER - ORC文字识别，图片或扫描文件转文字。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/8cb3f82a9c7f2c42.jpg">OCRMAKER</div>
+                        <div class="duty-card-des">ORC文字识别，图片或扫描文件转文字。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://zhcn.109876543210.com/');" class="duty-card" target="_blank" title="诚华OCR - 免费在线OCR，在线图片识别，支持多种语言。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/72758dcdf08d7582.jpg">诚华OCR</div>
+                        <div class="duty-card-des">免费在线OCR，在线图片识别，支持多种语言。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://app.xunjiepdf.com/ocr');" class="duty-card" target="_blank" title="迅捷PDF转换器 - 在线ORC文字识别，单文件限制2MB以内。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/46fb514a00db9bea.jpg">迅捷PDF转换器</div>
+                        <div class="duty-card-des">在线ORC文字识别，单文件限制2MB以内。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.alltoall.net/');" class="duty-card" target="_blank" title="ALL TO ALL 在线文件转换 - 免费的在线格式转换工具，国内最全类型的在线文件转换平台 免费、快速，无须下载安装任何软件。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b6d331949a472642.jpg">ALL TO ALL 在线文件转换</div>
+                        <div class="duty-card-des">免费的在线格式转换工具，国内最全类型的在线文件转换平台 免费、快速，无须下载安装任何软件。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://cn.office-converter.com/');" class="duty-card" target="_blank" title="Office Converter - 世界上最大的在线文件转换工具集合网站，你能免费在线转换包括视频、音频、图形、文档和压缩等服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8c0a6635938092ea.png">Office Converter</div>
+                        <div class="duty-card-des">世界上最大的在线文件转换工具集合网站，你能免费在线转换包括视频、音频、图形、文档和压缩等服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://convertio.co/zh/');" class="duty-card" target="_blank" title="Convertio - 在线转换文件的简单工具，支持超过283种不同的文档、图像、电子表格、电子书、文档、演示文稿、音频和视频格式。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fc4a99a8bcfea292.png">Convertio</div>
+                        <div class="duty-card-des">在线转换文件的简单工具，支持超过283种不同的文档、图像、电子表格、电子书、文档、演示文稿、音频和视频格式。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.pdfdo.com/');" class="duty-card" target="_blank" title="PDFdo - PDFdo提供全套的PDF转换操作，一站式服务，在线转换PDF永久免费。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5ae96bc017db6ca.png">PDFdo</div>
+                        <div class="duty-card-des">PDFdo提供全套的PDF转换操作，一站式服务，在线转换PDF永久免费。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://smallpdf.com/cn');" class="duty-card" target="_blank" title="Smallpdf - PDF文件格式转换和编辑平台，专注于PDF格式互转、压缩等功能，免费且易于使用">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bd343abeaed2f8f7.png">Smallpdf</div>
+                        <div class="duty-card-des">PDF文件格式转换和编辑平台，专注于PDF格式互转、压缩等功能，免费且易于使用</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-28" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-suitcase"></i>工作/私单</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://cn.100offer.com/');" class="duty-card" target="_blank" title="100offer - 让最好的人才遇见更好的机会，100offer上线于2014年7月12日，致力于“为最好的程序员发现更好的offer”。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d07b8d2292c9150.png">100offer</div>
+                        <div class="duty-card-des">让最好的人才遇见更好的机会，100offer上线于2014年7月12日，致力于“为最好的程序员发现更好的offer”。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.lagou.com/');" class="duty-card" target="_blank" title="拉勾网 - 拉勾网，是一家专为拥有3至10年工作经验的资深互联网从业者，提供工作机会的招聘网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7cae325e3e75e932.jpg">拉勾网</div>
+                        <div class="duty-card-des">拉勾网，是一家专为拥有3至10年工作经验的资深互联网从业者，提供工作机会的招聘网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.nashangban.com/');" class="duty-card" target="_blank" title="哪上班 - 哪上班招聘网是专注优质互联网招聘平台，高薪工作、企业直招、公司内推、内部推荐直接面试。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/51b866cb7407d832.png">哪上班</div>
+                        <div class="duty-card-des">哪上班招聘网是专注优质互联网招聘平台，高薪工作、企业直招、公司内推、内部推荐直接面试。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.liepin.com/');" class="duty-card" target="_blank" title="猎聘网 - 猎聘网于2011年上线，是国内唯一真正实现企业、猎头和职业经理人三方互动的职业发展平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/58b4a03489b4dd5a.jpg">猎聘网</div>
+                        <div class="duty-card-des">猎聘网于2011年上线，是国内唯一真正实现企业、猎头和职业经理人三方互动的职业发展平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.dianhou.com/');" class="duty-card" target="_blank" title="电猴网 - 电猴网是一个为电子商务、互联网it行业的企业及人才提供求职招聘信息展示的平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d912931e951c49f8.jpg">电猴网</div>
+                        <div class="duty-card-des">电猴网是一个为电子商务、互联网it行业的企业及人才提供求职招聘信息展示的平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.genduiren.cn/');" class="duty-card" target="_blank" title="跟对人 - 跟对人是一个招聘信息网站平台，提供互联网it公司最新招聘信息，是互联网人才求职找工作首选网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b3350fe5961961e8.png">跟对人</div>
+                        <div class="duty-card-des">跟对人是一个招聘信息网站平台，提供互联网it公司最新招聘信息，是互联网人才求职找工作首选网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.neitui.me/');" class="duty-card" target="_blank" title="内推网 - 内推网是一个专注于互联网行业的招聘平台，致力于打造互联网招聘第一品牌。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a43678726d7c1e90.png">内推网</div>
+                        <div class="duty-card-des">内推网是一个专注于互联网行业的招聘平台，致力于打造互联网招聘第一品牌。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.nowcoder.com/');" class="duty-card" target="_blank" title="牛客网 - “牛客网”是一个专注于程序员的学习和成长的专业平台，集笔面试系统、课程教育、社群交流、招聘内推于一体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e6e052bea268163a.jpg">牛客网</div>
+                        <div class="duty-card-des">“牛客网”是一个专注于程序员的学习和成长的专业平台，集笔面试系统、课程教育、社群交流、招聘内推于一体。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.zhaopin.com/');" class="duty-card" target="_blank" title="智联招聘 - 智联招聘创建于1997年，是一家面向大型公司和快速发展的中小企业提供一站式专业人力资源服务，包括网络招聘等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7f6016bc972ef9be.jpg">智联招聘</div>
+                        <div class="duty-card-des">智联招聘创建于1997年，是一家面向大型公司和快速发展的中小企业提供一站式专业人力资源服务，包括网络招聘等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.51job.com/');" class="duty-card" target="_blank" title="前程无忧 - 前程无忧&#40;Nasdaq: JOBS&#41;是国内一个集多种媒介资源优势的专业人力资源服务机构，创始人为甄荣辉。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b9f0943eb841dafe.jpg">前程无忧</div>
+                        <div class="duty-card-des">前程无忧&#40;Nasdaq: JOBS&#41;是国内一个集多种媒介资源优势的专业人力资源服务机构，创始人为甄荣辉。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.chinahr.com/');" class="duty-card" target="_blank" title="中华英才网 - 中华英才网成立于1997年，是国内最早、最专业的人才招聘网站之一，其品牌和服务已被个人求职者和企业人力资源部门普遍认可。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/904561315addcef2.jpg">中华英才网</div>
+                        <div class="duty-card-des">中华英才网成立于1997年，是国内最早、最专业的人才招聘网站之一，其品牌和服务已被个人求职者和企业人力资源部门普遍认可。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.dajie.com/');" class="duty-card" target="_blank" title="大街网 - 大街网创立于2008年底，是一家真正专属于年轻人的移动社交招聘平台，为年轻职场人匹配最佳工作机会。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2cc314c63a3c922.jpg">大街网</div>
+                        <div class="duty-card-des">大街网创立于2008年底，是一家真正专属于年轻人的移动社交招聘平台，为年轻职场人匹配最佳工作机会。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.kanzhun.com/');" class="duty-card" target="_blank" title="看准网 - 看准网&#65288;Kanzhun&#65289;是中国雇主点评与职场信息平台，网站成立于2013年12月，2016年上线看准APP。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a1c5fcb59a065b4e.jpg">看准网</div>
+                        <div class="duty-card-des">看准网&#65288;Kanzhun&#65289;是中国雇主点评与职场信息平台，网站成立于2013年12月，2016年上线看准APP。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.wealink.com/');" class="duty-card" target="_blank" title="若邻网 - 若邻网拥有数百万高端职业人士会员，且保持高速增长，是目前全球最大的中文商务社交网。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a1b81d19aaa2868e.jpg">若邻网</div>
+                        <div class="duty-card-des">若邻网拥有数百万高端职业人士会员，且保持高速增长，是目前全球最大的中文商务社交网。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ganji.com/zhaopin/');" class="duty-card" target="_blank" title="赶集网 - 赶集网成立于2005年，是专业的分类信息网，为用户提供房屋租售、招聘求职、交友等众多本地生活及商务服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3e1cf10d8e2e99ca.jpg">赶集网</div>
+                        <div class="duty-card-des">赶集网成立于2005年，是专业的分类信息网，为用户提供房屋租售、招聘求职、交友等众多本地生活及商务服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.58.com/changecity.html?');" class="duty-card" target="_blank" title="58同城招聘 - 58同城成立于2005年，网站定位于本地社区及免费分类信息服务，帮助人们解决生活和工作所遇到的难题。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4c6f676329a1abe0.jpg">58同城招聘</div>
+                        <div class="duty-card-des">58同城成立于2005年，网站定位于本地社区及免费分类信息服务，帮助人们解决生活和工作所遇到的难题。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.job5156.com/');" class="duty-card" target="_blank" title="智通人才网 - 智通人才网提供“线上&#43;线下”O2O招聘模式，为企业提供网络招聘、招聘会、校园招聘，致力于实现企业和人才的高效对接。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6894e26f1f7d7b9e.jpg">智通人才网</div>
+                        <div class="duty-card-des">智通人才网提供“线上&#43;线下”O2O招聘模式，为企业提供网络招聘、招聘会、校园招聘，致力于实现企业和人才的高效对接。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mart.coding.net/');" class="duty-card" target="_blank" title="码市 - 互联网软件外包服务平台，码市是 Coding 推出的互联网软件外包服务平台，意在连接需求方与广大开发者。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/c86881d939dc87d4.jpg">码市</div>
+                        <div class="duty-card-des">互联网软件外包服务平台，码市是 Coding 推出的互联网软件外包服务平台，意在连接需求方与广大开发者。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.yuanjisong.com/');" class="duty-card" target="_blank" title="猿急送 - 一个高级技术共享平台，优质的程序员兼职网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/10/fab613fcb183ffd5.jpg">猿急送</div>
+                        <div class="duty-card-des">一个高级技术共享平台，优质的程序员兼职网站。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-27" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-globe"></i>新闻资讯</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://36kr.com/');" class="duty-card" target="_blank" title="36氪 - 36氪创办于2011年7月，36氪以科技创投媒体起家，是中国主流、权威和影响力最大的新商业媒体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6ebf1d17ca75df16.png">36氪</div>
+                        <div class="duty-card-des">36氪创办于2011年7月，36氪以科技创投媒体起家，是中国主流、权威和影响力最大的新商业媒体。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.geekpark.net/');" class="duty-card" target="_blank" title="极客公园 - 聚焦互联网领域，跟踪最新的科技新闻动态，关注极具创新精神的科技产品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/cbf5c3a6d68e6a3c.jpg">极客公园</div>
+                        <div class="duty-card-des">聚焦互联网领域，跟踪最新的科技新闻动态，关注极具创新精神的科技产品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ifanr.com/');" class="duty-card" target="_blank" title="爱范儿 - 爱范儿是发现创新价值的科技媒体，是MobileMonday 广州授权组织者，成立于 2008 年 10 月。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7c8a8c24130ea0fc.png">爱范儿</div>
+                        <div class="duty-card-des">爱范儿是发现创新价值的科技媒体，是MobileMonday 广州授权组织者，成立于 2008 年 10 月。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.huxiu.com/');" class="duty-card" target="_blank" title="虎嗅网 - 创办于2012年5月，虎嗅网是一个聚合优质创新信息与人群的新媒体平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fb749473aa1337ae.jpg">虎嗅网</div>
+                        <div class="duty-card-des">创办于2012年5月，虎嗅网是一个聚合优质创新信息与人群的新媒体平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.cyzone.cn/');" class="duty-card" target="_blank" title="创业邦 - 中国领先的专业创业服务平台，致力于帮助创业者实现创业梦想，推动各领域高成长企业快速发展。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/47bb62c41b1b293c.jpg">创业邦</div>
+                        <div class="duty-card-des">中国领先的专业创业服务平台，致力于帮助创业者实现创业梦想，推动各领域高成长企业快速发展。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.infoq.com/cn/');" class="duty-card" target="_blank" title="InfoQ - InfoQ是一个在线新闻/社区网站，旨在通过促进软件开发领域知识与创新的传播，为软件开发者提供帮助。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8e32c29c02eff1b4.jpg">InfoQ</div>
+                        <div class="duty-card-des">InfoQ是一个在线新闻/社区网站，旨在通过促进软件开发领域知识与创新的传播，为软件开发者提供帮助。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://tech2ipo.com/');" class="duty-card" target="_blank" title="创见 - TECH2IPO创见专注互联网创业与创新，我们报道最前沿的科技创业模式，披露最有潜力的新兴创业公司。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6a7562a897a4953c.png">创见</div>
+                        <div class="duty-card-des">TECH2IPO创见专注互联网创业与创新，我们报道最前沿的科技创业模式，披露最有潜力的新兴创业公司。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.cnbeta.com/');" class="duty-card" target="_blank" title="cnBeta - cnBeta.COM是互联网IT新闻业界的后起之秀,是国内领先的即时科技资讯站点和网友交流平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8df3ba51a4272ae6.jpg">cnBeta</div>
+                        <div class="duty-card-des">cnBeta.COM是互联网IT新闻业界的后起之秀,是国内领先的即时科技资讯站点和网友交流平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.tmtpost.com/');" class="duty-card" target="_blank" title="钛媒体 - 钛媒体是国内首家TMT公司人社群媒体，集信息交流融合、IT技术信息、新媒体于一身的媒体平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/26bda9661aa906e.PNG">钛媒体</div>
+                        <div class="duty-card-des">钛媒体是国内首家TMT公司人社群媒体，集信息交流融合、IT技术信息、新媒体于一身的媒体平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.pingwest.com/');" class="duty-card" target="_blank" title="PingWest品玩 - PingWest以提供最前沿科技创业资讯、趋势和洞见为主，是连接海外与国内的新锐在线科技媒体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/48498d61cd269a02.png">PingWest品玩</div>
+                        <div class="duty-card-des">PingWest以提供最前沿科技创业资讯、趋势和洞见为主，是连接海外与国内的新锐在线科技媒体。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-29" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-cloud-download"></i>应用程序</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.jokerps.com/');" class="duty-card" target="_blank" title="鹏少资源网 - 一个分享全平台软件应用、插件模板等所有资源的优质网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/8/950f687c0e357004.jpg">鹏少资源网</div>
+                        <div class="duty-card-des">一个分享全平台软件应用、插件模板等所有资源的优质网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://msdn.itellyou.cn/');" class="duty-card" target="_blank" title="MSDN我告诉你 - 一个原版软件信息收录站点，该网站创办十年仍是非常简洁的风格，没有广告&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6313b317a505c5e6.png">MSDN我告诉你</div>
+                        <div class="duty-card-des">一个原版软件信息收录站点，该网站创办十年仍是非常简洁的风格，没有广告&#65281;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.52pojie.cn/');" class="duty-card" target="_blank" title="吾爱破解 - 爱破解英文全称 Love Crack Group，缩写LCG吾爱破解论坛是致力于软件安全与病毒分析的非营利性技术论坛。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3ef1ffb5747c3b82.jpg">吾爱破解</div>
+                        <div class="duty-card-des">爱破解英文全称 Love Crack Group，缩写LCG吾爱破解论坛是致力于软件安全与病毒分析的非营利性技术论坛。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.zdfans.com/');" class="duty-card" target="_blank" title="zd423 - 软件分享平台领跑者 ZDFANS.COM,更新快、去广告类软件博客领跑者、有态度的知名软件分享站&#33;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/696788ab7c53ceb0.png">zd423</div>
+                        <div class="duty-card-des">软件分享平台领跑者 ZDFANS.COM,更新快、去广告类软件博客领跑者、有态度的知名软件分享站&#33;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.qiuquan.cc/');" class="duty-card" target="_blank" title="QiuQuan - QiuQuan Blog 是一个精品软件分享博客,专注于软件的绿化、精简与优化。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4392e9e1369704a4.png">QiuQuan</div>
+                        <div class="duty-card-des">QiuQuan Blog 是一个精品软件分享博客,专注于软件的绿化、精简与优化。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.flighty.cn/');" class="duty-card" target="_blank" title="轻狂志 - 要分享少轻狂原创或整理的NSIS源码,以及软件封装方面的相关知识。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ebc4fbf309335400.png">轻狂志</div>
+                        <div class="duty-card-des">要分享少轻狂原创或整理的NSIS源码,以及软件封装方面的相关知识。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.appinn.com/');" class="duty-card" target="_blank" title="小众软件 - 小众软件这里分享免费、小巧、实用、有趣、绿色的软件。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ed1a8edb6ba678d0.png">小众软件</div>
+                        <div class="duty-card-des">小众软件这里分享免费、小巧、实用、有趣、绿色的软件。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.repaik.com/');" class="duty-card" target="_blank" title="睿派克技术论坛 - 软件去广告论坛，破解软件限制，破解迅雷VIP，去广告，提供方法教程，以及精品软件下载，最新高清电影等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2f6f63ab04a48b3e.png">睿派克技术论坛</div>
+                        <div class="duty-card-des">软件去广告论坛，破解软件限制，破解迅雷VIP，去广告，提供方法教程，以及精品软件下载，最新高清电影等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://bbs.kafan.cn/');" class="duty-card" target="_blank" title="卡饭论坛 - 是国内最著名的软件论坛、友善,、热情、开放的讨论氛围、首屈一指，打造国内最好的软件交流平台&#33;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8df08956166d1cce.jpg">卡饭论坛</div>
+                        <div class="duty-card-des">是国内最著名的软件论坛、友善,、热情、开放的讨论氛围、首屈一指，打造国内最好的软件交流平台&#33;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.portablesoft.org/');" class="duty-card" target="_blank" title="精品绿色便携软件 - 追求绿色便携理念，打造清爽干净系统&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9b5c2620d9469d1e.jpg">精品绿色便携软件</div>
+                        <div class="duty-card-des">追求绿色便携理念，打造清爽干净系统&#65281;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.iplaysoft.com/');" class="duty-card" target="_blank" title="异次元软件世界 - 很有特色的软件博客&#65281;推荐精选实用的软件，并提供相当详细且精美的图文评测。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/c4a6327de47bcb6e.jpg">异次元软件世界</div>
+                        <div class="duty-card-des">很有特色的软件博客&#65281;推荐精选实用的软件，并提供相当详细且精美的图文评测。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.dayanzai.me/');" class="duty-card" target="_blank" title="大眼仔旭 - 大眼仔旭博客提供各类PC软件、绿色软件、手机游戏、安卓APP等，坚持每天更新大量软件及视频教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8715517a8eb33b54.png">大眼仔旭</div>
+                        <div class="duty-card-des">大眼仔旭博客提供各类PC软件、绿色软件、手机游戏、安卓APP等，坚持每天更新大量软件及视频教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.ttrar.com/');" class="duty-card" target="_blank" title="天天软件 - 天天下载是个免费软件下载网站，纯净用户体验,没有垃圾广告的单机游戏和软件下载基地&#33;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d6405076489a0fa4.png">天天软件</div>
+                        <div class="duty-card-des">天天下载是个免费软件下载网站，纯净用户体验,没有垃圾广告的单机游戏和软件下载基地&#33;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.wandoujia.com/award');" class="duty-card" target="_blank" title="豌豆荚设计奖 - 优质安卓应用，每周推荐一次，快来豌豆荚设计奖看看，让实用、创意、或经典的安卓应用填满您的手机吧。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bf792f5b3abb06ac.png">豌豆荚设计奖</div>
+                        <div class="duty-card-des">优质安卓应用，每周推荐一次，快来豌豆荚设计奖看看，让实用、创意、或经典的安卓应用填满您的手机吧。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://app.mi.com/subject/169216');" class="duty-card" target="_blank" title="小米 - 金米奖 - 金米奖评选的应用都是近2周内最佳的应用和游戏，评选的应用和游戏都富有当前的流行元素或反应即将流行的趋势。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/88f41ad12a9f03c0.jpg">小米 - 金米奖</div>
+                        <div class="duty-card-des">金米奖评选的应用都是近2周内最佳的应用和游戏，评选的应用和游戏都富有当前的流行元素或反应即将流行的趋势。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-14" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-institution"></i>政府网站</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.gov.cn/');" class="duty-card" target="_blank" title="中国政府网 - 中央人民政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/8c284eaf39a9a81c.jpg">中国政府网</div>
+                        <div class="duty-card-des">中央人民政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.beijing.gov.cn/');" class="duty-card" target="_blank" title="北京市人民政府 - 北京市人民政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/5286e978e4800c8c.jpg">北京市人民政府</div>
+                        <div class="duty-card-des">北京市人民政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.shanghai.gov.cn/');" class="duty-card" target="_blank" title="上海市人民政府 - 上海市人民政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/9d3a65207e88ab2b.jpg">上海市人民政府</div>
+                        <div class="duty-card-des">上海市人民政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.gz.gov.cn/');" class="duty-card" target="_blank" title="广州市人民政府 - 广州市人民政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/14a7566a1fcd4eb5.jpg">广州市人民政府</div>
+                        <div class="duty-card-des">广州市人民政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.sz.gov.cn/cn/');" class="duty-card" target="_blank" title="深圳政府在线 - 深圳市人民政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/380da8e481d6662c.jpg">深圳政府在线</div>
+                        <div class="duty-card-des">深圳市人民政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mohrss.gov.cn/');" class="duty-card" target="_blank" title="人力资源和社会保障部 - 中华人民共和国人力资源和社会保障部">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/ddd2d882dc8ba03c.jpg">人力资源和社会保障部</div>
+                        <div class="duty-card-des">中华人民共和国人力资源和社会保障部</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.miit.gov.cn/');" class="duty-card" target="_blank" title="工业和信息化部 - 中华人民共和国工业和信息化部">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/e5d7d2e73620a577.jpg">工业和信息化部</div>
+                        <div class="duty-card-des">中华人民共和国工业和信息化部</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mca.gov.cn/');" class="duty-card" target="_blank" title="民政部 - 中华人民共和国民政部，婚姻登记、收养登记、社会救助、社会福利等">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/f3de112477d82cd6.jpg">民政部</div>
+                        <div class="duty-card-des">中华人民共和国民政部，婚姻登记、收养登记、社会救助、社会福利等</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.moe.gov.cn/');" class="duty-card" target="_blank" title="教育部 - 中华人民共和国教育部政府门户网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/4d00ca03a0d7a80c.jpg">教育部</div>
+                        <div class="duty-card-des">中华人民共和国教育部政府门户网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mps.gov.cn/');" class="duty-card" target="_blank" title="公安部 - 中华人民共和国公安部，治安、身份证、出入境、交通管理">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/a75032ff6f245e44.jpg">公安部</div>
+                        <div class="duty-card-des">中华人民共和国公安部，治安、身份证、出入境、交通管理</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.12377.cn/');" class="duty-card" target="_blank" title="网上有害信息举报 - 中央网信办（国家互联网信息办公室）违法和不良信息举报中心">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/f87c0e76038469cf.jpg">网上有害信息举报</div>
+                        <div class="duty-card-des">中央网信办（国家互联网信息办公室）违法和不良信息举报中心</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.12315.cn/');" class="duty-card" target="_blank" title="全国12315互联网平台 - 全国12315消费者投诉举报门户、全国12315业务处理平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/cc3e96ba140d3a58.jpg">全国12315互联网平台</div>
+                        <div class="duty-card-des">全国12315消费者投诉举报门户、全国12315业务处理平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.spb.gov.cn/');" class="duty-card" target="_blank" title="邮政局 - 中华人民共和国国家邮政局，快递查询、消费者投诉、邮政编码查询等">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/29b581ab8c0ab5b8.jpg">邮政局</div>
+                        <div class="duty-card-des">中华人民共和国国家邮政局，快递查询、消费者投诉、邮政编码查询等</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+        </div>
+        <footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-main">
+          <p>Copyright © 2017-2019 小呆导航（<a href="index.html">webjike.com</a>）By SiteServer CMS 提供强力驱动 · 粤ICP备18030223号-1  <a href="sitemap.html" target="_blank">网站地图</a><a href="javascript:window.open('https://github.com/xiaodai945/WEBJIKE');" target="_blank" class="pull-right"><img src="github/stars/xiaodai945/WEBJIKE-social.jpg"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="top" class="hidden-xs hidden-sm">
+  <ul>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="联 系客 服"><i class="fa fa-smile-o"></i></a>
+      <span><img src="images/weixin.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="意 见反 馈"><i class="fa fa-envelope-o fa-fw"></i></a>
+      <span>我们可以做的更好</span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="微 信群 聊"><i class="fa fa-weixin"></i></a>
+      <span><img src="images/qun.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="返 回顶 部" style="display: none" id="go-top"><i class="fa fa-chevron-up"></i></a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    <!-- 对话框HTML -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+            <h4 class="modal-title">自定义链接</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-control has-icon-left">
+              <input id="inputAccountExample1" type="text" class="form-control" placeholder="网址名称">
+              <label for="inputAccountExample1" class="input-control-icon-left"><i class="icon icon-header"></i></label>
+            </div>
+            <div class="input-control has-icon-left" style="margin-top: 15px">
+              <input id="inputAccountExample2" type="text" class="form-control" placeholder="请输入网址，注意网址前面要加上http://">
+              <label for="inputAccountExample1" class="input-control-icon-left"><i class="icon icon-link"></i></label>
+            </div>
+            <div class="modal-text">
+              <p class="text-red">网址书写格式：http://xxx.com，网址前面一定要加上 “ http:// ” 前缀。</p>
+              <p>tips：自定义链接的数据是储存在浏览器本地缓存上，清空浏览数据（Cookie及其他网站数据）后会导致自定义的数据丢失，所以清理浏览数据的时候切勿选中（Cookie及其他网站数据）选项。</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="dist/lib/ieonly/html5shiv.js"></script>
+    <script src="dist/lib/ieonly/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261855216'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261855216' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+<script src="js/jquery.js"></script>
+<script src="dist/js/zui.js"></script>
+<script src="static/js/3.0.4/av-min.js"></script>
+<script src="js/Valine.min.js"></script>
+<script src="js/main.min-3.0.2.js"></script>
+  </body>
+</html>

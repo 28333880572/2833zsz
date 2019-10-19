@@ -1,0 +1,1017 @@
+<!--
+ * 严重鄙视任何盗窃、复制代码行为！
+ * 引用、借鉴本站功能或布局的，请在页面中标注或附上链接，谢谢.
+ * 本站已在github开源，只需保留版权声明即可免费使用：https://github.com/xiaodai945/WEBJIKE
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+    <!--头部信息-->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>友情链接 | 小呆导航</title>
+    <meta name="keywords" content="小呆导航,webjike,网址导航,上网导航">
+    <meta name="description" content="互联网共享时代，小呆导航欢迎各大网站互换友链，共享网站流量，申请标准：非黄赌毒、挂马等非法网站即可，简洁美观的优质本站会优先收录。">
+<!-- zui -->
+
+<link rel="stylesheet" href="css/zui.min.css">
+<link href="css/main-style-3.0.2.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  </head>
+  <body data-customize="false">
+
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/cleanslate.min.css">
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/style.css">
+<!-- template start -->
+
+<div id="ss-auth" class="ss-auth cleanslate" v-bind:style="{ display: form ? '' : 'none !important' }" style="display: none !important;">
+  <header class="popupHeader">
+    <span class="header_title">{{ title }}</span>
+    <span class="modal_close" @click="closeModal"></span>
+  </header>
+
+  <section class="popupBody">
+    <!-- Social form -->
+    <div class="social_login" v-bind:style="{ display: form == 'social' ? '' : 'none !important' }" style="display: none !important;">
+      <div>
+        <a v-bind:href="apiUrlWeixin" v-bind:style="{ display: apiUrlWeixin ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weixin"></span>
+          <span class="icon_title">微信登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlQq" v-bind:style="{ display: apiUrlQq ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon qq"></span>
+          <span class="icon_title">QQ 登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlWeibo" v-bind:style="{ display: apiUrlWeibo ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weibo"></span>
+          <span class="icon_title">微博登录</span>
+        </a>
+      </div>
+
+      <div class="centeredText">
+        <span>使用账号密码登录</span>
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openRegisterModal" class="btn">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div data-vv-scope="login_form" v-bind:style="{ display: form == 'login' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名/邮箱/手机</label>
+      <input type="text" name="account" v-validate="'required'" :class="{'is-danger': errors.has('login_form.account') }" v-model="login.account">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('login_form.password') }" v-model="login.password">
+      <br>
+
+      <!-- <div class="checkbox">
+        <input id="remember" type="checkbox" />
+        <label for="remember">记住用户名</label>
+      </div> -->
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="loginSubmit" class="btn btn_red">登录</a>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;" @click="openFindPasswordModal" class="forgot_password">忘记密码？</a> -->
+    </div>
+
+    <!-- Register Form -->
+    <div data-vv-scope="register_form" v-bind:style="{ display: form == 'register' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名</label>
+      <input type="text" name="userName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.userName') }" v-model="register.userName">
+      <br>
+
+      <label>姓名</label>
+      <input type="text" name="displayName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.displayName') }" v-model="register.displayName">
+      <br>
+
+      <label>邮箱</label>
+      <input type="email" name="email" v-validate="'required|email'" :class="{'is-danger': errors.has('register_form.email') }" v-model="register.email">
+      <br>
+
+      <label>手机号</label>
+      <input type="text" name="mobile" v-validate="{ required: true, regex: /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/ }" :class="{'is-danger': errors.has('register_form.mobile') }" v-model="register.mobile">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('register_form.password') }" v-model="register.password">
+      <br>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取 消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="registerSubmit" class="btn btn_red">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Success Form -->
+    <div class="user_form" v-bind:style="{ display: form == 'registerSuccess' ? '' : 'none !important' }" style="display: none !important;">
+      <div class="successText">
+        {{ registerSuccessMessage }}
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">关 闭</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vue-2.1.10.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vee-validate-2.0.3.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/axios-0.17.1.min.js"></script>
+<script type="text/javascript">
+var authData = {
+    apiUrlRegister: '/api/SS.Login/actions/register',
+    apiUrlLogin: '/api/SS.Login/actions/login',
+    apiUrlLogout: '/api/SS.Login/actions/logout',
+    apiUrlWeixin: '/api/SS.Login/auth/Weixin?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlWeibo: '/api/SS.Login/auth/Weibo?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlQq: '/api/SS.Login/auth/Qq?redirectUrl=' + encodeURIComponent(location.href),
+    registerSuccessMessage: '恭喜，注册用户成功',
+    loginRedirectUrl: '?success=true',
+    logoutRedirectUrl: '?logout=true',
+};
+</script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/script.js"></script>
+<script src="sitefiles/assets/components/lodash-4.17.4.min.js" type="text/javascript"></script><script src="sitefiles/assets/components/stlClient.js" type="text/javascript"></script>
+
+    <!--[if lt IE 8]>
+    <div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+    <![endif]-->
+    <!--头部导航条-->
+    <header>
+      <div class="main">
+  <div class="logo">
+    <a href="index.html">
+      <img src="images/logo.png">
+      <span>小呆导航</span>
+    </a>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a class="duty-nav" href="dutynav.html">职业导航<i class="fa fa-caret-down"></i></a></li>
+      
+      
+        <li><a href="course.html">教程资源</a></li>
+      
+        <li><a href="blog.html">个人博客</a></li>
+      
+        <li><a href="liuyan.html">在线留言</a></li>
+      
+        <li><a href="">友情链接</a></li>
+      
+        <li><a href="adout.html">关于本站</a></li>
+      
+    </ul>
+  </nav>
+  <div class="user visible-lg">
+    
+<div id="ajaxElement_1_559_loading"></div>
+<div id="ajaxElement_1_559_success" style="display: none"></div>
+<div id="ajaxElement_1_559_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_1_559(page)
+{
+    document.getElementById('ajaxElement_1_559_loading').style.display = 'block';
+    document.getElementById('ajaxElement_1_559_success').style.display = 'none';
+    document.getElementById('ajaxElement_1_559_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQByMj0add0J5skM0vUL3NsDI0slash0DpUZ6YZQPltq0add0pNfVOsdu4l7uKihI4XuL0add0yYPnldg0YFuNxhWOop3Gaasv9qP7BkninuDthDIw4wtOXNEfhT7uaJmV8VAQLh85MNIa6qKMiIDMzQoNK4mpOwZnowu7HpBd1xCd7IJm0add087Q0slash0zYKaNCWhKYju0add0xtOn5DmJ93uNiAQ6LXHFOTK7QNdWxn7rP0slash0yAJAwxd1qtNIDjUxZUP0OIeP52w0slash04Zpza7cSUiTkD8kdSflfMREH4xyLe9EPuwpPBldnVeLftqoTxkuLGB0add09uyu3r4y1MbjWrEsHt62IfHliZNMYTvG3T0add0ZY4bowN0slash0BxiA6rMxdmr7xuIYylIgGWHNj0slash00u7DhOpusKugZdih8QWv7iowDOBlIwDRfpgVrI8LVfsrypo42Rt4KvYI0OiZqHzAn3Qo5h3zR8oXw6gnBozN0Rcgg22XuFk9uzVzlXwoLfIvmCo4MebkA9RpWGpIApKqoPhkj8P2C9EL8D49RV90slash0EduswmETxchN03CP9UIllCxJwUS4ApFLR7NAsK4oYLSk4CA9mEZX9YFUfzAq0xlOj26QK4ETLnNYNGrroHuBdPNfnJMkjgDLCgnOrK3yrDa130dxrZUUWbUgJRO6G4MFFGTgmVGtJ18tJB9jzo8vVNOlpVR8pTVpbgX0add0DSKgeBxeORmA0FzA2qjMkhPMbRKgmt3IK40vVDzztBmPVQRm8MJMK4lXZqSN2rB80HsxY9SUTiDwCmodflDHpxw8XGlcZKH4iMTEp8qk48NEnzBYP7QfDe9BwZepeXg0slash0xf5X0add0bzXSgE6RvbNJpa1C7XmdCIQuDJjVXvQuOYoStbaZIhvxQa7bO10slash0U5OruVwZieOn9HEMjqYohRjaslSbwDShiay00add00add0n6MsCWWR61wJJqkP9IjuQ6WxHCzml17gya0sLMkN0mKt1hEewGkRtJ0add0XKWYv11r8dOwBjqeswn8F0LmqpsCoLiHMG0slash0S57c8OzE456vW52waHLIdFi7Tg6bT90add085Upz7HoSh0AoZ300slash06TLHJG0add0bn7q0add0K0jnfrnUYOvP1XWgmUhxVEcMwykbTlo3sJ29qOaLVjkqMAjqp0sshiQqm2mON0add0XOMsCmxTMDdX8LzaQ9pVjuWos9jxVLvYrfuVkzuXSyqrESFZhW57sleCLtN4yHfTp3eOvIy1YlivoscF7c5xdnSeMEmVca4bZ3yEXT04XRwyK8UR97CBhc4bSxpIUdtnryqRzOIaG04EjXvCXgNoP1CwdzxBKt6HrFNRCYqekmue4WNxBr5QbMmAq0q2dUHmJXhs8GOsNRFvrvbMGMN3Yun0slash00slash07jrjnUOzygJBAs50add0nGtjUif3VIB2UQWmnImfj0add0KG4Asb8yfAwWSAZDfXMHSHgJQeDv0yJa8ws0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_1_559_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_559_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_1_559_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_559_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_1_559(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_1_559(stlGetPageajaxElement_1_559());
+
+function stlRedirectajaxElement_1_559(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div class="head-btn visible-lg">
+    <a href="sethome.html" target="_blank">设为首页</a>
+  </div>
+  <button class="nav-btn visible-xs visible-sm">
+    <span class="icon-line top"></span>
+    <span class="icon-line middle"></span>
+    <span class="icon-line bottom"></span>
+  </button>
+  <div class="mobile-user visible-xs visible-sm">
+    
+<div id="ajaxElement_2_264_loading"></div>
+<div id="ajaxElement_2_264_success" style="display: none"></div>
+<div id="ajaxElement_2_264_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_2_264(page)
+{
+    document.getElementById('ajaxElement_2_264_loading').style.display = 'block';
+    document.getElementById('ajaxElement_2_264_success').style.display = 'none';
+    document.getElementById('ajaxElement_2_264_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQByMj0add0J5skM0vUL3NsDI0slash0DpUZ6YZQPltq0add0pNfVOsdu4l7uKihI4XuL0add0yYPnldg0YFuNxhWOop3Gaasv9qP7BknimOMTg2KmLfL8wOtFykPt91Y7l06iYg5Dcl2gsG0WLndMhlJ0slash0SFB5u4bHIgT0HSUc0j1jc0add0O1j3WiNUUIm3tidrZAS0t6xmzxI097avxXQqbAkrfIzXIqG9z3mILF3uJL1DNKg4ySiu2qAI2eBQp5CxOf3KjuK8G0add0QR6LIjQpx8HljnC9273Otq5SU1DTxY0add0ijqy5C1no70JnCkd1XlodXj0slash0MitlG9yCnMBu71F1380l2BHgEA5NE8vF8rtvARs0add0oMxIPyopmuXQWAcQrZKQ0add00add0Q0add0eb4EsD38NMCVB4E6NEwkuOICK2z2s0qMc6J1MGgqAKtk9GTzyD6ayQ1c0add0y8L1nA5Axs5C2rV9n10slash00eAUJ0PYJf0slash05QUSyEvTZmIgxg0A6O0add09lesfc4fjmKaBM2wrXIhABU3xs50add0yZRNDTybXQ3lE0add0U2VqPnQDL2dnpny2BCYFmW6I0add0zTTwc1CWzu1Gt4kvZzjU2dY1SULQdN2fjPAKD28kSJvd1IF20add08qWaq6cqtjE0add0BeeO6MQuXPHdev9Y7KYEgpWXXiZeLaKyCBw2u3J0add06cRawoRDwdkyjN4RzLaC7LIHvBlY5YKcy8GK7aXmstOrXeW0add0j0add08wC8o0slash0VCBVUTPDkcHSzm80slash0HPeia0KlmdnKkB0slash0jpXkZLFxCglkAuM6TQ8qCcOeEVGCNVZZiO8TymhVNvTVV33MP7IVospeM63raXrjfT8nm26sqI8oEHCJ8RykDWYzBMZU8oI1Z9qWzlhuJ2cPUGU3LoAR4NT5mrT6TtGqm1ZhfYZ0slash0PqSzB8wceH8BThYrzgH4wbPRCm5ovP6TFkxX0HSOblUK7kAFnTGmZcMvF3cY8zBuvYrGkRivOCuzXxEnxzu4p8oR9j0j0slash0a1OcPcjL0slash0UlsC0add0hriPGOuszQmbJNqjkcIhXfkOCon4zrEF0slash00ZK9QOEWjjblnopl1qyX0add0sRSfOGL4yuWElr1zBkShOAHaE7DqNs1YJgFVVPMhgqjshgMclF0slash0tYLmMkvCnkiVTVRCxdFbSLfov9ON5hyMbwKj2fsg5cObRjjYjnPeFnNUZ0secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_2_264_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_264_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_2_264_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_264_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_2_264(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_2_264(stlGetPageajaxElement_2_264());
+
+function stlRedirectajaxElement_2_264(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div id="tow-nav">
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="web.html">前端开发</a>
+        <ul>
+          
+            <li><a target="_blank" href="web.html">视频教程</a></li>
+          
+            <li><a target="_blank" href="web.html">在线学习</a></li>
+          
+            <li><a target="_blank" href="web.html">碎片学习</a></li>
+          
+            <li><a target="_blank" href="web.html">学习工具</a></li>
+          
+            <li><a target="_blank" href="web.html">WEB公共库</a></li>
+          
+            <li><a target="_blank" href="web.html">前端组织/团队</a></li>
+          
+            <li><a target="_blank" href="web.html">社区/论坛</a></li>
+          
+            <li><a target="_blank" href="web.html">前端框架 - UI</a></li>
+          
+            <li><a target="_blank" href="web.html">前端框架 - JS</a></li>
+          
+            <li><a target="_blank" href="web.html">前端插件</a></li>
+          
+            <li><a target="_blank" href="web.html">移动框架</a></li>
+          
+            <li><a target="_blank" href="web.html">预处理器</a></li>
+          
+            <li><a target="_blank" href="web.html">字体图标</a></li>
+          
+            <li><a target="_blank" href="web.html">构建工具</a></li>
+          
+            <li><a target="_blank" href="web.html">模块加载</a></li>
+          
+            <li><a target="_blank" href="web.html">包管理器</a></li>
+          
+            <li><a target="_blank" href="web.html">模板引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">游戏引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">代码高亮</a></li>
+          
+            <li><a target="_blank" href="web.html">代码托管</a></li>
+          
+            <li><a target="_blank" href="web.html">博客系统</a></li>
+          
+            <li><a target="_blank" href="web.html">域名/服务器</a></li>
+          
+            <li><a target="_blank" href="web.html">辅助工具</a></li>
+          
+            <li><a target="_blank" href="web.html">站长工具</a></li>
+          
+            <li><a target="_blank" href="web.html">图片素材</a></li>
+          
+            <li><a target="_blank" href="web.html">精选酷站</a></li>
+          
+            <li><a target="_blank" href="web.html">互联网资讯</a></li>
+          
+            <li><a target="_blank" href="web.html">工作/私单</a></li>
+          
+            <li><a target="_blank" href="web.html">应用程序</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="ui.html">界面设计</a>
+        <ul>
+          
+            <li><a target="_blank" href="ui.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="ui.html">灵感采集</a></li>
+          
+            <li><a target="_blank" href="ui.html">界面交互</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计规范</a></li>
+          
+            <li><a target="_blank" href="ui.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="ui.html">icon图标</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计素材</a></li>
+          
+            <li><a target="_blank" href="ui.html">图库素材</a></li>
+          
+            <li><a target="_blank" href="ui.html">颜色搭配</a></li>
+          
+            <li><a target="_blank" href="ui.html">渐变配色</a></li>
+          
+            <li><a target="_blank" href="ui.html">字体字形</a></li>
+          
+            <li><a target="_blank" href="ui.html">漫画插画</a></li>
+          
+            <li><a target="_blank" href="ui.html">设计团队</a></li>
+          
+            <li><a target="_blank" href="ui.html">社区交流</a></li>
+          
+            <li><a target="_blank" href="ui.html">酷站集合</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="cg.html">影视后期</a>
+        <ul>
+          
+            <li><a target="_blank" href="cg.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="cg.html">特效动画</a></li>
+          
+            <li><a target="_blank" href="cg.html">资讯交流</a></li>
+          
+            <li><a target="_blank" href="cg.html">软件插件</a></li>
+          
+            <li><a target="_blank" href="cg.html">摄影摄像</a></li>
+          
+            <li><a target="_blank" href="cg.html">素材资源</a></li>
+          
+            <li><a target="_blank" href="cg.html">录屏工具</a></li>
+          
+            <li><a target="_blank" href="cg.html">学习论坛</a></li>
+          
+            <li><a target="_blank" href="cg.html">求职招聘</a></li>
+          
+            <li><a target="_blank" href="cg.html">渲染平台</a></li>
+          
+            <li><a target="_blank" href="cg.html">兼职外包</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="office.html">日常办公</a>
+        <ul>
+          
+            <li><a target="_blank" href="office.html">热门推荐</a></li>
+          
+            <li><a target="_blank" href="office.html">效率资源</a></li>
+          
+            <li><a target="_blank" href="office.html">办公软件</a></li>
+          
+            <li><a target="_blank" href="office.html">技能提升</a></li>
+          
+            <li><a target="_blank" href="office.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="office.html">团队协作</a></li>
+          
+            <li><a target="_blank" href="office.html">电子邮箱</a></li>
+          
+            <li><a target="_blank" href="office.html">文案策划</a></li>
+          
+            <li><a target="_blank" href="office.html">文档模板</a></li>
+          
+            <li><a target="_blank" href="office.html">工作兼职</a></li>
+          
+            <li><a target="_blank" href="office.html">企业信息</a></li>
+          
+            <li><a target="_blank" href="office.html">合同/范文</a></li>
+          
+            <li><a target="_blank" href="office.html">思维导图</a></li>
+          
+            <li><a target="_blank" href="office.html">文件转换</a></li>
+          
+            <li><a target="_blank" href="office.html">政府网站</a></li>
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+
+    </header>
+    <div id="content">
+      <div class="container content-box">
+        <div class="row">
+          <div class="col-md-12">
+            <section class="page-top">
+              <h2><i class="fa fa-comments-o"></i>友情链接</h2>
+              <blockquote>
+                <p>不排斥新站，请先收录本站再提交申请：点击申请</p>
+                <p>申请标准：添加本站友链，非黄赌毒、挂马等非法网站，网站简洁美观能正常访问</p>
+                <p>链接本站：小呆导航 | webjike.com | 描述：一个可自定义的简洁网址导航（可无）网址导航</p>
+              </blockquote>
+            </section>
+          </div>
+        </div>
+          
+          <div class="row duty-item">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-send"></i>网址导航</strong>
+            </div>            
+            <div class="col-md-12 ">
+              <div class="row">
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.gitnavi.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/dbce3df17c4ada9d.png">GitNavi</div>
+                      <div class="duty-card-des">你的专属生活网址导航，注册成会员后可制作一个属于自己的专属导航。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://ailongmiao.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1fc550a93896a6d1.png">龙喵导航</div>
+                      <div class="duty-card-des">一个有态度的网址导航网站，收录和分享各种优质网站，内容收录非常丰富。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://lxqnsys.com/d/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1e4b3a609b15d31.png">五花八门导航</div>
+                      <div class="duty-card-des">邂逅你的网站。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://adzhp.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7583f04adeb60cff.png">爱达杂货铺</div>
+                      <div class="duty-card-des">发现不一样的网络世界</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.bidianer.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/bcea8acdaa44f309.jpg">笔点</div>
+                      <div class="duty-card-des">用心做最简洁的网址导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://uu456.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/22a4f2d68c84a765.png">悠悠导航</div>
+                      <div class="duty-card-des">优秀独立博客导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.lvfox.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/6/3210f495bae9fead.png">绿狐导航</div>
+                      <div class="duty-card-des"> 做个轻巧而有用的导航&#65281;设主页终身得积分&#65281;</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.lian81.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/9528ebd9e280a713.png">超链网 </div>
+                      <div class="duty-card-des">发现更大的互联网世界，一个实用、好玩儿、有干货的自定义导航网站。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://taoxiaozhong.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/c3b85379cf9419a5.png">淘小众</div>
+                      <div class="duty-card-des">推荐优秀小众网站，探索互联网世界，收集和分享实用互联网资源。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.bxsnxs.cn/dh/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/5d5903428b7bced2.png">沃客导航</div>
+                      <div class="duty-card-des">精选优质高效实用的网址，提高工作效率与生活质量的网址导航。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.24kdh.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/7db273bc84bccd08.png">24K导航</div>
+                      <div class="duty-card-des">简单事，高效做&#65281;一个有个性的网址导航。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.yechuang.top/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/8/ce2e3e66ce11b7c9.png">野创职业导航</div>
+                      <div class="duty-card-des">致力于提供优秀的垂直行业网站、工具</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://web.geekji.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/78a4b49c40b50dd0.png"> 钛导航</div>
+                      <div class="duty-card-des">专营工作者专业导航网站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://nav.ailuoku6.top/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/8e2b1b583d5a64ef.png"> GY导航</div>
+                      <div class="duty-card-des"> 高度可定制的上网导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.guozhivip.com/nav/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/5/35606b1c8e52a11b.jpg">果汁导航</div>
+                      <div class="duty-card-des">简约实用，上网从这里开始。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.551la.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/6/88c71ce57a4191c5.jpg"> 551la网址之家</div>
+                      <div class="duty-card-des">我无忧啦网址之家&#65288;551la.com&#65289;-广泛收录购物、音乐、电影、游戏、小说等优质网址，并提供搜索引擎和天气查询、快递查询、机票查询等实用查询工具。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://98dh.cc/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/6/50651e801038f307.png"> 98导航</div>
+                      <div class="duty-card-des"> 精选实用网址大全</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://bigezhang.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/7/5a1638da0ca13451.jpg">比格张</div>
+                      <div class="duty-card-des">发现更好的网站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://anyi.life/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/8/dcc0958c09ca7abe.jpg">安逸导航</div>
+                      <div class="duty-card-des">学术导航&#65293;世界的创新源于学术的探索</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.prohui.com/start');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/9/2798783dd080d998.jpg">产品汇导航</div>
+                      <div class="duty-card-des"> 互联网从业者的网址导航站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.mingdan.top/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/10/88f952081f307bff.png">网站名单</div>
+                      <div class="duty-card-des">致力于成为最有价值最值得收藏的导航网站！</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://dh.fubohan.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/10/8141e0b518e3bd17.jpg">波涛浩瀚导航</div>
+                      <div class="duty-card-des">实用网址大全，您的上网导航助手</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.superdirectorycn.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/b6ae3e87153c7224.jpg">超级网站目录</div>
+                      <div class="duty-card-des">中文网站发布和索引的平台，旨在为网友和搜索引擎提供参考。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.super-directory.net/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/3230e4781e21af92.png">超級網站目錄</div>
+                      <div class="duty-card-des">免費分類目錄網站，旨在為用戶提供網站分類目錄檢索。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://lackk.com/nav/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/1/331b0c909b0b7aea.jpg">兰客导航</div>
+                      <div class="duty-card-des">收录创意及美的网站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.91sotu.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/1/578f223ae62d5d0a.jpg">搜图导航</div>
+                      <div class="duty-card-des">一款智能且便捷的设计师导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.ibbuu.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/2/4c276739d9ff137f.jpg"> ibbuu</div>
+                      <div class="duty-card-des">服务快递代收点和超市的垂直行业导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://qiachu.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/69ff51354ad0ccf0.jpg">洽初导航</div>
+                      <div class="duty-card-des">汇集全网优质网址及资源的网站导航</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://lerso.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/6f12b290378cc7cc.jpg"> 乐搜导航</div>
+                      <div class="duty-card-des">让搜索更有乐趣！</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.vipbic.com/navigation.html');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/11bac4f542035a91.jpg">vipbic</div>
+                      <div class="duty-card-des">一个专注前端开发、网址导航、HTML5、CSS3、JavaScript...独立分享导航综合网站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.feihudaohang.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/805a219b91abc77c.jpg">飞狐导航</div>
+                      <div class="duty-card-des"> 小清新导航站</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.jydh360.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/7/229f048ba049cb4d.jpg">聚优导航</div>
+                      <div class="duty-card-des">最快捷的资源平台，让你迅速找到想要的资源</div>
+                    </a>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <div class="row duty-item">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-comments"></i>社区博客</strong>
+            </div>            
+            <div class="col-md-12 ">
+              <div class="row">
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.pzhaopian.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/6/90bdd5d4350042b3.jpg">数码师论坛</div>
+                      <div class="duty-card-des">数码师交流论坛。</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.chengxianrui.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/6/ee0f70103162dddf.png"> 程显锐</div>
+                      <div class="duty-card-des"> 程显锐的博客</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://zodream.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/a2a217e5cb4a425e.jpg"> zodream</div>
+                      <div class="duty-card-des"> zodream开发博客</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://need.im/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/e822380449c38d32.jpg">NEED</div>
+                      <div class="duty-card-des">NEED是一个分享购物心得的社区</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://saodaye.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/35a016ecb5c8b9f2.jpeg">SaoDaye</div>
+                      <div class="duty-card-des">大爷，不骚！</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.lcddjm.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/4f019501a0e42238.jpg">lcddjm</div>
+                      <div class="duty-card-des">lcddjm's website</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://blog.bnightning.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/20b1574797d628d9.png">Bnightning</div>
+                      <div class="duty-card-des">一个基于内容分享，创作与灵感结合折腾的笔记博客</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.mutonglingren.top/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/fcfa911e96f91729.png">牧童灵人</div>
+                      <div class="duty-card-des">一个致力推广优秀绘画和网络技术的个人博客</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.dule.io/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/94711693c6a1b834.jpg">独乐博客</div>
+                      <div class="duty-card-des">一个沉醉于Coding的文盲......</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://2huoqingnian.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/3abd0392610aa5c3.jpg">两伙青年博客</div>
+                      <div class="duty-card-des">专注于平面设计与影视后期技术探索</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.biliui.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/3692483f1df59e60.png"> 设计师的小小盒</div>
+                      <div class="duty-card-des">我是一名UI设计师，干着一条龙的活，一不拜神，二不怕抄，一路打怪升级不敢飘</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.bituplink.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/5/d13673a9139afe7d.jpg">bituplink</div>
+                      <div class="duty-card-des">分享有价值的软件资源和经验技巧</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.emin.ink/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/6/37bf801be2bdea02.jpg">Emin.ink</div>
+                      <div class="duty-card-des">Emin的个人博客，记录踩坑技术笔记</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.panglb.top/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/6/8d282e67784e97ec.jpg">Hubery</div>
+                      <div class="duty-card-des">这里是Hubery的个人博客</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://learnblockchain.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/6/5ec9fef7de4768bc.jpg">深入浅出区块链</div>
+                      <div class="duty-card-des">专业的区块链技术博客</div>
+                    </a>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <div class="row duty-item">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-gear"></i>工具/干货</strong>
+            </div>            
+            <div class="col-md-12 ">
+              <div class="row">
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://www.kkroot.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/10/465983fc22389291.jpg">卡卡源</div>
+                      <div class="duty-card-des">精品Mac应用软件资源分享</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://docsmall.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/2/c22f461ac3da736c.jpg">docsmall</div>
+                      <div class="duty-card-des">简单好用的在线图片压缩工具</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://minitagcloud.cn/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/2cec5b784df5242f.jpg">微词云</div>
+                      <div class="duty-card-des">一款超级实用、重视用户体验、简单的在线词云标签云生成软件</div>
+                    </a>
+                  </div>
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('https://v.dingko.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/3cd9238ef3ae9cf.jpg"> 顶空影视</div>
+                      <div class="duty-card-des">全网VIP影视免费在线播放-2019最新院线电影美剧-高清无广告</div>
+                    </a>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <div class="row duty-item">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-building"></i>合作企业</strong>
+            </div>            
+            <div class="col-md-12 ">
+              <div class="row">
+                
+                  <div class="col-md-3 col-sm-4 col-xs-6">
+                    <a href="javascript:window.open('http://www.kt180.com/');" class="duty-card" target="_blank">
+                      <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/6/11c05f2fa281147e.jpg">高新技术企业认定网</div>
+                      <div class="duty-card-des">专做高新技术企业认证、双软企业认定</div>
+                    </a>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        
+      </div>
+      <footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-main">
+          <p>Copyright © 2017-2019 小呆导航（<a href="index.html">webjike.com</a>）By SiteServer CMS 提供强力驱动 · 粤ICP备18030223号-1  <a href="sitemap.html" target="_blank">网站地图</a><a href="javascript:window.open('https://github.com/xiaodai945/WEBJIKE');" target="_blank" class="pull-right"><img src="github/stars/xiaodai945/WEBJIKE-social.jpg"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="top" class="hidden-xs hidden-sm">
+  <ul>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="联 系客 服"><i class="fa fa-smile-o"></i></a>
+      <span><img src="images/weixin.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="意 见反 馈"><i class="fa fa-envelope-o fa-fw"></i></a>
+      <span>我们可以做的更好</span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="微 信群 聊"><i class="fa fa-weixin"></i></a>
+      <span><img src="images/qun.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="返 回顶 部" style="display: none" id="go-top"><i class="fa fa-chevron-up"></i></a>
+    </li>
+  </ul>
+</div>
+
+
+    </div>
+    <!--[if lt IE 9]>
+    <script src="dist/lib/ieonly/html5shiv.js"></script>
+    <script src="dist/lib/ieonly/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261855216'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261855216' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+<script src="js/jquery.js"></script>
+<script src="dist/js/zui.js"></script>
+<script src="static/js/3.0.4/av-min.js"></script>
+<script src="js/Valine.min.js"></script>
+<script src="js/main.min-3.0.2.js"></script>
+  </body>
+</html>

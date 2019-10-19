@@ -1,0 +1,2383 @@
+<!--
+ * 严重鄙视任何盗窃、复制代码行为！
+ * 引用、借鉴本站功能或布局的，请在页面中标注或附上链接，谢谢.
+ * 本站已在github开源，只需保留版权声明即可免费使用：https://github.com/xiaodai945/WEBJIKE
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html">
+    <!--头部信息-->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>设计师导航 - 内容最全的设计师上网导航</title>
+    <meta name="keywords" content="设计师导航,设计教程,设计师网址导航,设计导航,ps教程,素材下载,UI设计,小呆导航">
+    <meta name="description" content="设计师导航为小呆导航推出的设计师行业版，专注分享优秀设计网站、免费可商用素材资源，是设计师上网必备的网址导航。">
+<!-- zui -->
+
+<link rel="stylesheet" href="css/zui.min.css">
+<link href="css/main-style-3.0.2.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  </head>
+  <body data-page-name="ui">
+
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/cleanslate.min.css">
+<link rel="stylesheet" type="text/css" href="SiteFiles/Plugins/SS.Login/assets/style.css">
+<!-- template start -->
+
+<div id="ss-auth" class="ss-auth cleanslate" v-bind:style="{ display: form ? '' : 'none !important' }" style="display: none !important;">
+  <header class="popupHeader">
+    <span class="header_title">{{ title }}</span>
+    <span class="modal_close" @click="closeModal"></span>
+  </header>
+
+  <section class="popupBody">
+    <!-- Social form -->
+    <div class="social_login" v-bind:style="{ display: form == 'social' ? '' : 'none !important' }" style="display: none !important;">
+      <div>
+        <a v-bind:href="apiUrlWeixin" v-bind:style="{ display: apiUrlWeixin ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weixin"></span>
+          <span class="icon_title">微信登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlQq" v-bind:style="{ display: apiUrlQq ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon qq"></span>
+          <span class="icon_title">QQ 登录</span>
+        </a>
+
+        <a v-bind:href="apiUrlWeibo" v-bind:style="{ display: apiUrlWeibo ? '' : 'none !important' }" style="display: none !important;" class="social_box">
+          <span class="icon weibo"></span>
+          <span class="icon_title">微博登录</span>
+        </a>
+      </div>
+
+      <div class="centeredText">
+        <span>使用账号密码登录</span>
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openRegisterModal" class="btn">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div data-vv-scope="login_form" v-bind:style="{ display: form == 'login' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名/邮箱/手机</label>
+      <input type="text" name="account" v-validate="'required'" :class="{'is-danger': errors.has('login_form.account') }" v-model="login.account">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('login_form.password') }" v-model="login.password">
+      <br>
+
+      <!-- <div class="checkbox">
+        <input id="remember" type="checkbox" />
+        <label for="remember">记住用户名</label>
+      </div> -->
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="loginSubmit" class="btn btn_red">登录</a>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;" @click="openFindPasswordModal" class="forgot_password">忘记密码？</a> -->
+    </div>
+
+    <!-- Register Form -->
+    <div data-vv-scope="register_form" v-bind:style="{ display: form == 'register' ? '' : 'none !important' }" style="display: none !important;">
+
+      <div class="errorText" v-bind:style="{ display: errorMessage ? '' : 'none !important' }" style="display: none !important;">
+        {{ errorMessage }}
+      </div>
+
+      <label>用户名</label>
+      <input type="text" name="userName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.userName') }" v-model="register.userName">
+      <br>
+
+      <label>姓名</label>
+      <input type="text" name="displayName" v-validate="'required'" :class="{'is-danger': errors.has('register_form.displayName') }" v-model="register.displayName">
+      <br>
+
+      <label>邮箱</label>
+      <input type="email" name="email" v-validate="'required|email'" :class="{'is-danger': errors.has('register_form.email') }" v-model="register.email">
+      <br>
+
+      <label>手机号</label>
+      <input type="text" name="mobile" v-validate="{ required: true, regex: /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/ }" :class="{'is-danger': errors.has('register_form.mobile') }" v-model="register.mobile">
+      <br>
+
+      <label>密码</label>
+      <input type="password" name="password" v-validate="'required'" :class="{'is-danger': errors.has('register_form.password') }" v-model="register.password">
+      <br>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">取 消</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="registerSubmit" class="btn btn_red">注 册</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Success Form -->
+    <div class="user_form" v-bind:style="{ display: form == 'registerSuccess' ? '' : 'none !important' }" style="display: none !important;">
+      <div class="successText">
+        {{ registerSuccessMessage }}
+      </div>
+
+      <div class="action_btns">
+        <div class="one_half">
+          <a href="javascript:;" @click="closeModal" class="btn back_btn">关 闭</a>
+        </div>
+        <div class="one_half last">
+          <a href="javascript:;" @click="openLoginModal" class="btn">登 录</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vue-2.1.10.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/vee-validate-2.0.3.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/js/axios-0.17.1.min.js"></script>
+<script type="text/javascript">
+var authData = {
+    apiUrlRegister: '/api/SS.Login/actions/register',
+    apiUrlLogin: '/api/SS.Login/actions/login',
+    apiUrlLogout: '/api/SS.Login/actions/logout',
+    apiUrlWeixin: '/api/SS.Login/auth/Weixin?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlWeibo: '/api/SS.Login/auth/Weibo?redirectUrl=' + encodeURIComponent(location.href),
+    apiUrlQq: '/api/SS.Login/auth/Qq?redirectUrl=' + encodeURIComponent(location.href),
+    registerSuccessMessage: '恭喜，注册用户成功',
+    loginRedirectUrl: '?success=true',
+    logoutRedirectUrl: '?logout=true',
+};
+</script>
+<script type="text/javascript" src="SiteFiles/Plugins/SS.Login/assets/script.js"></script>
+<script src="sitefiles/assets/components/lodash-4.17.4.min.js" type="text/javascript"></script><script src="sitefiles/assets/components/stlClient.js" type="text/javascript"></script>
+
+    <!--[if lt IE 8]>
+    <div class="alert alert-danger">您正在使用 <strong>过时的</strong> 浏览器. 是时候 <a href="http://browsehappy.com/">更换一个更好的浏览器</a> 来提升用户体验.</div>
+    <![endif]-->
+    <!--头部导航条-->
+    <header id="fenzhi-nav">
+      <div class="main">
+  <div class="logo">
+    <a href="index.html">
+      <img src="images/logo.png">
+      <span>小呆导航</span>
+    </a>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a class="duty-nav" href="dutynav.html">职业导航<i class="fa fa-caret-down"></i></a></li>
+      
+      
+        <li><a href="course.html">教程资源</a></li>
+      
+        <li><a href="blog.html">个人博客</a></li>
+      
+        <li><a href="liuyan.html">在线留言</a></li>
+      
+        <li><a href="link.html">友情链接</a></li>
+      
+        <li><a href="adout.html">关于本站</a></li>
+      
+    </ul>
+  </nav>
+  <div class="user visible-lg">
+    
+<div id="ajaxElement_1_100_loading"></div>
+<div id="ajaxElement_1_100_success" style="display: none"></div>
+<div id="ajaxElement_1_100_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_1_100(page)
+{
+    document.getElementById('ajaxElement_1_100_loading').style.display = 'block';
+    document.getElementById('ajaxElement_1_100_success').style.display = 'none';
+    document.getElementById('ajaxElement_1_100_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQFT52mIFylpW342hTNDjb4GySvhUJUenBLPFmNjvO1ieYS7IMlszu15DOhZ2HtbIeAsDf6xjb508NrS8DNLHTCDirf0slash0PYQAoYRb0add0cmIgwdX0slash0IZ0slash0kjaN7HTSdGN08AQEDmTR2HWqd0add0cDjg5mlR9MtfvgscKuB6oBEaVbmpMHhlO1vow73s4BrJGbMUqg3buXeiQgBZbIOt0UA2jmUMhvUpGcNjiZ6GDJqx8OR0ZkYFoQxgADBKyRMPb0add0RKqc31NNrC79dgK0add0TBlxReId4QVORgywLgw6yvFRmgXCS0fm0add0LNYi0slash0S0slash0Up5VPoUrgsQTAkwF40slash0SpRBuyQyan74ozvcpnIVVWNjUyrR5b2fs3J4ZSf8xHwGlw8ZWtkV48XkapnpmV2zfuflaFXwRBtalHX0add07B6ykhxA90add02DhBbOykNvUgUL0slash02laVEUKTPixEO5KyaXTLcaOugrroIknkMk6gjNiQ4YGyoE7M4dp8YoD1tDlBWFC09UY10slash01a5ucW0oqbcJOA3Nm9MP8gIX9tQ4kGSSX0add009u5CR0V9boEumpZUwBM8uTIMdlcqXTfHYVJ0slash0vjmVFxYkPKK7Q8X0TfrZAcCiYtDjezODo6yy50add0TwH9fFz0EznMR1vQ6ry4vaHBqxMPCrecXHgGIkjYyjHwNOLXCKEZaG80iGSUuWgU10gn0slash04ATHgI60slash0TFDBkY0slash071IyOlo6X6D505q99uguHJ1ke50add09l30add0FMukZa9xz5bXQQ7SxDHc720VCZNkPoAIZC0slash0hePYUUyH0slash0IrCM0ZrFWYipPIz582x0add0zgh3rGrGucpkD4FgN40add0PrZEvqqQT9Fj09ohi3cRpZlgi3jFMh7VxQ2qYptFbKTdZwvgsLx1tLYmyLq2ITuaWlDyU63A6Ykwbqtx8x0357fxQOtysMriStbNc1Q0WYTJK48frFBx0slash02Vops4YVBqcY9mZah0add0fWTh0slash0pGSel73ldeua3XExX0d9IlWTQXL6yjlGEMuGs0slash0gQsHDe6bYV3iBughBcUmd0slash0oLKFMJxuJx0slash0Me2XPCLOk6GMX3XFOlgK8VLVs3ABJc0add0En6DgPne1TrPeucYBUyuCqL2N99lDNXiZm6zLvlFnCsr5gPsKHcsIezrhXARDtWjtS0add0y0slash0kU5K10slash0NZtoXFOHXxGwZALDmLZGOe42CNHRN8K2SFtaUUXim0Iyg2Q9WwRM0slash0ZyQxU0PdAt03kYj14Y8qbHOC1wRMgQJCPqauGu0add0fqY2f1c42pslo0slash0qTDWFbR0Hu6sRJyKD5UT0slash0BdK5X5OjHVcdU0ByC0gKmJYXG4aRHwxW5pOomKO9WtukmGBCUdKXHf9e60add0dlH6l55wN9eYqXeDt0LWSI9yXEm5cgV7NPnCaLuLcW7K5kBcA3CC6FoMqKR69ZDH0slash0nL6ZMEooYMOTzOsnKJr1s3DZRInKhg0equals00secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_1_100_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_100_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_1_100_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_1_100_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_1_100(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_1_100(stlGetPageajaxElement_1_100());
+
+function stlRedirectajaxElement_1_100(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div class="head-btn visible-lg">
+    <a href="sethome.html" target="_blank">设为首页</a>
+  </div>
+  <button class="nav-btn visible-xs visible-sm">
+    <span class="icon-line top"></span>
+    <span class="icon-line middle"></span>
+    <span class="icon-line bottom"></span>
+  </button>
+  <div class="mobile-user visible-xs visible-sm">
+    
+<div id="ajaxElement_2_377_loading"></div>
+<div id="ajaxElement_2_377_success" style="display: none"></div>
+<div id="ajaxElement_2_377_failure" style="display: none"></div>
+<script type="text/javascript" language="javascript">
+function stlDynamicajaxElement_2_377(page)
+{
+    document.getElementById('ajaxElement_2_377_loading').style.display = 'block';
+    document.getElementById('ajaxElement_2_377_success').style.display = 'none';
+    document.getElementById('ajaxElement_2_377_failure').style.display = 'none';
+    
+    stlClient.post('/api/sys/stl/actions/if?' + StlClient.getQueryString(), {
+        value: '7ZNeUmMAG5GYfANbTQyniPqfGj6KbS9bQE851UDrCPV8jcKpGK7RQFT52mIFylpW342hTNDjb4GySvhUJUenBLPFmNjvO1ieYS7IMlszu15DOhZ2HtbIeAsDf6xjb508NrS8DNLHTCDwuI0qMGAQg7o5dO0add0qS9DTJXWL6Z8a8aZF4nE0add0QmPA0slash0LRq0add0y53vrkM0slash0CjfAmFZjvx60O9Bo8jTMl60YO6C33KKOT20slash0Ui3mL6icXyS7NNATBTrFNp943XdANAEPuvp0JqViNed90add0OOlnnLZbQnb4G2Y5XR3GdLMvYqVQJ3qZaEIs2hHbMTLdvU3C7l29WZLeOV30slash0Kf00L9FQEGc0add0nwSRrO7hT7eMCxUwYEpk1sswxGrbWarYO0dTmvQPueXDTMIoO0slash0MTajH07VgOaX1uPKi6wsWCaDevQhqhT1QUWdaHxIzBVr0slash03yxiVwuvh0add0zOiFZRrK0slash0yw3IJ1gK3qywX5DG8DsJGwBajQL7ahfSe187FigZyRi3L90add01X4rCCaMt41fkrVIK4xWuZzDg5G10OS90add09Fyha9aPchogNVTWPWKUFS7xAtTicg0uujUU0add00Ed10add0ZQ1wF86XyOs4Y6mfMzPoSNMGJSTpnBlpMJSTJMgh0add0RWD8TbBDgYEvsSV10slash0SCYHshClcQads7MyF2FKWhoRaI3vdfS070slash0XAk1WRhRSi8f6d9jh8KDhf026Z0add0jKZgrxfkS3fHoBVTH5edSqAdwbQoYe44NoFCxjLewL2j0add0FFfmsd7G9iTFY6OSnAdra0TllLqGRAW1LvuEK6WpGgKFDmSMIymmwADRLb5ErsKNQZqNWXF3g0add0fB1aaFApcwEmpFt3xOlLpxV3GSmzr2PxMVUVJ0slash0F28XazRA75JluBGAAmxGnvu0dlhqdWo2T0slash0pU10slash0GHBZgw9XqtdaGowD5aseS8bEJsxvTe3IvtOZxY70add0u2TZcGXBzcnuJ7AWjKhs1Kgk1OKzdefgeWWu9PXGFDbQeJvzThQx0hoLZoec7bHxD2KoKLLZShowUhGb77Nvz0LLeLxy7rapLX27tQd5BEJQomvg5RoHw73PAFjREp0add0qSakO0add0b0add0HcdOZji4A4s35pkuNNSPyat0slash0A56oSOwCRA59kbmMmr3z3pfcXjuBbeFL9Km2YvIbQTFY7Tt2slR4Gl2jrLGRRN83R4EwfrlXeYNRhgY56raCiAXxDa0secret0',
+        page: page
+    }, function (err, data, status) {
+        if (!err) {
+            if (data.value) {
+                
+                document.getElementById('ajaxElement_2_377_success').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_377_success').style.display = 'block';
+            } else {
+                document.getElementById('ajaxElement_2_377_failure').innerHTML = data.html;
+                document.getElementById('ajaxElement_2_377_failure').style.display = 'block';
+            }
+        } else {
+            
+        }
+        
+    });
+}
+
+function stlGetPageajaxElement_2_377(){
+    var page = 1;
+    var queryString = document.location.search;
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] === 'page') {
+                    page = parseInt(arr2[1]);
+                }
+            }
+        }
+    }
+    return page;
+}
+
+stlDynamicajaxElement_2_377(stlGetPageajaxElement_2_377());
+
+function stlRedirectajaxElement_2_377(page)
+{
+    var queryString = document.location.search;
+    var parameters = '';
+    if (queryString && queryString.length > 1) {
+        queryString = queryString.substring(1);
+        
+        var arr = queryString.split('&');
+        for(var i=0; i < arr.length; i++) {
+            var item = arr[i];
+            var arr2 = item.split('=');
+            if (arr2 && arr2.length == 2) {
+                if (arr2[0] !== 'page') {
+                    parameters += item + '&';
+                }
+            }
+        }
+    }
+    parameters += 'page=' + page;
+    location.href = location.protocol + '//' + location.host + location.pathname + location.hash + '?' + parameters;
+}
+</script>
+
+  </div>
+  <div id="tow-nav">
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="web.html">前端开发</a>
+        <ul>
+          
+            <li><a target="_blank" href="web.html">视频教程</a></li>
+          
+            <li><a target="_blank" href="web.html">在线学习</a></li>
+          
+            <li><a target="_blank" href="web.html">碎片学习</a></li>
+          
+            <li><a target="_blank" href="web.html">学习工具</a></li>
+          
+            <li><a target="_blank" href="web.html">WEB公共库</a></li>
+          
+            <li><a target="_blank" href="web.html">前端组织/团队</a></li>
+          
+            <li><a target="_blank" href="web.html">社区/论坛</a></li>
+          
+            <li><a target="_blank" href="web.html">前端框架 - UI</a></li>
+          
+            <li><a target="_blank" href="web.html">前端框架 - JS</a></li>
+          
+            <li><a target="_blank" href="web.html">前端插件</a></li>
+          
+            <li><a target="_blank" href="web.html">移动框架</a></li>
+          
+            <li><a target="_blank" href="web.html">预处理器</a></li>
+          
+            <li><a target="_blank" href="web.html">字体图标</a></li>
+          
+            <li><a target="_blank" href="web.html">构建工具</a></li>
+          
+            <li><a target="_blank" href="web.html">模块加载</a></li>
+          
+            <li><a target="_blank" href="web.html">包管理器</a></li>
+          
+            <li><a target="_blank" href="web.html">模板引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">游戏引擎</a></li>
+          
+            <li><a target="_blank" href="web.html">代码高亮</a></li>
+          
+            <li><a target="_blank" href="web.html">代码托管</a></li>
+          
+            <li><a target="_blank" href="web.html">博客系统</a></li>
+          
+            <li><a target="_blank" href="web.html">域名/服务器</a></li>
+          
+            <li><a target="_blank" href="web.html">辅助工具</a></li>
+          
+            <li><a target="_blank" href="web.html">站长工具</a></li>
+          
+            <li><a target="_blank" href="web.html">图片素材</a></li>
+          
+            <li><a target="_blank" href="web.html">精选酷站</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="">界面设计</a>
+        <ul>
+          
+            <li><a target="_blank" href="">学习教程</a></li>
+          
+            <li><a target="_blank" href="">灵感采集</a></li>
+          
+            <li><a target="_blank" href="">界面交互</a></li>
+          
+            <li><a target="_blank" href="">设计规范</a></li>
+          
+            <li><a target="_blank" href="">在线工具</a></li>
+          
+            <li><a target="_blank" href="">icon图标</a></li>
+          
+            <li><a target="_blank" href="">设计素材</a></li>
+          
+            <li><a target="_blank" href="">图库素材</a></li>
+          
+            <li><a target="_blank" href="">颜色搭配</a></li>
+          
+            <li><a target="_blank" href="">渐变配色</a></li>
+          
+            <li><a target="_blank" href="">字体字形</a></li>
+          
+            <li><a target="_blank" href="">漫画插画</a></li>
+          
+            <li><a target="_blank" href="">设计团队</a></li>
+          
+            <li><a target="_blank" href="">社区交流</a></li>
+          
+            <li><a target="_blank" href="">酷站集合</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="cg.html">影视后期</a>
+        <ul>
+          
+            <li><a target="_blank" href="cg.html">学习教程</a></li>
+          
+            <li><a target="_blank" href="cg.html">特效动画</a></li>
+          
+            <li><a target="_blank" href="cg.html">资讯交流</a></li>
+          
+            <li><a target="_blank" href="cg.html">软件插件</a></li>
+          
+            <li><a target="_blank" href="cg.html">摄影摄像</a></li>
+          
+            <li><a target="_blank" href="cg.html">素材资源</a></li>
+          
+            <li><a target="_blank" href="cg.html">录屏工具</a></li>
+          
+            <li><a target="_blank" href="cg.html">学习论坛</a></li>
+          
+            <li><a target="_blank" href="cg.html">求职招聘</a></li>
+          
+            <li><a target="_blank" href="cg.html">渲染平台</a></li>
+          
+            <li><a target="_blank" href="cg.html">兼职外包</a></li>
+          
+        </ul>
+      </div>
+    
+      <div class="tow-nav-item">
+        <a class="item-img" href="office.html">日常办公</a>
+        <ul>
+          
+            <li><a target="_blank" href="office.html">热门推荐</a></li>
+          
+            <li><a target="_blank" href="office.html">效率资源</a></li>
+          
+            <li><a target="_blank" href="office.html">办公软件</a></li>
+          
+            <li><a target="_blank" href="office.html">技能提升</a></li>
+          
+            <li><a target="_blank" href="office.html">在线工具</a></li>
+          
+            <li><a target="_blank" href="office.html">团队协作</a></li>
+          
+            <li><a target="_blank" href="office.html">电子邮箱</a></li>
+          
+            <li><a target="_blank" href="office.html">文案策划</a></li>
+          
+            <li><a target="_blank" href="office.html">文档模板</a></li>
+          
+            <li><a target="_blank" href="office.html">工作兼职</a></li>
+          
+            <li><a target="_blank" href="office.html">企业信息</a></li>
+          
+            <li><a target="_blank" href="office.html">合同/范文</a></li>
+          
+            <li><a target="_blank" href="office.html">思维导图</a></li>
+          
+            <li><a target="_blank" href="office.html">文件转换</a></li>
+          
+            <li><a target="_blank" href="office.html">工作/私单</a></li>
+          
+            <li><a target="_blank" href="office.html">新闻资讯</a></li>
+          
+            <li><a target="_blank" href="office.html">应用程序</a></li>
+          
+            <li><a target="_blank" href="office.html">政府网站</a></li>
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+
+    </header>
+    <div id="content">
+      <!--导航条-->
+      <div class="mask">
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="web.html"><img src="upload/images/2018/10/8a051f89bcd0750a.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href=""><img src="upload/images/2018/10/3e08d3698b088f88.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="cg.html"><img src="upload/images/2018/10/46f51682aee0c3a5.jpg"></a>
+          </div>
+        
+          <div class="fenzhi-nav-item">
+            <a class="item-img" href="office.html"><img src="upload/images/2018/10/9a40eea2605a4965.jpg"></a>
+          </div>
+        
+      </div>
+      <div class="left-bar">
+        
+          
+        
+          <div class="header"><h2>界面设计</h2></div>
+              <div class="menu" id="menu">
+                <ul class="scrollcontent">
+                  
+                    <li><a href=""><i class="fa fa-graduation-cap"></i>学习教程</a></li>
+                  
+                    <li><a href=""><i class="fa fa-lightbulb-o"></i>灵感采集</a></li>
+                  
+                    <li><a href=""><i class="fa fa-tv"></i>界面交互</a></li>
+                  
+                    <li><a href=""><i class="fa fa-newspaper-o"></i>设计规范</a></li>
+                  
+                    <li><a href=""><i class="fa fa-briefcase"></i>在线工具</a></li>
+                  
+                    <li><a href=""><i class="fa fa-flag"></i>icon图标</a></li>
+                  
+                    <li><a href=""><i class="fa fa-magic"></i>设计素材</a></li>
+                  
+                    <li><a href=""><i class="fa fa-photo"></i>图库素材</a></li>
+                  
+                    <li><a href=""><i class="fa fa-tint"></i>颜色搭配</a></li>
+                  
+                    <li><a href=""><i class="fa fa-magic"></i>渐变配色</a></li>
+                  
+                    <li><a href=""><i class="fa fa-font"></i>字体字形</a></li>
+                  
+                    <li><a href=""><i class="fa fa-tint"></i>漫画插画</a></li>
+                  
+                    <li><a href=""><i class="fa fa-users"></i>设计团队</a></li>
+                  
+                    <li><a href=""><i class="fa fa-comments-o"></i>社区交流</a></li>
+                  
+                    <li><a href=""><i class="fa fa-tint"></i>酷站集合</a></li>
+                  
+                </ul>
+              </div>
+        
+          
+        
+          
+        
+        <div class="menu-about">
+          <span>Powered by <a href="index.html">小呆导航 3.0</a></span>
+        </div>
+      </div>
+      <!--内容-->
+      <div class="duty-main">
+        <div class="container content-box">
+          <section class="sousuo">
+  <div class="search">
+    <div class="search-box">
+      <span class="search-icon" style="background: url('images/search_icon.png')"></span>
+      <input type="text" id="txt" class="search-input" placeholder="请输入关键字，按回车 / Enter 搜索">
+      <button class="search-btn" id="search-btn"><i class="fa fa-search"></i></button>
+    </div>
+    <!-- 搜索热词 -->
+    <div class="box search-hot-text" id="box" style="display: none">
+      <ul></ul>
+    </div>
+    <!-- 搜索引擎 -->
+    <div class="search-engine">
+      <div class="search-engine-head">
+        <strong class="search-engine-tit">选择您的默认搜索引擎：</strong>
+        <div class="search-engine-tool">搜索热词： <span id="hot-btn"></span></div>
+      </div>
+      <ul class="search-engine-list">
+      </ul>
+    </div>
+    <!--<div class="bt-link"><a href="https://ibaotu.com/ppt/3-0-0-0-0-1.html?format_type=0&spm=cndesign&utm_source=BD&utm_medium=%E5%B0%8F%E5%91%86%E5%AF%BC%E8%88%AA&utm_campaign=%E5%8A%9E%E5%85%AC" target="_blank">福利：2000套精美PPT模板，一键套用，立即领取！</a></div>-->
+  </div>
+</section>
+          <div class="row duty-custom">
+            <div class="col-md-12">
+              <strong class="duty-item-name"><i class="fa fa-dribbble"></i>任你创造<span class="pull-right hidden-xs hidden-sm" id="duty-custom-btn"><i class="fa fa-cog"></i>自定义</span></strong>
+            </div>  
+            <div class="col-md-12">
+              <ul class="duty-custom-item">
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://dribbble.com/');">Dribbble</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.zcool.com.cn/');">站酷</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://huaban.com/');">花瓣</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.pexels.com/');">Pexels</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://www.pinterest.com/');">Pinterest</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.ui.cn/');">UI中国</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://reeoo.com/');">Reeoo</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.iconfont.cn/');">Iconfont</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://pixabay.com/');">Pixabay</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://color.adobe.com/zh/');">AdobeColor</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://uigradients.com/#Flare');">uiGradients</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://fontsup.com/');">Fontsup</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://colorhunt.co/');">Color Hunt</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://cli.im/');">草料二维码</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.iospirations.com/');">iOSpirations</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://logofaves.com/');">Logo Faves</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://sketchfab.com/');">Sketchfab</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://androidux.com/');">AndroidUX</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://pttrns.com/');">Pttrns</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://design.google/');">Google Design</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://developer.apple.com/design/');">Apple Developer</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://modao.cc/');">墨刀</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('https://tinypng.com/');">TinyPNG</a></li>
+                
+                  <li><a class="duty-custom-link" href="javascript:window.open('http://www.polaxiong.com/');">泼辣修图</a></li>
+                
+              </ul>
+            </div>
+            <!--职业导航自定义面板-->
+            <div class="col-md-12">
+              <ul class="duty-customize">
+                <li id="duty-local-save">本 地 保 存</li>
+                <li id="duty-server-save">云 端 保 存</li>
+                <li id="duty-sync-data">数 据 同 步</li>
+                <li id="duty-restore-data">恢 复 默 认</li>
+                <li id="duty-out">关 闭 面 板</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="duty-tool">
+                <div class="duty-tool-notice">
+                  <i class="fa fa-volume-up" aria-hidden="true"></i>
+                  <span>小呆导航 3.0 全新版本强势来袭！新增会员、投稿等功能，目前功能测试中，欢迎提出你的反馈与建议，谢谢支持。</span>
+                </div>
+                <ul class="duty-tool-switch hidden-xs hidden-sm">
+                  <li><span>图标</span><i class="fa fa-toggle-on"></i></li>
+                  <li><span>简介</span><i class="fa fa-toggle-on"></i></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-1" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-graduation-cap"></i>学习教程</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://uiiiuiii.com/');" class="duty-card" target="_blank" title="优优教程网 - 设计师教程学习平台，为零基础、进阶提升和设计自学者提供平面、UI、网页等设计软件教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5b34d46a3a3d0b84.png">优优教程网</div>
+                        <div class="duty-card-des">设计师教程学习平台，为零基础、进阶提升和设计自学者提供平面、UI、网页等设计软件教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.imooc.com/course/list?c=photo');" class="duty-card" target="_blank" title="慕课网 - UI设计 - 慕课网是一个免费的IT技能学习平台，课程涉及前端开发、后端开发等和UI设计内容。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/3/12477e879c32ff6.jpg">慕课网 - UI设计</div>
+                        <div class="duty-card-des">慕课网是一个免费的IT技能学习平台，课程涉及前端开发、后端开发等和UI设计内容。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.psahz.com/');" class="duty-card" target="_blank" title="PS爱好者 - PS爱好者是一个自学教程网站，提供了PS实例教程、PS抠图教程等各种PS教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/71762ceb192de7eb.jpg">PS爱好者</div>
+                        <div class="duty-card-des">PS爱好者是一个自学教程网站，提供了PS实例教程、PS抠图教程等各种PS教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://uilover.com/forum-2-1.html');" class="duty-card" target="_blank" title="UI设计教程 - 这里是UI设计师入门与进价的地方，精选优秀UI设计教程和技巧，从简单理论知识到进价实践，每天看一点都能获益良多。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4021163b1707ce9e.png">UI设计教程</div>
+                        <div class="duty-card-des">这里是UI设计师入门与进价的地方，精选优秀UI设计教程和技巧，从简单理论知识到进价实践，每天看一点都能获益良多。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.51zxw.net/list.aspx?cid=8#904');" class="duty-card" target="_blank" title="我要自学网 - 平面设计 - 免费视频教程，提供全方位软件学习，有3D教程，平面教程，多媒体制作教程等教程视频。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2008e8f9c50b32c.png">我要自学网 - 平面设计</div>
+                        <div class="duty-card-des">免费视频教程，提供全方位软件学习，有3D教程，平面教程，多媒体制作教程等教程视频。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.shejidaren.com/');" class="duty-card" target="_blank" title="设计达人 - 设计博客，精选全球优秀UI设计和网页设计欣赏，发表设计类、前端开发类的文章、教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7019e2983d939e02.jpg">设计达人</div>
+                        <div class="duty-card-des">设计博客，精选全球优秀UI设计和网页设计欣赏，发表设计类、前端开发类的文章、教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://w.sketchchina.com/');" class="duty-card" target="_blank" title="sketchchina - SketchChina中国社区，中国UI设计第一站UI设计文章及教程。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8b23762bd70ad63b.png">sketchchina</div>
+                        <div class="duty-card-des">SketchChina中国社区，中国UI设计第一站UI设计文章及教程。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.xueui.cn/tutorials');" class="duty-card" target="_blank" title="学UI网 - UI设计师学习教程平台，手把手教你设计，UI教程、UI设计欣赏、APP欣赏等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/29cd4a2cea63e996.png">学UI网</div>
+                        <div class="duty-card-des">UI设计师学习教程平台，手把手教你设计，UI教程、UI设计欣赏、APP欣赏等。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-2" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-lightbulb-o"></i>灵感采集</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://dribbble.com/');" class="duty-card" target="_blank" title="Dribbble - 设计师作品分享平台，面向创作家、艺术工作者、设计师等创意类作品的人群，提供作品在线服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3cc0cf129d042e06.jpg">Dribbble</div>
+                        <div class="duty-card-des">设计师作品分享平台，面向创作家、艺术工作者、设计师等创意类作品的人群，提供作品在线服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.behance.net/');" class="duty-card" target="_blank" title="Behance - Adobe旗下的设计师交流平台，于2006年创立，是一个展示和发现创意作品的领先在线平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/db65bd9d70b1ad5e.jpg">Behance</div>
+                        <div class="duty-card-des">Adobe旗下的设计师交流平台，于2006年创立，是一个展示和发现创意作品的领先在线平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.zcool.com.cn/');" class="duty-card" target="_blank" title="站酷 - 中国人气设计师互动平台，站酷聚集了470万优秀设计师、摄影师、插画师等用户。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ffdca1bcfb241c7c.jpg">站酷</div>
+                        <div class="duty-card-des">中国人气设计师互动平台，站酷聚集了470万优秀设计师、摄影师、插画师等用户。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.pinterest.com/');" class="duty-card" target="_blank" title="Pinterest - Pinterest是世界上最大的图片社交分享网站，网站允许用户创建和管理主题图片集合，例如事件、兴趣和爱好。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/67a7deb31bb9ecb0.jpg">Pinterest</div>
+                        <div class="duty-card-des">Pinterest是世界上最大的图片社交分享网站，网站允许用户创建和管理主题图片集合，例如事件、兴趣和爱好。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.ui.cn/');" class="duty-card" target="_blank" title="UI中国 - 前身为iconfans.com，是专业的界面设计师交流、学习/展示平台，同时也是UI设计师人才流动的集散地。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/c99af2aa3450d08e.png">UI中国</div>
+                        <div class="duty-card-des">前身为iconfans.com，是专业的界面设计师交流、学习/展示平台，同时也是UI设计师人才流动的集散地。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.uplabs.com/');" class="duty-card" target="_blank" title="UpLabs - UpLabs 网站是一个汇集了网站前端作品设计、iOS UI设计的资源站点，帮助设计师们收集网站设计灵感。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9c518a4690ad4745.png">UpLabs</div>
+                        <div class="duty-card-des">UpLabs 网站是一个汇集了网站前端作品设计、iOS UI设计的资源站点，帮助设计师们收集网站设计灵感。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://usepanda.com/app/#/');" class="duty-card" target="_blank" title="Panda - 设计作品和资讯文摘订阅平台，可以自己订阅多个设计类网站的最新内容。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/64437318faa7d59c.png">Panda</div>
+                        <div class="duty-card-des">设计作品和资讯文摘订阅平台，可以自己订阅多个设计类网站的最新内容。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://sketchfab.com/');" class="duty-card" target="_blank" title="Sketchfab - Sketchfab是全球最极致3D设计模型在线展示平台，全世界都在用的Sketchfab在线3D模型展示工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d770143b4e8be622.jpg">Sketchfab</div>
+                        <div class="duty-card-des">Sketchfab是全球最极致3D设计模型在线展示平台，全世界都在用的Sketchfab在线3D模型展示工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://huaban.com/');" class="duty-card" target="_blank" title="花瓣 - 国内最优质图片灵感库已有数百万出众网友，用花瓣保存喜欢的图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/44cf1021955ddbd9.jpg">花瓣</div>
+                        <div class="duty-card-des">国内最优质图片灵感库已有数百万出众网友，用花瓣保存喜欢的图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://thefwa.com/');" class="duty-card" target="_blank" title="FWA - 一个世界著名的互动多媒体网站收录平台，目的是展示世界上最优秀、最前沿的网络媒体艺术设计作品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/74458436bd86c592.png">FWA</div>
+                        <div class="duty-card-des">一个世界著名的互动多媒体网站收录平台，目的是展示世界上最优秀、最前沿的网络媒体艺术设计作品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.deviantart.com/');" class="duty-card" target="_blank" title="Deviantart - deviantART是一个展示与分享各类艺术创作的大型国际性社群网站，创立于2000年8月7日。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bf721eecb8d564a4.jpg">Deviantart</div>
+                        <div class="duty-card-des">deviantART是一个展示与分享各类艺术创作的大型国际性社群网站，创立于2000年8月7日。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://land-book.com/');" class="duty-card" target="_blank" title="Land-book - 一个致力于收集互联网中优秀网页设计作品的站点，帮助网页设计师找到久违的设计灵感和创意思维。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e82b36e816554ea3.jpg">Land-book</div>
+                        <div class="duty-card-des">一个致力于收集互联网中优秀网页设计作品的站点，帮助网页设计师找到久违的设计灵感和创意思维。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://abduzeedo.com/');" class="duty-card" target="_blank" title="abduzeedo - 一个创意灵感和教程的设计博客，各种各样的平面设计,你都可以在这里找到。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bf22af69a49c4794.png">abduzeedo</div>
+                        <div class="duty-card-des">一个创意灵感和教程的设计博客，各种各样的平面设计,你都可以在这里找到。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://theinspirationgrid.com/');" class="duty-card" target="_blank" title="SpirationGrid - SpirationGrid是一个每日更新的设计灵感博客，来自世界各地的创意人才。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2ea6f5a33470d418.png">SpirationGrid</div>
+                        <div class="duty-card-des">SpirationGrid是一个每日更新的设计灵感博客，来自世界各地的创意人才。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.cssdesignawards.com/');" class="duty-card" target="_blank" title="CSS Design Awards - 全球优秀CSS网页设计奖提名网，CSSDA奖标语是世界上第一个基于100&#37;代码的完全可定制和响应式站点奖。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2ae4e02fbae2ec90.png">CSS Design Awards</div>
+                        <div class="duty-card-des">全球优秀CSS网页设计奖提名网，CSSDA奖标语是世界上第一个基于100&#37;代码的完全可定制和响应式站点奖。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://inspirationui.com/');" class="duty-card" target="_blank" title="Inspiration UI - 一个UI社区站点，旨在为那些为网络创建的人提供最好的设计资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4427e32f9004a5da.png">Inspiration UI</div>
+                        <div class="duty-card-des">一个UI社区站点，旨在为那些为网络创建的人提供最好的设计资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.lapa.ninja/');" class="duty-card" target="_blank" title="Lapa - Lapa Ninja旨在帮助设计师找到灵感，学习和提高设计技能。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a9e5cae9624f9ab4.png">Lapa</div>
+                        <div class="duty-card-des">Lapa Ninja旨在帮助设计师找到灵感，学习和提高设计技能。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.gameui.cn/');" class="duty-card" target="_blank" title="GAMEUI - GAMEUI是一个游戏视觉设计相关分享站，这里将提供全球范围的游戏设计相关的视觉欣赏。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5ac41db2831c76ac.jpg">GAMEUI</div>
+                        <div class="duty-card-des">GAMEUI是一个游戏视觉设计相关分享站，这里将提供全球范围的游戏设计相关的视觉欣赏。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.webdesignerdepot.com/');" class="duty-card" target="_blank" title="Web Designer Depot - 一个网页设计博客，拥有超过110万的新闻通讯订阅者，超过740万的Twitter追随者。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1d8738cb888c9c18.png">Web Designer Depot</div>
+                        <div class="duty-card-des">一个网页设计博客，拥有超过110万的新闻通讯订阅者，超过740万的Twitter追随者。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.uedna.com/');" class="duty-card" target="_blank" title="UEHTML - 中国一个设计师交流平台，专为热爱界面设计的你而倾力打造。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4aaf8ce8c7d8ce4.png">UEHTML</div>
+                        <div class="duty-card-des">中国一个设计师交流平台，专为热爱界面设计的你而倾力打造。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://androidux.com/');" class="duty-card" target="_blank" title="AndroidUX - 安卓界面布局设计资源库，该网站为设计师，工程师和您共享了数以千计的android应用程序模式。 ">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/331425863443708c.png">AndroidUX</div>
+                        <div class="duty-card-des">安卓界面布局设计资源库，该网站为设计师，工程师和您共享了数以千计的android应用程序模式。 </div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iospirations.com/');" class="duty-card" target="_blank" title="iOSpirations - 苹果用户界面灵感设计库，致力于iOS系统和MAC系统的用户界面和图标设计素材分享。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f7b9313602bad406.png">iOSpirations</div>
+                        <div class="duty-card-des">苹果用户界面灵感设计库，致力于iOS系统和MAC系统的用户界面和图标设计素材分享。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.awwwards.com/');" class="duty-card" target="_blank" title="Awwwards -  权威的网站设计评选平台，旨在表彰和推广世界上最优秀的开发人员，设计师和网络机构的才能和努力。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2c935ac24f0e0144.jpg">Awwwards</div>
+                        <div class="duty-card-des"> 权威的网站设计评选平台，旨在表彰和推广世界上最优秀的开发人员，设计师和网络机构的才能和努力。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.mobile-patterns.com/');" class="duty-card" target="_blank" title="Mobile Patterns - 一个iOS和Android截图UI欣赏网站，供设计师和开发人员参考。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/13066a3bb753c71e.png">Mobile Patterns</div>
+                        <div class="duty-card-des">一个iOS和Android截图UI欣赏网站，供设计师和开发人员参考。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iosicongallery.com/');" class="duty-card" target="_blank" title="iOS Icon Gallery - 一个iOS App图标欣赏网站，网站内容摘自iOS App Store展示漂亮的图标设计。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4d3a3b6199222d0a.png">iOS Icon Gallery</div>
+                        <div class="duty-card-des">一个iOS App图标欣赏网站，网站内容摘自iOS App Store展示漂亮的图标设计。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iconsfeed.com/');" class="duty-card" target="_blank" title="Iconsfeed - Iconsfeed是一个iOS 应用图标的收集站点，分类展示了各个 iOS 应用图标。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/40b603cde107beec.jpg">Iconsfeed</div>
+                        <div class="duty-card-des">Iconsfeed是一个iOS 应用图标的收集站点，分类展示了各个 iOS 应用图标。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.onepagemania.com/');" class="duty-card" target="_blank" title="One Page Mania - One Page Mania是来自网络上的最佳单页CSS网站的综合展示平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/726bea93c001145c.png">One Page Mania</div>
+                        <div class="duty-card-des">One Page Mania是来自网络上的最佳单页CSS网站的综合展示平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://thedesigninspiration.com/');" class="duty-card" target="_blank" title="The Design Inspiration - 一个为设计师提供设计灵感的在线资源网站，它汇集了网页，插图和LOGO等设计资源，作为灵感的源泉。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3ace884b698ddf5e.png">The Design Inspiration</div>
+                        <div class="duty-card-des">一个为设计师提供设计灵感的在线资源网站，它汇集了网页，插图和LOGO等设计资源，作为灵感的源泉。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://logofaves.com/');" class="duty-card" target="_blank" title="Logo Faves - LOGO案例欣赏网站，每天从上百个设计师作品挑选最佳的LOGO展示到Logo Faves上。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1f9f48d7423d36a5.gif">Logo Faves</div>
+                        <div class="duty-card-des">LOGO案例欣赏网站，每天从上百个设计师作品挑选最佳的LOGO展示到Logo Faves上。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.siteinspire.com/');" class="duty-card" target="_blank" title="siteInspiration - 优秀的网页和交互式设计的展示平台，超过2500个网站，可按类型，主题和风格进行搜索。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/adcb6c94459bcc80.png">siteInspiration</div>
+                        <div class="duty-card-des">优秀的网页和交互式设计的展示平台，超过2500个网站，可按类型，主题和风格进行搜索。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-3" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-tv"></i>界面交互</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://reeoo.com/');" class="duty-card" target="_blank" title="Reeoo - 一个收集最新的时尚潮流网站设计案例，为您的设计提供灵感的网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/92c7e722fc082f0a.png">Reeoo</div>
+                        <div class="duty-card-des">一个收集最新的时尚潮流网站设计案例，为您的设计提供灵感的网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://uimovement.com/');" class="duty-card" target="_blank" title="UImovement - UI Movement 网站是一个致力于手机和分享最好的UI设计灵感，帮助设计师获得最优秀的UI设计作品。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2c58470058571172.png">UImovement</div>
+                        <div class="duty-card-des">UI Movement 网站是一个致力于手机和分享最好的UI设计灵感，帮助设计师获得最优秀的UI设计作品。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.4db.cc/');" class="duty-card" target="_blank" title="4DB - 4DB网站是日本的一家致力于分享网站设计展示的站点，通过日本地理位置来方式来划分不同地区的行业网站集合。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d488163b9980d47a.gif">4DB</div>
+                        <div class="duty-card-des">4DB网站是日本的一家致力于分享网站设计展示的站点，通过日本地理位置来方式来划分不同地区的行业网站集合。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://freshdesign.io/');" class="duty-card" target="_blank" title="Freshdesign - 精选的设计精美的网站和设计资源展示平台，可以快速查看网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/799a09e605c7b7e8.png">Freshdesign</div>
+                        <div class="duty-card-des">精选的设计精美的网站和设计资源展示平台，可以快速查看网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://pttrns.com/');" class="duty-card" target="_blank" title="Pttrns - APP截图展示网站，Pttrns 收集了一千多个App设计模板，而且还在不断更新中。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fe56e29dc465750.png">Pttrns</div>
+                        <div class="duty-card-des">APP截图展示网站，Pttrns 收集了一千多个App设计模板，而且还在不断更新中。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://collectui.com/');" class="duty-card" target="_blank" title="collectUI - Collect UI 是一个致力于从Dribbble网站上收集优秀的UI设计案例站点。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5a31a0599a1e9fab.png">collectUI</div>
+                        <div class="duty-card-des">Collect UI 是一个致力于从Dribbble网站上收集优秀的UI设计案例站点。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://freebiesbug.com/');" class="duty-card" target="_blank" title="Freebiesbug - 专门为网页设计师们提供素材的资源站点，主要提供网页PSD源文件、illustrator矢量素材等资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/617d7c940ade5ae1.png">Freebiesbug</div>
+                        <div class="duty-card-des">专门为网页设计师们提供素材的资源站点，主要提供网页PSD源文件、illustrator矢量素材等资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://uigarage.net/');" class="duty-card" target="_blank" title="UIgarage - UI灵感收集网站，内容收录了Web，iOS，Android和Mac优秀设计资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6bd57039264f0f96.png">UIgarage</div>
+                        <div class="duty-card-des">UI灵感收集网站，内容收录了Web，iOS，Android和Mac优秀设计资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.calltoidea.com/');" class="duty-card" target="_blank" title="Calltoidea - 一个针对网页设计师而创办的收集并分类各种优秀网页设计的站点，帮助设计师们寻找设计灵感。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/89cf1723dac1e27b.png">Calltoidea</div>
+                        <div class="duty-card-des">一个针对网页设计师而创办的收集并分类各种优秀网页设计的站点，帮助设计师们寻找设计灵感。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://muuuuu.org/');" class="duty-card" target="_blank" title="muuuuu - 日本网站画廊，收集了很多最具创意的网站，左栏的分类很清晰。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2ca240f44af159d8.png">muuuuu</div>
+                        <div class="duty-card-des">日本网站画廊，收集了很多最具创意的网站，左栏的分类很清晰。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://sitesee.co/');" class="duty-card" target="_blank" title="sitesee - 一个精美漂亮的现代网站画廊，意在激发网站开发人员和设计师。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/daa3de6f4193e5.png">sitesee</div>
+                        <div class="duty-card-des">一个精美漂亮的现代网站画廊，意在激发网站开发人员和设计师。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://bestwebsite.gallery/');" class="duty-card" target="_blank" title="BestWebsite - 漂亮酷炫网站收集站点，设计师灵感来源好去处网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f81ac05b20f0b106.png">BestWebsite</div>
+                        <div class="duty-card-des">漂亮酷炫网站收集站点，设计师灵感来源好去处网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://bm.straightline.jp/');" class="duty-card" target="_blank" title="Straightline - 日本优秀的商业、企业、创意、艺术、购物等范畴收录网站，帮助设计师们找到更多的灵感和设计理念。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/18551878888e5741.png">Straightline</div>
+                        <div class="duty-card-des">日本优秀的商业、企业、创意、艺术、购物等范畴收录网站，帮助设计师们找到更多的灵感和设计理念。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.webdesignclip.com/');" class="duty-card" target="_blank" title="webdesignclip - 日本一家专门搜集响应式网页设计案例的网站，网站的案例丰富无愧于clip剪报这个词。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fbed0e0932b6c148.png">webdesignclip</div>
+                        <div class="duty-card-des">日本一家专门搜集响应式网页设计案例的网站，网站的案例丰富无愧于clip剪报这个词。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.csswinner.com/');" class="duty-card" target="_blank" title="CSSwinner - 一个独特的全球性平台，专门展示和奖励最佳网站，推广创新的网站设计师、开发者与机构。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d723cb475bf796b.png">CSSwinner</div>
+                        <div class="duty-card-des">一个独特的全球性平台，专门展示和奖励最佳网站，推广创新的网站设计师、开发者与机构。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://useyourinterface.com/');" class="duty-card" target="_blank" title="UseYourInterface - 一个展示互联网上最优秀的网页设计的平台，网页设计师必备灵感来源网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/407c53926629f94d.png">UseYourInterface</div>
+                        <div class="duty-card-des">一个展示互联网上最优秀的网页设计的平台，网页设计师必备灵感来源网站。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-13" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-newspaper-o"></i>设计规范</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://material.io/tools/devices/');" class="duty-card" target="_blank" title="设备尺寸 - 主流设备尺寸网站，包含安卓、IOS、笔记本、穿戴设备等">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/60914b10b6ec2a8c.jpg">设备尺寸</div>
+                        <div class="duty-card-des">主流设备尺寸网站，包含安卓、IOS、笔记本、穿戴设备等</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions');" class="duty-card" target="_blank" title="iPhone尺寸 - 提供各型号iPhone设备屏幕尺寸信息参数">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/9a654be3beb1e4f0.jpg">iPhone尺寸</div>
+                        <div class="duty-card-des">提供各型号iPhone设备屏幕尺寸信息参数</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://screensiz.es/');" class="duty-card" target="_blank" title="Screen Sizes - 常用设备参数大全，各种手机、平板、电脑不同型号的设备参数">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/ba3f239a0f146532.jpg">Screen Sizes</div>
+                        <div class="duty-card-des">常用设备参数大全，各种手机、平板、电脑不同型号的设备参数</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://developer.apple.com/design/');" class="duty-card" target="_blank" title="Apple Developer - 苹果官方设计指南，获取相关资讯、文档、开发工具">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/821916d7ec7b577.jpg">Apple Developer</div>
+                        <div class="duty-card-des">苹果官方设计指南，获取相关资讯、文档、开发工具</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://design.google/');" class="duty-card" target="_blank" title="Google Design - 谷歌官方设计指南，推动设计和技术的发展（需要翻墙）">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/984c83aec5d30dc4.jpg">Google Design</div>
+                        <div class="duty-card-des">谷歌官方设计指南，推动设计和技术的发展（需要翻墙）</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.microsoft.com/design/');" class="duty-card" target="_blank" title="Microsoft Design -  微软官方设计指南">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/1c1e3bda7a471759.jpg">Microsoft Design</div>
+                        <div class="duty-card-des"> 微软官方设计指南</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://developer.android.google.cn/design/index.html');" class="duty-card" target="_blank" title="Android Developers - 安卓官方设计指南中国版">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/41204a52998899a4.jpg">Android Developers</div>
+                        <div class="duty-card-des">安卓官方设计指南中国版</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.uisdc.com/tag/设计规范');" class="duty-card" target="_blank" title="设计规范 - 优设网设计规范，超过130篇设计规范文章">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/76265dbdcdf6be04.jpg">设计规范</div>
+                        <div class="duty-card-des">优设网设计规范，超过130篇设计规范文章</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-4" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-briefcase"></i>在线工具</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.processon.com/');" class="duty-card" target="_blank" title="ProcessOn - ProcessOn是一个方便易用、免费高效的在线作图工具，运用它可以免费制作多种图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6e97d3d79f7a604a.png">ProcessOn</div>
+                        <div class="duty-card-des">ProcessOn是一个方便易用、免费高效的在线作图工具，运用它可以免费制作多种图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://huaban.com/about/goodies/');" class="duty-card" target="_blank" title="花瓣采集工具 - 你可以方便地保存任意网站上的图片、视频和截图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/88dc363a15d31642.jpg">花瓣采集工具</div>
+                        <div class="duty-card-des">你可以方便地保存任意网站上的图片、视频和截图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://xiuxiu.web.meitu.com/');" class="duty-card" target="_blank" title="美图秀秀网页版 - 美图秀秀 旗下图片处理软件中的在线版，不用下载直接使用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fbd44c2a62246d2a.jpg">美图秀秀网页版</div>
+                        <div class="duty-card-des">美图秀秀 旗下图片处理软件中的在线版，不用下载直接使用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://cli.im/');" class="duty-card" target="_blank" title="草料二维码 - 草料二维码是国内专业的二维码服务提供商，提供二维码生成、美化、印制、管理、统计等服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/aebdbbea9ede96e0.jpg">草料二维码</div>
+                        <div class="duty-card-des">草料二维码是国内专业的二维码服务提供商，提供二维码生成、美化、印制、管理、统计等服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://modao.cc/');" class="duty-card" target="_blank" title="墨刀 - 强大易用的免费移动应用原型与线框图工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e088699736bde1b6.png">墨刀</div>
+                        <div class="duty-card-des">强大易用的免费移动应用原型与线框图工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://tinypng.com/');" class="duty-card" target="_blank" title="TinyPNG - 图片压缩网站，支持小于5M的jpg、png图片的压缩。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/35e3b40398dc5a68.jpg">TinyPNG</div>
+                        <div class="duty-card-des">图片压缩网站，支持小于5M的jpg、png图片的压缩。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.biaonimeia.com/');" class="duty-card" target="_blank" title="标你妹啊 - 无需下载客户端，自动转换px/dp/pt单位，高效、全自动、免费&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ba927961a1d96ab0.png">标你妹啊</div>
+                        <div class="duty-card-des">无需下载客户端，自动转换px/dp/pt单位，高效、全自动、免费&#65281;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://zhongguose.com/');" class="duty-card" target="_blank" title="中国色（颜色库） - 供各种中国的传统颜色的名称，CMYK值，RGB值，16进制表示。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/845eb22362ae058e.png">中国色（颜色库）</div>
+                        <div class="duty-card-des">供各种中国的传统颜色的名称，CMYK值，RGB值，16进制表示。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.chuangkit.com/');" class="duty-card" target="_blank" title="创客贴 - 创客贴是国内首创极简在线平面设计工具，专注在线免费设计图片，素材下载及在线印刷。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6d3d144ff65739c2.png">创客贴</div>
+                        <div class="duty-card-des">创客贴是国内首创极简在线平面设计工具，专注在线免费设计图片，素材下载及在线印刷。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.polaxiong.com/');" class="duty-card" target="_blank" title="泼辣修图 - 一款免费的在线图像处理软件，只要页面加载完成，导出导入图片不再受网络影响">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/72c267138f889315.png">泼辣修图</div>
+                        <div class="duty-card-des">一款免费的在线图像处理软件，只要页面加载完成，导出导入图片不再受网络影响</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://cloudconvert.com/');" class="duty-card" target="_blank" title="CloudConvert - 基于云端的网页版在线文件格式转换工具,最大的特点就是格式支持非常丰富。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/304588952c57c080.png">CloudConvert</div>
+                        <div class="duty-card-des">基于云端的网页版在线文件格式转换工具,最大的特点就是格式支持非常丰富。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.myfonts.com/WhatTheFont/');" class="duty-card" target="_blank" title="FindMyfont - 英文字体识别网站，网站可以根据上传的图片识别到相应的字体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/95661b36a2671b57.png">FindMyfont</div>
+                        <div class="duty-card-des">英文字体识别网站，网站可以根据上传的图片识别到相应的字体。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.qiuziti.com/');" class="duty-card" target="_blank" title="Qiuziti - 中文字体识别网站，免费提供上传图片找字体、字体实时预览及字体下载服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/536e61100b4b84b7.png">Qiuziti</div>
+                        <div class="duty-card-des">中文字体识别网站，免费提供上传图片找字体、字体实时预览及字体下载服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.fancynode.com.cn/pxcook');" class="duty-card" target="_blank" title="PxCook - 最高效易用的自动标注工具，设计研发协作利器，从设计到代码, 让团队高效协作。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a416cf142f5cfa7f.png">PxCook</div>
+                        <div class="duty-card-des">最高效易用的自动标注工具，设计研发协作利器，从设计到代码, 让团队高效协作。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.jpegmini.com/');" class="duty-card" target="_blank" title="Jpegmini - JPEG图片在线压缩工具，Jpegmini可以使你的JPEG图片缩小5倍以下。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d88f4bc30cce3eff.png">Jpegmini</div>
+                        <div class="duty-card-des">JPEG图片在线压缩工具，Jpegmini可以使你的JPEG图片缩小5倍以下。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://smallpdf.com/cn');" class="duty-card" target="_blank" title="Smallpdf - PDF文件格式转换和编辑平台，专注于PDF格式互转、压缩等功能，免费且易于使用">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bd343abeaed2f8f7.png">Smallpdf</div>
+                        <div class="duty-card-des">PDF文件格式转换和编辑平台，专注于PDF格式互转、压缩等功能，免费且易于使用</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://logojoy.com/');" class="duty-card" target="_blank" title="Logojoy - logo生成器，Logojoy 带来了标志设计的全新方式，利用人工智能和机器学习的力量帮你完成所有的工作。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e53ed7f92c7309a7.png">Logojoy</div>
+                        <div class="duty-card-des">logo生成器，Logojoy 带来了标志设计的全新方式，利用人工智能和机器学习的力量帮你完成所有的工作。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://bezier.method.ac/');" class="duty-card" target="_blank" title="Bezier Game - 贝塞尔曲线练习游戏，以动画的方式来演示一遍贝塞尔曲线画法，然后自己尝试去绘制。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e53ede093d63b10f.png">Bezier Game</div>
+                        <div class="duty-card-des">贝塞尔曲线练习游戏，以动画的方式来演示一遍贝塞尔曲线画法，然后自己尝试去绘制。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://pdfcandy.com/');" class="duty-card" target="_blank" title="PDFcandy - 免费PDF文件在线工具，汇集了许多常用PDF工具，功能非常强大。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/262e50f96be3da9f.png">PDFcandy</div>
+                        <div class="duty-card-des">免费PDF文件在线工具，汇集了许多常用PDF工具，功能非常强大。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.qrhacker.com/');" class="duty-card" target="_blank" title="QRhacker - 在线创建自定义二维码工具，支持生成文本 、URL 、vCard 名片等多种类型的二维码。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6d2b7958b3c04cb7.png">QRhacker</div>
+                        <div class="duty-card-des">在线创建自定义二维码工具，支持生成文本 、URL 、vCard 名片等多种类型的二维码。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://optimizilla.com/');" class="duty-card" target="_blank" title="optimizilla - 在线图片压缩工具，这个在线图像优化器使用最佳优化和压缩算法来达到最小尺寸的JPEG和PNG图像。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b34a6ce697464027.png">optimizilla</div>
+                        <div class="duty-card-des">在线图片压缩工具，这个在线图像优化器使用最佳优化和压缩算法来达到最小尺寸的JPEG和PNG图像。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://waifu2x.udp.jp/');" class="duty-card" target="_blank" title="waifu2x - waifu2x是一款免费的图片拉伸提升画质的在线工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/58e8258b7b768d65.jpg">waifu2x</div>
+                        <div class="duty-card-des">waifu2x是一款免费的图片拉伸提升画质的在线工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://vectormagic.com/');" class="duty-card" target="_blank" title="VectorMagic - 强悍的位图转矢量工具，可以精确的把位图转换为矢量图片，而且操作很简单。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7e53271547316297.png">VectorMagic</div>
+                        <div class="duty-card-des">强悍的位图转矢量工具，可以精确的把位图转换为矢量图片，而且操作很简单。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://weavesilk.com/');" class="duty-card" target="_blank" title="WeaveSilk - Weavesilk是一个基于HTML5的独具匠心的在线绘画特效网页，它告诉我们关于对称的美丽传说。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d9bb532a1cc81427.png">WeaveSilk</div>
+                        <div class="duty-card-des">Weavesilk是一个基于HTML5的独具匠心的在线绘画特效网页，它告诉我们关于对称的美丽传说。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://grid.guide/');" class="duty-card" target="_blank" title="Grid - 超好用的网页栅格化工具，使用简单，不需要设计师去算来算去。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8941327e13da8059.png">Grid</div>
+                        <div class="duty-card-des">超好用的网页栅格化工具，使用简单，不需要设计师去算来算去。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://loading.io/');" class="duty-card" target="_blank" title="Loading - 一个可以直接生成loading加载图标的站点，还生成svg图和css代码。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e32dc913180107e5.png">Loading</div>
+                        <div class="duty-card-des">一个可以直接生成loading加载图标的站点，还生成svg图和css代码。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.logaster.cn/');" class="duty-card" target="_blank" title="Logaster - 免费的logo设计生成器，在线设计logo的工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e46c539a9bcdf847.png">Logaster</div>
+                        <div class="duty-card-des">免费的logo设计生成器，在线设计logo的工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://goimg.io/');" class="duty-card" target="_blank" title="Goimg.io - 智能在线图像压缩工具，使用聪明的有损压缩技术来减少你的 PNG、JPG、GIF 文件的存储大小。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e850d345f3d4a563.png">Goimg.io</div>
+                        <div class="duty-card-des">智能在线图像压缩工具，使用聪明的有损压缩技术来减少你的 PNG、JPG、GIF 文件的存储大小。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://minitagcloud.com/');" class="duty-card" target="_blank" title="微词云 - 一款非常实用、简单的在线词云标签云图生成软件。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/11/fa6a7d4677f2cf36.jpg">微词云</div>
+                        <div class="duty-card-des">一款非常实用、简单的在线词云标签云图生成软件。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.xiaopiu.com/');" class="duty-card" target="_blank" title="xiaopiu - 产品原型设计与团队实时协作平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/e7ed48485ddfc0af.png">xiaopiu</div>
+                        <div class="duty-card-des">产品原型设计与团队实时协作平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://idoc.mockplus.cn/');" class="duty-card" target="_blank" title="摹客iDoc - 高效的产品设计协作平台，让设计更快更简单">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/2a8a64f5f8f63bf9.jpg">摹客iDoc</div>
+                        <div class="duty-card-des">高效的产品设计协作平台，让设计更快更简单</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-5" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-flag"></i>icon图标</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iconfont.cn/');" class="duty-card" target="_blank" title="Iconfont - 阿里妈妈MUX打造的图标库，是国内功能很强大且图标内容很丰富的矢量图标库。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/3/b7c91eb2fa151856.jpg">Iconfont</div>
+                        <div class="duty-card-des">阿里妈妈MUX打造的图标库，是国内功能很强大且图标内容很丰富的矢量图标库。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://icomoon.io/');" class="duty-card" target="_blank" title="iconmoon - icomoon提供包装矢量图标，以及一个免费的HTML5应用程序进行自定义图标字体或SVG的精灵。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3f02eb6b12aa8389.png">iconmoon</div>
+                        <div class="duty-card-des">icomoon提供包装矢量图标，以及一个免费的HTML5应用程序进行自定义图标字体或SVG的精灵。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.easyicon.net/');" class="duty-card" target="_blank" title="Easyicon - 国内一个免费的图标搜索下载站点，可通过关键词和推荐来寻找合适的素材，同时支持打包下载功能。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/32062f25dec034d9.png">Easyicon</div>
+                        <div class="duty-card-des">国内一个免费的图标搜索下载站点，可通过关键词和推荐来寻找合适的素材，同时支持打包下载功能。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://iconmonstr.com/');" class="duty-card" target="_blank" title="iconmonstr - 一个提供免费的PNG SVG格式的素材下载站点，收录了海量的黑白图标素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/964407f5a5ced389.png">iconmonstr</div>
+                        <div class="duty-card-des">一个提供免费的PNG SVG格式的素材下载站点，收录了海量的黑白图标素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://logodust.com/');" class="duty-card" target="_blank" title="Logodust - 免费logo设计案例下载的站点，所有的logo设计都可以免费下载并用于商业项目使用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/276182052b1f13e9.png">Logodust</div>
+                        <div class="duty-card-des">免费logo设计案例下载的站点，所有的logo设计都可以免费下载并用于商业项目使用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.flaticon.com/');" class="duty-card" target="_blank" title="Flaticon - 海量免费矢量图标库，超过76万&#43;免费矢量图标SVG，PSD，PNG，EPS格式或图标字体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1f77b722092d51a1.png">Flaticon</div>
+                        <div class="duty-card-des">海量免费矢量图标库，超过76万&#43;免费矢量图标SVG，PSD，PNG，EPS格式或图标字体。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://iconstore.co/');" class="duty-card" target="_blank" title="iconstore - 免费图标包素材的站点，汇集了很多优质的icon素材，设计师可以自由下载使用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/20d03407411daeb9.png">iconstore</div>
+                        <div class="duty-card-des">免费图标包素材的站点，汇集了很多优质的icon素材，设计师可以自由下载使用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://logoeps.com/');" class="duty-card" target="_blank" title="Logoeps - 各类品牌 logo 的矢量素材网站，收录大量知名品牌LOGO矢量图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a26613d3baeba501.png">Logoeps</div>
+                        <div class="duty-card-des">各类品牌 logo 的矢量素材网站，收录大量知名品牌LOGO矢量图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.emojione.com/');" class="duty-card" target="_blank" title="Emojione - Emoji表情图标库，超过2.6万个优质Emoji表情图标，可用于部分商业用途。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ae50b2284521f049.png">Emojione</div>
+                        <div class="duty-card-des">Emoji表情图标库，超过2.6万个优质Emoji表情图标，可用于部分商业用途。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.iconninja.com/icon');" class="duty-card" target="_blank" title="iconninja - 图标搜索引擎，支持关键词搜索，收录了超百万张免费图标素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1eaf42169ddb749.png">iconninja</div>
+                        <div class="duty-card-des">图标搜索引擎，支持关键词搜索，收录了超百万张免费图标素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://chuangzaoshi.com/icon/');" class="duty-card" target="_blank" title="草莓图标 - 专为开发者设计的一套免费开源图标库。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f9fcad730ab042b9.png">草莓图标</div>
+                        <div class="duty-card-des">专为开发者设计的一套免费开源图标库。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-6" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-magic"></i>设计素材</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.freepik.com/');" class="duty-card" target="_blank" title="Freepik - 一款免费素材搜索引擎，可帮助设计师找到高质量的照片、矢量图、插图等素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/267c354deefa40a9.png">Freepik</div>
+                        <div class="duty-card-des">一款免费素材搜索引擎，可帮助设计师找到高质量的照片、矢量图、插图等素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.toptal.com/designers/subtlepatterns/');" class="duty-card" target="_blank" title="Subtlepatterns - 一款免費背景下载网站，收录了超400&#43;中高品质纹理素材，這些背景图案都相当精致美观。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4527db5ce9a03459.png">Subtlepatterns</div>
+                        <div class="duty-card-des">一款免費背景下载网站，收录了超400&#43;中高品质纹理素材，這些背景图案都相当精致美观。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.shutterstock.com/');" class="duty-card" target="_blank" title="Shutterstock - 全球顶级高清摄影图片网站， 超过197 百万张免版税图片等资源，不过是要收费的&#126;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7a21f900090edbd1.png">Shutterstock</div>
+                        <div class="duty-card-des">全球顶级高清摄影图片网站， 超过197 百万张免版税图片等资源，不过是要收费的&#126;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.fribbble.com/');" class="duty-card" target="_blank" title="Fribbble - Fribbble 是一个免费高速下载dribbbler PSD资源站，该网站是从Dribble网站获得免费的PSD资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/fef92e4f63fb3ca0.png">Fribbble</div>
+                        <div class="duty-card-des">Fribbble 是一个免费高速下载dribbbler PSD资源站，该网站是从Dribble网站获得免费的PSD资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://principlerepo.com/');" class="duty-card" target="_blank" title="Principlerepo - 高质量Principle原型和动效设计资源的网站，特别是动效,每一个都非常漂亮，很有参考价值。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/cc93ebc146349b95.png">Principlerepo</div>
+                        <div class="duty-card-des">高质量Principle原型和动效设计资源的网站，特别是动效,每一个都非常漂亮，很有参考价值。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://psefan.com/');" class="duty-card" target="_blank" title="PS饭团网 - 自由开放的平面设计资源分享网站，致力于开放式分享、介绍、推荐有价值的设计素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/29e869c31134935f.png">PS饭团网</div>
+                        <div class="duty-card-des">自由开放的平面设计资源分享网站，致力于开放式分享、介绍、推荐有价值的设计素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://sc.68design.net/');" class="duty-card" target="_blank" title="68design - 专业的互联网设计师成长社区推出的素材站，素材无需登录即可免费下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ec9a7f9a72c336af.png">68design</div>
+                        <div class="duty-card-des">专业的互联网设计师成长社区推出的素材站，素材无需登录即可免费下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.58pic.com/');" class="duty-card" target="_blank" title="千图网 - 千图网又名美工宝，免费图标搜索引擎，网页图标下载服务。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8c33e40c1a91e483.jpg">千图网</div>
+                        <div class="duty-card-des">千图网又名美工宝，免费图标搜索引擎，网页图标下载服务。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://588ku.com/');" class="duty-card" target="_blank" title="千库网 - 千库网是国内提供免费PNG图片的素材先驱网站，做设计不抠图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/12fc3c839d70a992.jpg">千库网</div>
+                        <div class="duty-card-des">千库网是国内提供免费PNG图片的素材先驱网站，做设计不抠图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://90sheji.com/');" class="duty-card" target="_blank" title="90设计网 - 90设计是专注电商设计的淘宝素材库，设计交流、学习与分享一体的平台。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4a35f2e53991caed.jpg">90设计网</div>
+                        <div class="duty-card-des">90设计是专注电商设计的淘宝素材库，设计交流、学习与分享一体的平台。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://97ui.com/');" class="duty-card" target="_blank" title="优界网 - 专注于UI素材下载的网站，提供丰富的高质精品免费UI素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/bd3547d29d6e602d.jpg">优界网</div>
+                        <div class="duty-card-des">专注于UI素材下载的网站，提供丰富的高质精品免费UI素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://ibaotu.com/');" class="duty-card" target="_blank" title="包图网 - 包图网汇集了各种流行趋势，视觉冲击力强的原创广告图片设计、电商淘宝、企业办公模板素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/64fd74a42276bb22.jpg">包图网</div>
+                        <div class="duty-card-des">包图网汇集了各种流行趋势，视觉冲击力强的原创广告图片设计、电商淘宝、企业办公模板素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.16sucai.com/');" class="duty-card" target="_blank" title="16素材中国 - 免费素材共享平台，图片素材图库提供海量素材，图片下载，设计素材等资源。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/55e58212c556a6e4.png">16素材中国</div>
+                        <div class="duty-card-des">免费素材共享平台，图片素材图库提供海量素材，图片下载，设计素材等资源。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.17sucai.com/');" class="duty-card" target="_blank" title="17素材 - 17素材网主要收集各种网站素材资源，为html网站模板开发人员提供高效率的工作方式。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2136d79199b50bd3.gif">17素材</div>
+                        <div class="duty-card-des">17素材网主要收集各种网站素材资源，为html网站模板开发人员提供高效率的工作方式。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.bee-ji.com/');" class="duty-card" target="_blank" title="逗比拯救世界 - 专业的表情包搜索网站，超过20万张优质表情包，每日更新&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/7/3420e91dda5f5e12.png">逗比拯救世界</div>
+                        <div class="duty-card-des">专业的表情包搜索网站，超过20万张优质表情包，每日更新&#65281;</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-7" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-photo"></i>图库素材</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://pixabay.com/');" class="duty-card" target="_blank" title="Pixabay - 全球最大的免费可商用高清图库网站，超过130万张免费的优质图片及视频素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/302447bfcb844997.png">Pixabay</div>
+                        <div class="duty-card-des">全球最大的免费可商用高清图库网站，超过130万张免费的优质图片及视频素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.gratisography.com/');" class="duty-card" target="_blank" title="Gratisography - Gratisography-超高清优质可商用图库，各种创意图片，图片可用于商业用途。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4340a862ab0d6c81.png">Gratisography</div>
+                        <div class="duty-card-des">Gratisography-超高清优质可商用图库，各种创意图片，图片可用于商业用途。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://magdeleine.co/browse/');" class="duty-card" target="_blank" title="Magdeleine - 高清灵感图片资源下载,免费的哦，不用登录即可直接点击下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4605b0938044e895.png">Magdeleine</div>
+                        <div class="duty-card-des">高清灵感图片资源下载,免费的哦，不用登录即可直接点击下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://unsplash.com/');" class="duty-card" target="_blank" title="Unsplash - Unsplash - 美丽，免费的照片，高质量图库，同样不用登陆直接下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8419b1366cffa9d9.png">Unsplash</div>
+                        <div class="duty-card-des">Unsplash - 美丽，免费的照片，高质量图库，同样不用登陆直接下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://cn.freeimages.com/');" class="duty-card" target="_blank" title="FAMILYSAFE - 超高清免费图库，超过30万张免费高清图片，注册登录后直接可以下载&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d29d566949bb447.png">FAMILYSAFE</div>
+                        <div class="duty-card-des">超高清免费图库，超过30万张免费高清图片，注册登录后直接可以下载&#65281;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://foodshot.co/');" class="duty-card" target="_blank" title="Foodshot - 美食主题图库，图片质量都比较高，图片点击下载然后另存为就可以了。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e3970dbc703f76af.png">Foodshot</div>
+                        <div class="duty-card-des">美食主题图库，图片质量都比较高，图片点击下载然后另存为就可以了。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://publicdomainarchive.com/');" class="duty-card" target="_blank" title="publicdomain - publicdomainarchive目前已经有33万张免费高清图像下载，设计师可以免费使用在你的创意项目上。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/7f2d171ac5943a21.jpg">publicdomain</div>
+                        <div class="duty-card-des">publicdomainarchive目前已经有33万张免费高清图像下载，设计师可以免费使用在你的创意项目上。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://barnimages.com/');" class="duty-card" target="_blank" title="Barn Images - 这些相片看起来确实跟一般的图库相片很不一样，不但很有质感，也少了一种制式的感觉。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5c016634a377c0ad.png">Barn Images</div>
+                        <div class="duty-card-des">这些相片看起来确实跟一般的图库相片很不一样，不但很有质感，也少了一种制式的感觉。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.socwall.com/');" class="duty-card" target="_blank" title="Socwall - 高清免费图库，不用登陆直接可以下载，风景类图片居多。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a26b487477325c05.png">Socwall</div>
+                        <div class="duty-card-des">高清免费图库，不用登陆直接可以下载，风景类图片居多。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://stocksnap.io/');" class="duty-card" target="_blank" title="StockSnap.io - 高清免费大图素材，不用登陆直接可以下载，每周更新超过百张高清免费图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/2a8b0b37b90f75cb.png">StockSnap.io</div>
+                        <div class="duty-card-des">高清免费大图素材，不用登陆直接可以下载，每周更新超过百张高清免费图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.pexels.com/');" class="duty-card" target="_blank" title="Pexels - 推荐&#65281;提供高清尺寸且品质优良的免费照片网站，直接可以下载，图片可用于任何用途。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1ca2e92160969aee.png">Pexels</div>
+                        <div class="duty-card-des">推荐&#65281;提供高清尺寸且品质优良的免费照片网站，直接可以下载，图片可用于任何用途。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.designerspics.com/');" class="duty-card" target="_blank" title="DesignersPics - 免费可以商用的图片网站，好图不多，需要花点时间才能找到自己喜欢的。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e2980c1b1a0b6.png">DesignersPics</div>
+                        <div class="duty-card-des">免费可以商用的图片网站，好图不多，需要花点时间才能找到自己喜欢的。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://deathtothestockphoto.com/');" class="duty-card" target="_blank" title="DEATH TO STOCK - 高清免费图片网站，图片都是同系列多张打包好的压缩包，文件较大，注册成会员可以查看更多图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/dce9b3894ef06a32.png">DEATH TO STOCK</div>
+                        <div class="duty-card-des">高清免费图片网站，图片都是同系列多张打包好的压缩包，文件较大，注册成会员可以查看更多图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.hdwallpapers.net/');" class="duty-card" target="_blank" title="HD wallpapers - 免费高清壁纸图库，提供多种尺寸下载，图片商用需要作者许可哦&#65281;">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/3406bd8986fba44a.png">HD wallpapers</div>
+                        <div class="duty-card-des">免费高清壁纸图库，提供多种尺寸下载，图片商用需要作者许可哦&#65281;</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://visualhunt.com/');" class="duty-card" target="_blank" title="Visual Hunt - 一个提供高品质免费图片素材的站点，收录了海量的CC0授权图片整合后生成的站点，用户可以通过内置的搜索引擎来查询海量的免费图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/a10b0dfd84d83062.png">Visual Hunt</div>
+                        <div class="duty-card-des">一个提供高品质免费图片素材的站点，收录了海量的CC0授权图片整合后生成的站点，用户可以通过内置的搜索引擎来查询海量的免费图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://streetwill.co/');" class="duty-card" target="_blank" title="StreetWill - 一个干净整洁无任何广告的图片分享网站，提供超高分辨率的图片资源，就是更新有点慢。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d10a269e51d73f0a.png">StreetWill</div>
+                        <div class="duty-card-des">一个干净整洁无任何广告的图片分享网站，提供超高分辨率的图片资源，就是更新有点慢。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://imcreator.com/free');" class="duty-card" target="_blank" title="IM FREE - 免费高清图片库，该站提供搜索和分类目录,有人物、自然、艺术、生活、图标等分类。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/83f2270f01d6b132.gif">IM FREE</div>
+                        <div class="duty-card-des">免费高清图片库，该站提供搜索和分类目录,有人物、自然、艺术、生活、图标等分类。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://fancycrave.com/');" class="duty-card" target="_blank" title="FancyCrave - FancyCrave 网站是一个致力于个人和商业免费摄影图片资源库的站点。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/dfcced79f9c0010a.png">FancyCrave</div>
+                        <div class="duty-card-des">FancyCrave 网站是一个致力于个人和商业免费摄影图片资源库的站点。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.lifeofpix.com/');" class="duty-card" target="_blank" title="LifeOfPix - 免费无版权欧美生活图片网是一个提供免费高清图像素材，并且无版权限制，图片多为欧洲景观，多为摄影师拍摄的生活类图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e38d6ce9a0215dba.png">LifeOfPix</div>
+                        <div class="duty-card-des">免费无版权欧美生活图片网是一个提供免费高清图像素材，并且无版权限制，图片多为欧洲景观，多为摄影师拍摄的生活类图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://kaboompics.com/');" class="duty-card" target="_blank" title="kaboompics - 以生活化场景为主，比方说手机、日历之类的，也有一些 mockup，无需登录，直接下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d1853ac3dabd0d32.png">kaboompics</div>
+                        <div class="duty-card-des">以生活化场景为主，比方说手机、日历之类的，也有一些 mockup，无需登录，直接下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://photos.oliur.com/');" class="duty-card" target="_blank" title="Oliur Rahman - 各种 iPhone、MacBook 和其他物件的好照片，直接可以下载，图片可免费商用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/4e1e7ff3258cfde2.png">Oliur Rahman</div>
+                        <div class="duty-card-des">各种 iPhone、MacBook 和其他物件的好照片，直接可以下载，图片可免费商用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://source.pixite.co/');" class="duty-card" target="_blank" title="Pixite Source - 可以搜索图片、材质、色调搜索，里面有很多比较精致的小众插图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/d5b45b9e5e9ee6fa.png">Pixite Source</div>
+                        <div class="duty-card-des">可以搜索图片、材质、色调搜索，里面有很多比较精致的小众插图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://freelyphotos.com/');" class="duty-card" target="_blank" title="Freely Photos - 国外一个基督教图片网站，有很多十字架，很多宗教祈祷的图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/367250db9eaf4c02.png">Freely Photos</div>
+                        <div class="duty-card-des">国外一个基督教图片网站，有很多十字架，很多宗教祈祷的图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://stokpic.com/');" class="duty-card" target="_blank" title="Stokpic - Stokpic 免费无版权图片素材库，支持自动把最新图片推送到邮箱。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/28d2e8e9179d309a.png">Stokpic</div>
+                        <div class="duty-card-des">Stokpic 免费无版权图片素材库，支持自动把最新图片推送到邮箱。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://jeshoots.com/');" class="duty-card" target="_blank" title="JESHOOTS - 2014年开始运营的免费无版权图片网站，图片质量还不错。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e0d4f893bef4edfa.png">JESHOOTS</div>
+                        <div class="duty-card-des">2014年开始运营的免费无版权图片网站，图片质量还不错。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://mmtstock.com/');" class="duty-card" target="_blank" title="MMT - 免费图库网站，图片使用CC0授权，网站图片色调比较亮丽，有很多花，也有很多 iPhone等。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/5991b3a22602e702.png">MMT</div>
+                        <div class="duty-card-des">免费图库网站，图片使用CC0授权，网站图片色调比较亮丽，有很多花，也有很多 iPhone等。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://picjumbo.com/');" class="duty-card" target="_blank" title="PicJumbo - 一个叫维克多的人创办了这个基于网站设计的素材站点，因为每一个设计师都需要高质量的图片素材。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/ef8329ede4e5273a.png">PicJumbo</div>
+                        <div class="duty-card-des">一个叫维克多的人创办了这个基于网站设计的素材站点，因为每一个设计师都需要高质量的图片素材。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://alpha.wallhaven.cc/');" class="duty-card" target="_blank" title="WallHaven - 世界上最伟大的高清图库站WallBase复制版，原网站创办人失联后，前成员推出的测试版。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/c4842068b8b3a422.png">WallHaven</div>
+                        <div class="duty-card-des">世界上最伟大的高清图库站WallBase复制版，原网站创办人失联后，前成员推出的测试版。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://mystock.photos/');" class="duty-card" target="_blank" title="My Stock Photos - 免费的可商用的高清图库，图片较少才490多张，但是图片质量非常不错，直接可以下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/f5ed36eac541dc8a.png">My Stock Photos</div>
+                        <div class="duty-card-des">免费的可商用的高清图库，图片较少才490多张，但是图片质量非常不错，直接可以下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://skuawk.com/');" class="duty-card" target="_blank" title="Skuawk - Skuawk 网站是一个集合了自由摄影师拍摄并分享的公共领域摄影图片，任何人都可以下载和使用这些图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/119abee93c0e150a.png">Skuawk</div>
+                        <div class="duty-card-des">Skuawk 网站是一个集合了自由摄影师拍摄并分享的公共领域摄影图片，任何人都可以下载和使用这些图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://en.freejpg.com.ar/');" class="duty-card" target="_blank" title="FreeJPG - 免费的可商用的高清图库，可按颜色分类图片，超过1万张免费图片，质量非常高。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/350a36bcb4998842.png">FreeJPG</div>
+                        <div class="duty-card-des">免费的可商用的高清图库，可按颜色分类图片，超过1万张免费图片，质量非常高。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.goodfreephotos.com/');" class="duty-card" target="_blank" title="Good Free Photos - 大部分为摄影作品，也有少量的插图，右击保存图片就可以下载了。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/9428d01d60c347da.png">Good Free Photos</div>
+                        <div class="duty-card-des">大部分为摄影作品，也有少量的插图，右击保存图片就可以下载了。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.stockvault.net/');" class="duty-card" target="_blank" title="Stockvault - Stockvault是一个免费图片分享站点，你可以在此站点注册成为会员，然后分享你喜爱的图片给其他用户。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/554b01ea2a593448.png">Stockvault</div>
+                        <div class="duty-card-des">Stockvault是一个免费图片分享站点，你可以在此站点注册成为会员，然后分享你喜爱的图片给其他用户。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.freemagebank.com/');" class="duty-card" target="_blank" title="freemagebank - 免费的可商用的高清图库，图片质量很高，只是要注册才能下载图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/8ac04b5aee47685e.png">freemagebank</div>
+                        <div class="duty-card-des">免费的可商用的高清图库，图片质量很高，只是要注册才能下载图片。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://cupcake.nilssonlee.se/');" class="duty-card" target="_blank" title="Cupcake - 免费无版权图库网站，所有图片采用CC0协议授权，图片色调厚实，适合做背景图。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/6c4154e8e8e2fac.png">Cupcake</div>
+                        <div class="duty-card-des">免费无版权图库网站，所有图片采用CC0协议授权，图片色调厚实，适合做背景图。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://trunklog.com/');" class="duty-card" target="_blank" title="Trunklog - 瑞典的一位摄影师旅行所拍摄的照片，网站所有图片全部无偿使用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/881f0fae1b270d38.png">Trunklog</div>
+                        <div class="duty-card-des">瑞典的一位摄影师旅行所拍摄的照片，网站所有图片全部无偿使用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://finda.photo/');" class="duty-card" target="_blank" title="Finda Photo - 一个可以根据图片的颜色和图片标签以及来源的方式来搜索免费可商用的图片资源网站。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/39f80b526256db78.png">Finda Photo</div>
+                        <div class="duty-card-des">一个可以根据图片的颜色和图片标签以及来源的方式来搜索免费可商用的图片资源网站。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.ssyer.com/');" class="duty-card" target="_blank" title="别样网 - 无版权免费大尺寸图片共享平台，图片遵循CC0 协议，随时随地发布使用。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/95319067f6ed64a.png">别样网</div>
+                        <div class="duty-card-des">无版权免费大尺寸图片共享平台，图片遵循CC0 协议，随时随地发布使用。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.polayoutu.com/collections');" class="duty-card" target="_blank" title="泼辣有图 - 泼辣修图出的开源摄影网站，全部是无版权的摄影作品，所有图片可以用于任何用途。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1c5dfecae738d0ce.jpg">泼辣有图</div>
+                        <div class="duty-card-des">泼辣修图出的开源摄影网站，全部是无版权的摄影作品，所有图片可以用于任何用途。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://699pic.com/');" class="duty-card" target="_blank" title="摄图网 - 摄图网是一家专注正版摄影高清图免费下载的图库，免费用户每天只能下载一张图片。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e4467da6a9d53894.png">摄图网</div>
+                        <div class="duty-card-des">摄图网是一家专注正版摄影高清图免费下载的图库，免费用户每天只能下载一张图片。</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-8" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-tint"></i>颜色搭配</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://color.adobe.com/zh/');" class="duty-card" target="_blank" title="AdobeColor - Adobe配色神器，它提供免费的色彩主题，我们可以在任何作品上使用它们。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/b6ea84e9822e7658.png">AdobeColor</div>
+                        <div class="duty-card-des">Adobe配色神器，它提供免费的色彩主题，我们可以在任何作品上使用它们。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://webcolourdata.com/');" class="duty-card" target="_blank" title="WebColourData - 帮助分析网站配色的在线工具类型网站，通过网址获取分析网站的配色 。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/1d2cf39401067d48.png">WebColourData</div>
+                        <div class="duty-card-des">帮助分析网站配色的在线工具类型网站，通过网址获取分析网站的配色 。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://nipponcolors.com/');" class="duty-card" target="_blank" title="Nipponcolors - 日本传统色的网站，网站以收录日本传统色系为主，前前后后共250种颜色,">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/29c64c2a92338946.png">Nipponcolors</div>
+                        <div class="duty-card-des">日本传统色的网站，网站以收录日本传统色系为主，前前后后共250种颜色,</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.colorfavs.com/');" class="duty-card" target="_blank" title="Colorfavs - 很实用的在线配色工具，可以上传图片来分析图片的配色。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e3c2dfad3dc2147a.png">Colorfavs</div>
+                        <div class="duty-card-des">很实用的在线配色工具，可以上传图片来分析图片的配色。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://coolors.co/');" class="duty-card" target="_blank" title="Coolors - Coolors是一个超级简单的配色方案生成器，它是一款帮助自动生成配色色板的小工具。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/99c9b332e48da4c0.png">Coolors</div>
+                        <div class="duty-card-des">Coolors是一个超级简单的配色方案生成器，它是一款帮助自动生成配色色板的小工具。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.webdesignrankings.com/resources/lolcolors/');" class="duty-card" target="_blank" title="LOLCOLORS - 精心调色的灵感，免费网页配色工具">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/1b5f9c5515a8d8ba.jpg">LOLCOLORS</div>
+                        <div class="duty-card-des">精心调色的灵感，免费网页配色工具</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://colorhunt.co/');" class="duty-card" target="_blank" title="Color Hunt - 一个免费开放的色彩灵感平台，拥有数千种时尚的手工挑选调色板">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/ba7acbefc0ba430.jpg">Color Hunt</div>
+                        <div class="duty-card-des">一个免费开放的色彩灵感平台，拥有数千种时尚的手工挑选调色板</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://colorsupplyyy.com/');" class="duty-card" target="_blank" title="COLOR SUPPLY - 设计神器，一键生成扁平化设计配色方案">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/cc6621206c935f1b.jpg">COLOR SUPPLY</div>
+                        <div class="duty-card-des">设计神器，一键生成扁平化设计配色方案</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-12" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-magic"></i>渐变配色</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://uigradients.com/#Flare');" class="duty-card" target="_blank" title="uiGradients - 美丽的UI渐变色分享站 并可转成CSS代码">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/ffea486aa6e0af42.jpg">uiGradients</div>
+                        <div class="duty-card-des">美丽的UI渐变色分享站 并可转成CSS代码</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://webkul.github.io/coolhue/');" class="duty-card" target="_blank" title="CoolHue - 在线颜色渐变色组合，快速生成CSS3语法">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/e972aa41c4f72f99.jpg">CoolHue</div>
+                        <div class="duty-card-des">在线颜色渐变色组合，快速生成CSS3语法</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://webgradients.com/');" class="duty-card" target="_blank" title="WebGradients.com - 免费线性渐变配色集合，180种渐变配色方案，一键生成css代码">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/e0912304575b4d8b.jpg">WebGradients.com</div>
+                        <div class="duty-card-des">免费线性渐变配色集合，180种渐变配色方案，一键生成css代码</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.grabient.com/');" class="duty-card" target="_blank" title="Grabient - 在线网页渐变配色方案网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/1fdfffd0939e7986.jpg">Grabient</div>
+                        <div class="duty-card-des">在线网页渐变配色方案网站</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-9" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-font"></i>字体字形</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://fontsup.com/');" class="duty-card" target="_blank" title="Fontsup - 免费英文字体下载库，包含了超过11万个免费字体的档案库，并且每天还在不断的增加中。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/71d3f061bbe7f53c.png">Fontsup</div>
+                        <div class="duty-card-des">免费英文字体下载库，包含了超过11万个免费字体的档案库，并且每天还在不断的增加中。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://zh.fonts2u.com/');" class="duty-card" target="_blank" title="Fonts2u - 免费字体下载站，Fonts2u提供大量的免费字体，免费为Windows和Mac系统下载免费的字体。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/e370fbbcaacb5786.png">Fonts2u</div>
+                        <div class="duty-card-des">免费字体下载站，Fonts2u提供大量的免费字体，免费为Windows和Mac系统下载免费的字体。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.urbanfonts.com/');" class="duty-card" target="_blank" title="Urbanfonts - 免费英文字体下载网站，提供超过8000种以上的免费英文字体下载。">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/4/89a7033fdad37704.png">Urbanfonts</div>
+                        <div class="duty-card-des">免费英文字体下载网站，提供超过8000种以上的免费英文字体下载。</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://fonts.adobe.com/');" class="duty-card" target="_blank" title="Adobe Fonts - Adobe出品的高质量字体库">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/9403f3ca65bf6502.jpg">Adobe Fonts</div>
+                        <div class="duty-card-des">Adobe出品的高质量字体库</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://comicneue.com/');" class="duty-card" target="_blank" title="Comicneue - 免费手写字体素材下载站，提供Comic Sans改良版字体的免费下载">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/3124fa8fbdb4e7ea.jpg">Comicneue</div>
+                        <div class="duty-card-des">免费手写字体素材下载站，提供Comic Sans改良版字体的免费下载</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://developer.apple.com/fonts/');" class="duty-card" target="_blank" title="San Francisco - Apple 苹果最新的系统界面字体San Francisco    ">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/aade06ce54232d8a.jpg">San Francisco</div>
+                        <div class="duty-card-des">Apple 苹果最新的系统界面字体San Francisco    </div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://fonts.adobe.com/fonts/source-han-sans-simplified-chinese#fonts-section');" class="duty-card" target="_blank" title="思源黑体 - Adobe与Google合作，在Adobe 25周年推出的开源中文字体 Source Han Sans">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/722a63a9edba1bb2.jpg">思源黑体</div>
+                        <div class="duty-card-des">Adobe与Google合作，在Adobe 25周年推出的开源中文字体 Source Han Sans</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.myfonts.com/');" class="duty-card" target="_blank" title="MyFonts - 最新时尚的商业英文字体库，超过13万种可用字体">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2018/12/df21e5c475f02a22.jpg">MyFonts</div>
+                        <div class="duty-card-des">最新时尚的商业英文字体库，超过13万种可用字体</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://fonts2u.com/');" class="duty-card" target="_blank" title="Fonts2U - 找字体很方便">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/9600afeebd4e0b10.jpg">Fonts2U</div>
+                        <div class="duty-card-des">找字体很方便</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.dafont.com/');" class="duty-card" target="_blank" title="DaFont - 各种高质量字体">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/7b2ae59a346039c2.jpg">DaFont</div>
+                        <div class="duty-card-des">各种高质量字体</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.qiuziti.com/');" class="duty-card" target="_blank" title="求字体 - 提供中文和英文字体库下载、识别与预览服务，找字体的好帮手">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/7ef468691e3a4d20.jpg">求字体</div>
+                        <div class="duty-card-des">提供中文和英文字体库下载、识别与预览服务，找字体的好帮手</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-10" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-tint"></i>漫画插画</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.uchor.com/');" class="duty-card" target="_blank" title="UCHOR - U区，二次元汇聚">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/a4961a0dfac04.png">UCHOR</div>
+                        <div class="duty-card-des">U区，二次元汇聚</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.13cg.com/');" class="duty-card" target="_blank" title="插画家园 - 插画作品交流、学习、展示平台">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/3769de996c20e075.jpg">插画家园</div>
+                        <div class="duty-card-des">插画作品交流、学习、展示平台</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.gracg.com/');" class="duty-card" target="_blank" title="涂鸦王国 - 中国人气数字艺术家社交网站，插画师、漫画家、画家的聚集地！">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/afb879b06e56fcb8.jpg">涂鸦王国</div>
+                        <div class="duty-card-des">中国人气数字艺术家社交网站，插画师、漫画家、画家的聚集地！</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://samchirnside.com/');" class="duty-card" target="_blank" title="CHIRNSIDE - 澳大利亚艺术家，设计师Sam Chirnside作品展示网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/466a5c6c65bf1e7a.png">CHIRNSIDE</div>
+                        <div class="duty-card-des">澳大利亚艺术家，设计师Sam Chirnside作品展示网站</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://dlanham.com/');" class="duty-card" target="_blank" title="David Lanham - 设计师David Lanham个人作品展示网站">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/3/a45d2ed481c0f2ca.jpg">David Lanham</div>
+                        <div class="duty-card-des">设计师David Lanham个人作品展示网站</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-11" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-users"></i>设计团队</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://eicoinc.com/');" class="duty-card" target="_blank" title="EICO - 国内专业界设计团队，服务于国内外知名IT厂商以及互联网企业">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/12b7e12448ba0ed5.jpg">EICO</div>
+                        <div class="duty-card-des">国内专业界设计团队，服务于国内外知名IT厂商以及互联网企业</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://www.aliued.com/');" class="duty-card" target="_blank" title="阿里国际UED - 阿里巴巴国际UED团队">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/696e4143fd6888ed.png">阿里国际UED</div>
+                        <div class="duty-card-des">阿里巴巴国际UED团队</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://isux.tencent.com/');" class="duty-card" target="_blank" title="Tencent ISUX - 腾讯社交用户体验设计">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/4f22d1bedcc386a1.jpg">Tencent ISUX</div>
+                        <div class="duty-card-des">腾讯社交用户体验设计</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://cdc.tencent.com/');" class="duty-card" target="_blank" title="腾讯CDC - 腾讯用户研究与体验设计中心，是腾讯的核心部门之一">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/8bc69bfed7002ca0.jpg">腾讯CDC</div>
+                        <div class="duty-card-des">腾讯用户研究与体验设计中心，是腾讯的核心部门之一</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-14" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-comments-o"></i>社区交流</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://sketchtalk.io/');" class="duty-card" target="_blank" title="Sketch Talk - Sketch用户交流论坛，友好的草图应用社区">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/86df20efecff8926.jpg">Sketch Talk</div>
+                        <div class="duty-card-des">Sketch用户交流论坛，友好的草图应用社区</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.designernews.co/');" class="duty-card" target="_blank" title="Designer News - 一个庞大的全球设计师交流社区">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/b7905a409bd02ef4.jpg">Designer News</div>
+                        <div class="duty-card-des">一个庞大的全球设计师交流社区</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://tieba.baidu.com/f?ie=utf-8&kw=设计');" class="duty-card" target="_blank" title="设计吧 - 百度贴吧设计吧，最广泛、最全面的设计爱好者的交流平台">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/1d93b4e9bae923fe.jpg">设计吧</div>
+                        <div class="duty-card-des">百度贴吧设计吧，最广泛、最全面的设计爱好者的交流平台</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://tieba.baidu.com/f?kw=ps&frs=yqtb&red_tag=o2603674792');" class="duty-card" target="_blank" title="PS吧 - 百度PS吧，有图无真相！">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/d4ff0d7fbd01e9cf.jpg">PS吧</div>
+                        <div class="duty-card-des">百度PS吧，有图无真相！</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://uigreat.com/');" class="duty-card" target="_blank" title="优阁网 - UI设计师学习交流社区">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/a43a6a0789917b98.jpg">优阁网</div>
+                        <div class="duty-card-des">UI设计师学习交流社区</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('http://bbs.blueidea.com/forum.php');" class="duty-card" target="_blank" title="经典论坛 - 蓝色理想经典论坛，前端开发、UI设计、Web编程交流论坛">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/9018cbc10f5ae39b.jpg">经典论坛</div>
+                        <div class="duty-card-des">蓝色理想经典论坛，前端开发、UI设计、Web编程交流论坛</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="row duty-item">
+              <div class="col-md-12">
+                <div id="row-15" class="anchor-link"></div>
+                <strong class="duty-item-name"><i class="fa fa-tint"></i>酷站集合</strong>
+              </div>            
+              <div class="col-md-12 ">
+                <div class="row">
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://muz.li/');" class="duty-card" target="_blank" title="Muzli Design Inspiration - 国外设计类网站导航">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/9acbf73a4708801e.jpg">Muzli Design Inspiration</div>
+                        <div class="duty-card-des">国外设计类网站导航</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://www.topys.cn/');" class="duty-card" target="_blank" title="TOPYS - 全球顶尖创意分享平台">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/76693a8da0516d2.jpg">TOPYS</div>
+                        <div class="duty-card-des">全球顶尖创意分享平台</div>
+                      </a>
+                    </div>
+                  
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                      <a href="javascript:window.open('https://scene360.com/');" class="duty-card" target="_blank" title="Scene 360 - 在线艺术杂志，涵盖艺术，摄影，纹身，设计和电影">
+                        <div class="duty-card-tit"><img src="images/zhanwei.gif" data-original="upload/images/2019/4/fa2de999e126831a.jpg">Scene 360</div>
+                        <div class="duty-card-des">在线艺术杂志，涵盖艺术，摄影，纹身，设计和电影</div>
+                      </a>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+        </div>
+        <footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-main">
+          <p>Copyright © 2017-2019 小呆导航（<a href="index.html">webjike.com</a>）By SiteServer CMS 提供强力驱动 · 粤ICP备18030223号-1  <a href="sitemap.html" target="_blank">网站地图</a><a href="javascript:window.open('https://github.com/xiaodai945/WEBJIKE');" target="_blank" class="pull-right"><img src="github/stars/xiaodai945/WEBJIKE-social.jpg"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="top" class="hidden-xs hidden-sm">
+  <ul>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="联 系客 服"><i class="fa fa-smile-o"></i></a>
+      <span><img src="images/weixin.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="意 见反 馈"><i class="fa fa-envelope-o fa-fw"></i></a>
+      <span>我们可以做的更好</span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="微 信群 聊"><i class="fa fa-weixin"></i></a>
+      <span><img src="images/qun.jpg"></span>
+    </li>
+    <li class="top-item">
+      <a href="javascript:;" data-tooltip="返 回顶 部" style="display: none" id="go-top"><i class="fa fa-chevron-up"></i></a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    <!-- 对话框HTML -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+            <h4 class="modal-title">自定义链接</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-control has-icon-left">
+              <input id="inputAccountExample1" type="text" class="form-control" placeholder="网址名称">
+              <label for="inputAccountExample1" class="input-control-icon-left"><i class="icon icon-header"></i></label>
+            </div>
+            <div class="input-control has-icon-left" style="margin-top: 15px">
+              <input id="inputAccountExample2" type="text" class="form-control" placeholder="请输入网址，注意网址前面要加上http://">
+              <label for="inputAccountExample1" class="input-control-icon-left"><i class="icon icon-link"></i></label>
+            </div>
+            <div class="modal-text">
+              <p class="text-red">网址书写格式：http://xxx.com，网址前面一定要加上 “ http:// ” 前缀。</p>
+              <p>tips：自定义链接的数据是储存在浏览器本地缓存上，清空浏览数据（Cookie及其他网站数据）后会导致自定义的数据丢失，所以清理浏览数据的时候切勿选中（Cookie及其他网站数据）选项。</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="dist/lib/ieonly/html5shiv.js"></script>
+    <script src="dist/lib/ieonly/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261855216'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261855216' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+<script src="js/jquery.js"></script>
+<script src="dist/js/zui.js"></script>
+<script src="static/js/3.0.4/av-min.js"></script>
+<script src="js/Valine.min.js"></script>
+<script src="js/main.min-3.0.2.js"></script>
+  </body>
+</html>
