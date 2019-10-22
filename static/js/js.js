@@ -79,7 +79,7 @@ function browserRedirect() {
 var now = -1;
 var resLength = 0;
 var thisSearch = 'https://www.baidu.com/s?wd=';
-var thisSearchIcon = '/2833zsz/测试/images/logo.jpg';
+var thisSearchIcon = 'https://28333880572.github.io/2833zsz/测试/images/logo.jpg';
 var storage = window.localStorage;
 if(!storage.stopHot){
     storage.stopHot = true
