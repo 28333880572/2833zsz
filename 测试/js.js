@@ -208,6 +208,10 @@ $(function(){
 	  name: 'B站',
       img: 'https://28333880572.github.io/2833zsz/测试/images/logo6.jpg',
       url: 'https://search.bilibili.com/all?keyword='
+	}, {
+	  name: '网易云',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo.jpg',
+      url: 'https://music.163.com/#/search/m/?s='
     }]
   }
   for(var i = 0; i < search.data.length; i++){
