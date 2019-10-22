@@ -210,7 +210,7 @@ $(function(){
       url: 'https://search.bilibili.com/all?keyword='
 	}, {
 	  name: '网易云',
-      img: 'https://28333880572.github.io/2833zsz/测试/images/logo.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo7.jpg',
       url: 'https://music.163.com/#/search/m/?s='
     }]
   }
