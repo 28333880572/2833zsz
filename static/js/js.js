@@ -186,23 +186,23 @@ $(function(){
   var search = {
     data: [{
       name: '百度',
-      img: '/2833zsz/测试/images/logo.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo.jpg',
       url: 'https://www.baidu.com/s?wd='
     }, {
       name: '谷歌',
-      img: '/2833zsz/测试/images/logo2.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo2.jpg',
       url: 'https://www.google.com/search?q='
     }, {
       name: '必应',
-      img: '/2833zsz/测试/images/logo3.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo3.jpg',
       url: 'https://cn.bing.com/search?q='
     }, {
       name: '好搜',
-      img: '/2833zsz/测试/images/logo4.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo4.jpg',
       url: 'https://www.so.com/s?q='
     }, {
       name: '搜狗',
-      img: '/2833zsz/测试/images/logo5.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo5.jpg',
       url: 'https://www.sogou.com/web?query='
     }]
   }
