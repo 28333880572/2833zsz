@@ -202,7 +202,7 @@ $(function(){
       url: 'https://www.so.com/s?q='
     }, {
       name: '搜狗',
-      img: 'https://28333880572.github.io/2833zsz/测试/images/logo5.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo2.jpg',
       url: 'https://www.sogou.com/web?query='
     }]
   }
