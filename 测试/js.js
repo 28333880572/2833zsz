@@ -206,7 +206,7 @@ $(function(){
       url: 'https://www.sogou.com/web?query='
 	}, {
 	  name: 'B站',
-      img: 'https://28333880572.github.io/2833zsz/测试/images/logo4.jpg',
+      img: 'https://28333880572.github.io/2833zsz/测试/images/logo6.jpg',
       url: 'https://search.bilibili.com/all?keyword='
     }]
   }
