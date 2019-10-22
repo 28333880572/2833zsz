@@ -207,7 +207,7 @@ $(function(){
 	}, {
 	  name: '好搜',
       img: 'https://28333880572.github.io/2833zsz/测试/images/logo4.jpg',
-      url: 'https://www.so.com/s?q='
+      url: 'https://search.bilibili.com/all?keyword='
     }]
   }
   for(var i = 0; i < search.data.length; i++){
