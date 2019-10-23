@@ -213,9 +213,10 @@ $(function(){
       img: 'https://28333880572.github.io/2833zsz/测试/images/logo7.jpg',
       url: 'https://music.163.com/#/search/m/?s='
     }, {
-	  name: '腾讯视频',
+	  name: '网易云',
       img: 'https://28333880572.github.io/2833zsz/测试/images/logo8.jpg',
       url: 'https://v.qq.com/x/search/?q='
+	  }]
 		
   }
   for(var i = 0; i < search.data.length; i++){
