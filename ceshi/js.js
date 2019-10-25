@@ -214,9 +214,17 @@ $(function(){
       url: 'https://music.163.com/#/search/m/?s='
 	}, {
 	  name: '爱奇艺',
-      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo9.jpg',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo9.png',
       url: 'https://so.iqiyi.com/so/q_'
-    }]
+    }, {
+	  name: '腾讯视频',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo8.jpg',
+      url: 'https://v.qq.com/x/search/?q='
+	}， {
+	  name: '优酷',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo10.png',
+      url: 'https://so.youku.com/search_video/q_'
+	  }]
   }
   for(var i = 0; i < search.data.length; i++){
     var addList = '<li><img src="' + search.data[i].img + '"/>' + search.data[i].name + '</li>'
