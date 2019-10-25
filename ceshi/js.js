@@ -79,7 +79,7 @@ function browserRedirect() {
 var now = -1;
 var resLength = 0;
 var thisSearch = 'https://www.baidu.com/s?wd=';
-var thisSearchIcon = 'https://28333880572.github.io/2833zsz/ceshi/images/logo.jpg';
+var thisSearchIcon = './logo.jpg';
 var storage = window.localStorage;
 if(!storage.stopHot){
     storage.stopHot = true
@@ -204,27 +204,27 @@ $(function(){
       name: '搜狗',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo5.jpg',
       url: 'https://www.sogou.com/web?query='
-	}, {
-	  name: 'B站',
+    }, {
+      name: 'B站',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo6.jpg',
       url: 'https://search.bilibili.com/all?keyword='
 	}, {
-	  name: '网易云',
+      name: '网易云',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo7.jpg',
       url: 'https://music.163.com/#/search/m/?s='
 	}, {
-	  name: '爱奇艺',
-      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo9.png',
-      url: 'https://so.iqiyi.com/so/q_'
-    }, {
-	  name: '腾讯视频',
+      name: '腾讯视频',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo8.jpg',
       url: 'https://v.qq.com/x/search/?q='
-	}， {
-	  name: '优酷',
-      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo10.png',
+	}, {
+      name: '爱奇艺',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo9.jpg',
+      url: 'https://so.iqiyi.com/so/q_'
+    }, {
+      name: '优酷',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo10.jpg',
       url: 'https://so.youku.com/search_video/q_'
-	  }]
+    }]
   }
   for(var i = 0; i < search.data.length; i++){
     var addList = '<li><img src="' + search.data[i].img + '"/>' + search.data[i].name + '</li>'
