@@ -228,6 +228,10 @@ $(function(){
       name: 'GitHub',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo11.jpg',
       url: 'https://github.com/search?q='
+    }, {
+      name: '知乎',
+      img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo12.jpg',
+      url: 'https://www.zhihu.com/search?type=content&q='
     }]
   }
   for(var i = 0; i < search.data.length; i++){
