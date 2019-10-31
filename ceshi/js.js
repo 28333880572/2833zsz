@@ -225,7 +225,7 @@ $(function(){
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo10.jpg',
       url: 'https://so.youku.com/search_video/q_'
     }, {
-      name: 'GitHob',
+      name: 'GitHub',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo11.jpg',
       url: 'https://github.com/search?q='
     }]
