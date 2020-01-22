@@ -35,7 +35,7 @@ $(function () {
 		layer.open({
 			type: 1,
 			area: ['310px', '450px'], //宽高
-			content: '<div style="text-align: center;"><br><img src="http://p2.so.qhmsg.com/t02c2c2e0f58ef5e0f5.jpg" style="width:80%;margin-bottom:15px;"><br>"扫码二维码查看支付效果或者打赏"<br>"本站生成的收款码无红包广告"<br>"又拍云CDN加速，收款更快捷"</div>',
+			content: '<div style="text-align: center;"><br><img src="https://imgs.bwmelon.com/20190722123548.png" style="width:80%;margin-bottom:15px;"><br>"扫码二维码查看支付效果或者打赏"<br>"本站生成的收款码无红包广告"<br>"又拍云CDN加速，收款更快捷"</div>',
 			title: '支付宝扫码领红包',
 			btn: ['关闭'],
 			btnAlign: 'c',
@@ -44,6 +44,8 @@ $(function () {
 				layer.closeAll();
 			}
 		});
+
+		
 
 		/**
 		 * url编码
@@ -304,6 +306,7 @@ $(function () {
 		}
 
 
+
 		/**
 		 * 生成普通样式二维码
 		 * @param {HTMLElement} element 
@@ -383,8 +386,9 @@ $(function () {
 			//由于原来生成的链接太长，生成的二维码太密集，所以通过腾讯/新浪生成短网址
 			$.ajax({
 				type: 'get',
-				url: 'long2tiny.php?&url_long=' + urlEncode(urlEncode(longUrl)),
-				success: function (tinyurl) {
+				url: 'https://api.no0a.cn/api/tinyurl/urlcn?longurl=' + urlEncode(urlEncode(longUrl)),
+				dataType: "JSON",
+				success: function (res) {
 					// 生成缩网址二维码
 					layer.closeAll();
 					// 获取当前被选中样式图片地址
@@ -395,11 +399,11 @@ $(function () {
 
 					// 判断是否为艺术码
 					var dataArt = document.querySelector(".swiper-slide-active").dataset.art;
-
+					
 					if (dataArt) {
-						makeArtQrcode(dataArt, tinyurl);
+						makeArtQrcode(dataArt, res.tinyurl);
 					} else {
-						makeCommonQrcode(nowUrl, nowName, tinyurl);
+						makeCommonQrcode(nowUrl, nowName, res.tinyurl);
 					}
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
@@ -545,5 +549,5 @@ $(function () {
 		}
 	})
 
-
+	
 });
