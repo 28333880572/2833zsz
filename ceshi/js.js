@@ -237,9 +237,14 @@ $(function(){
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo12.jpg',
       url: 'https://www.zhihu.com/search?type=content&q='
         }, {
+      name: '京东',
+      img: 'https://s2.ax1x.com/2020/03/08/3voPH0.jpg',
+      url: 'https://search.jd.com/Search?keyword='
+        }, {
       name: '维基百科',
-      img: 'https://s2.ax1x.com/2020/03/08/3vflsP.jpg',
+      img: 'https://s2.ax1x.com/2020/03/08/3vo0VP.jpg',
       url: 'https://zh.wikipedia.org/w/index.php?search='
+
     }]
   }
   for(var i = 0; i < search.data.length; i++){
