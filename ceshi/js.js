@@ -220,18 +220,22 @@ $(function(){
       name: '爱奇艺',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo9.jpg',
       url: 'https://so.iqiyi.com/so/q_'
-    }, {
+        }, {
       name: '优酷',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo10.jpg',
       url: 'https://so.youku.com/search_video/q_'
-    }, {
+        }, {
       name: 'GitHub',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo11.jpg',
       url: 'https://github.com/search?q='
-    }, {
+        }, {
       name: '知乎',
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo12.jpg',
       url: 'https://www.zhihu.com/search?type=content&q='
+        }, {
+      name: '维基百科',
+      img: 'https://s2.ax1x.com/2020/03/08/3vflsP.jpg',
+      url: 'https://zh.wikipedia.org/w/index.php?search='
     }]
   }
   for(var i = 0; i < search.data.length; i++){
