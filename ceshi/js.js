@@ -237,6 +237,10 @@ $(function(){
       img: 'https://28333880572.github.io/2833zsz/ceshi/images/logo12.jpg',
       url: 'https://www.zhihu.com/search?type=content&q='
         }, {
+      name: '贴吧',
+      img: 'https://s1.ax1x.com/2020/09/05/wEn55V.png',
+      url: 'https://tieba.baidu.com/f/search/res?ie=utf-8&qw='
+        }, {
       name: '维基百科',
       img: 'https://s2.ax1x.com/2020/03/08/3vo0VP.jpg',
       url: 'https://zh.wikipedia.org/w/index.php?search='
