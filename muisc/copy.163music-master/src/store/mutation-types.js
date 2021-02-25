@@ -1,8 +1,0 @@
-export const TOGGLE_PLAY = 'TOGGLE_PLAY'
-export const PLAY = 'PLAY'
-export const STOP = 'STOP'
-export const SHOW = 'SHOW'
-export const HIDE = 'HIDE'
-export const SHOW_MENU = 'SHOW_MENU'
-export const HIDE_MENU = 'HIDE_MENU'
-export const TOGGLE_MENU = 'TOGGLE_MENU'
